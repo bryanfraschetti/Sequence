@@ -2,6 +2,9 @@ var redirect_uri = "http://127.0.0.1:5500/index.html";
 
 var client_id = "";
 var client_secret = "";
+var access_token = null;
+var refresh_token = null;
+
 
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
@@ -34,7 +37,7 @@ function callAuthorizationApi(body){
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('Authorization', 'Basic' + btoa(client_id + ":" + client_secret));
     xhr.send(body);
-    xhr.onload = handleAuthorizationResponse;
+    xhr.onload = handleAuthorizationResponse();
 }
 
 function handleAuthorizationResponse(){
