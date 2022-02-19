@@ -1,43 +1,44 @@
-var redirect_uri = "http://127.0.0.1:5500/index.html";
+var redirect_uri = "http://127.0.0.1:8080/index.html";
 
 var client_id = "";
 var client_secret = "";
-var access_token = null;
-var refresh_token = null;
 
 
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
 
+
 function onPageLoad(){
     client_id = localStorage.getItem("client_id");
     client_secret = localStorage.getItem("client_secret");
 
-    if(window.location.search.length > 0){handleRedirect();}
+    if(window.location.search.length > 0){
+        handleRedirect();
+    }
 }
 
 function handleRedirect(){
     let code = getcode();
-    fetchAccessToken(code);
+    fetchAccessToken( code );
     window.history.pushState("", "", redirect_uri);
 }
 
-function fetchAccessToken(code){
+function fetchAccessToken( code ){
     let body = "grant_type=authorization_code";
     body += "&code=" + code;
     body += "&redirect_uri=" + encodeURI(redirect_uri);
     body += "&client_id=" + client_id;
     body += "&client_secret=" + client_secret;
-    callAuthorizationApi(body);
+    callAuthorizationApi( body );
 }
 
-function callAuthorizationApi(body){
+function callAuthorizationApi( body ){
     let xhr = new XMLHttpRequest();
     xhr.open("POST", TOKEN, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('Authorization', 'Basic' + btoa(client_id + ":" + client_secret));
+    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(client_id + ":" + client_secret));
     xhr.send(body);
-    xhr.onload = handleAuthorizationResponse();
+    xhr.onload = handleAuthorizationResponse;
 }
 
 function handleAuthorizationResponse(){
