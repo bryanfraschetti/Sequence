@@ -1,12 +1,19 @@
 body{
-    background: url("images/background.png") center;
+    /* background: rgb(2,0,36); */
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(to bottom right, rgb(40,40,40), rgb(0,0,0));
+    /* background-image: linear-gradient(to top left, #070347, #0a416e); */
+    /* background: url("images/background.png") center; */
     font-family: sans-serif;
 }
 
 .loginbox{
-    width: 320px;
+    width: 500px;
     height: 420px;
-    background: rgba(10, 10, 10, 0.5);
+    background: rgba(10, 10, 10, 0.45);
     color: #fff;
     top: 50%;
     left: 50%;
