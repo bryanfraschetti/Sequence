@@ -7,6 +7,14 @@ var client_secret = "";
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
 
+const loginSubmit = document.getElementById("clientSecret");
+
+loginSubmit.addEventListener("keydown", function isEnter(e){
+    if(e.key === "Enter"){
+        e.preventDefault()
+        requestAuthorization();//While a person is typing in the password bar, check to see if they hit enter
+    }
+})
 
 function onPageLoad(){
     client_id = localStorage.getItem("client_id");
@@ -19,20 +27,20 @@ function onPageLoad(){
 
 function handleRedirect(){
     let code = getcode();
-    fetchAccessToken( code );
+    fetchAccessToken(code);
     window.history.pushState("", "", redirect_uri);
 }
 
-function fetchAccessToken( code ){
+function fetchAccessToken(code){
     let body = "grant_type=authorization_code";
     body += "&code=" + code;
     body += "&redirect_uri=" + encodeURI(redirect_uri);
     body += "&client_id=" + client_id;
     body += "&client_secret=" + client_secret;
-    callAuthorizationApi( body );
+    callAuthorizationApi(body);
 }
 
-function callAuthorizationApi( body ){
+function callAuthorizationApi(body){
     let xhr = new XMLHttpRequest();
     xhr.open("POST", TOKEN, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -78,11 +86,17 @@ function requestAuthorization(){
     localStorage.setItem("client_id", client_id);
     localStorage.setItem("client_secret", client_secret);
 
-    let url = AUTHORIZE
-    url += "?client_id=" + client_id;
-    url += "&response_type=code";
-    url += "&redirect_uri=" + encodeURI(redirect_uri);
-    url += "&show_dialog=true";
-    url += "&scope=user-read-currently-playing%20playlist-modify-private%20playlist-modify-public";
-    window.location.href = url;
+    if(client_id === "2843145f9a1341e6b0d6f8ea156c5f69" && client_secret === "ec2d2ede8f2e4e40873040bc6e06750a"){
+        let url = AUTHORIZE;
+        url += "?client_id=" + client_id;
+        url += "&response_type=code";
+        url += "&redirect_uri=" + encodeURI(redirect_uri);
+        url += "&show_dialog=true";
+        url += "&scope=user-read-currently-playing%20playlist-modify-private%20playlist-modify-public";
+        window.location.href = url;
+    }
+
+    else{
+        document.getElementById("login-error-msg").style.opacity = 1;
+    }
 }
