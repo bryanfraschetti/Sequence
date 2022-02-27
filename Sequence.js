@@ -3,9 +3,16 @@ var redirect_uri = "http://127.0.0.1:8080/index.html";
 var client_id = "";
 var client_secret = "";
 
+var now = new Date();
 
+if(now.getHours()<8 || now.getHours()>=20){document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(40,40,40), rgb(0,0,0))"}
+else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
+
+/*Urls*/
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
+const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
+
 
 const loginSubmit = document.getElementById("clientSecret"); //variable to represent client secret box
 
