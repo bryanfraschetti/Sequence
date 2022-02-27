@@ -5,6 +5,8 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-image: linear-gradient(to bottom right, rgb(40,40,40), rgb(0,0,0));
+    /* background-image: linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788)); */
+    /* background-image: linear-gradient(to bottom right, rgba(196, 34, 34, 0.877), rgba(21, 91, 124, 0.863)); */
     /* background-image: linear-gradient(to top left, #070347, #0a416e); */
     /* background: url("images/background.png") center; */
     font-family: sans-serif;
