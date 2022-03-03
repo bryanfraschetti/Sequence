@@ -8,10 +8,13 @@ var now = new Date();
 if(now.getHours()<8 || now.getHours()>=20){document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(40,40,40), rgb(0,0,0))"}
 else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
 
+const playlist_id = ""
+
 /*Urls*/
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
 const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
+const TRACKS = "https://api.spotify.com/v1/playlists/" + `${playlist_id}` + "/tracks"
 
 
 const loginSubmit = document.getElementById("clientSecret"); //variable to represent client secret box
@@ -106,4 +109,57 @@ function handleAuthorizationResponse(){
         console.log(this.responseText);
         alert(this.responseText);
     }
+}
+
+//API CALLS
+
+function callApi(method, url, body, callback){
+    let xhr = new XMLHttpRequest();
+    xhr.open(method, url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
+    xhr.send(body);
+    xhr.onload = callback;
+}
+
+function handePlaylistResponse(){
+    if(this.status == 200){
+        var data = JSON.parse(this.responseText);
+        console.log(data);
+        removeAllItems("playlists");
+        data.items.forEach(el => addPlaylist(el));
+    }
+    else if(this.status == 401){
+        refreshAccessToken();
+    }
+    else{
+        console.log(this.responseText);
+        alert(this.responseText);
+    }
+}
+
+function addPlaylist(el){
+    let node = document.createElement("option");
+    node.value = el.id;
+    node.innerHTML = el.name;
+    document.getElementById("playlists").appendChild(node);
+}
+
+function removeAllItems( elementId ){
+    let node = document.getElementById(elementId);
+    while (node.firstChild) {
+        node.removeChild(node.firstChild);
+    }
+}
+
+function refreshPlaylists(){
+    callApi("GET", PLAYLISTS, null, handePlaylistResponse);
+}
+
+function refreshAccessToken(){
+    refresh_token = localStorage.getItem(refresh_token);
+    let body = "grant_type=refresh_token";
+    body += "refresh_token" + refresh_token;
+    body += "client_id=" + client_id;
+    callAuthorizationApi(body);
 }
