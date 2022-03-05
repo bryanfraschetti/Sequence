@@ -1,4 +1,5 @@
 var redirect_uri = "http://127.0.0.1:8080/index.html";
+var home_uri = "http://127.0.0.1:8080/home/home.html";
 
 var client_id = "";
 var client_secret = "";
@@ -50,7 +51,6 @@ function requestAuthorization(){
         url += "&scope=user-read-currently-playing%20playlist-modify-private%20playlist-modify-public";
         window.location.href = url;
     }
-
     else{//stay on page and let them know
         document.getElementById("login-error-msg").style.opacity = 1;
     }
@@ -103,7 +103,8 @@ function handleAuthorizationResponse(){
             refresh_token = data.refresh_token;
             localStorage.setItem("refresh_token", refresh_token);
         }
-        onPageLoad();
+        // onPageLoad();
+        window.location.href = home_uri;
     }
     else {
         console.log(this.responseText);
@@ -117,7 +118,7 @@ function callApi(method, url, body, callback){
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
+    xhr.setRequestHeader('Authorization', ' Bearer ' + localStorage.getItem("access_token"));
     xhr.send(body);
     xhr.onload = callback;
 }
@@ -145,7 +146,7 @@ function addPlaylist(el){
     document.getElementById("playlists").appendChild(node);
 }
 
-function removeAllItems( elementId ){
+function removeAllItems(elementId){
     let node = document.getElementById(elementId);
     while (node.firstChild) {
         node.removeChild(node.firstChild);
@@ -163,3 +164,5 @@ function refreshAccessToken(){
     body += "client_id=" + client_id;
     callAuthorizationApi(body);
 }
+
+for(var option of document.getElementById("playlists").options){console.log(option.innerHTML)}
