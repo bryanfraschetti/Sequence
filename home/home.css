@@ -11,6 +11,11 @@ body{
     font-family: sans-serif;
 }
 
+#main{
+    width: 80%;
+    text-align: center;
+}
+
 #PlaylistSection{
     width: 80%;
     height: 5%;
@@ -45,4 +50,14 @@ body{
 #PlaylistSection input[type="button"]:hover{
     cursor: pointer;
     background: rgb(61, 211, 248);
+}
+
+#Tracks{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 17%;
+    background-color: #fff;
+    border-radius: 30px;
+    visibility: hidden;
 }

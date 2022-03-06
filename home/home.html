@@ -6,18 +6,28 @@
         <meta name="viewport" content="width=device width, initial-scale=1.0">
         <title>Sequence</title>
         <link rel="stylesheet" type="text/css" href="home.css">
-        <script src="../Sequence.js" defer></script>
+        <script src="auth.js" defer></script>
+        <script src="mode.js" dever></script>
         <title>Home</title>
     </head>
-    <body>
+    <body onload="onPageLoad()">
         <br/>
-        <div id="PlaylistSection" class="row">
+        <container id="main">
             <container class="PlaylistBox">
-                <label for="playlists" class="form-label">Playlists: </label>
-                <select id="playlists" class="form-control">
-                </select>
-                <input id="refresher" type="button" onclick="refreshPlaylists()" value="Refresh Playlists">
+                <div id="PlaylistSection" class="row">
+                    <label for="playlists" class="form-label">Playlists: </label>
+                    <select id="playlists" onchange="selectPlaylist(this)" class="form-control">
+                    </select>
+                    <input id="refresher" type="button" onclick="refreshPlaylists()" value="Refresh Playlists">
+                </div>
             </container>
-        </div>
+            <container class="TrackBox">
+                <div id="TrackSection" class="row">
+                    <table id="Tracks">
+                        <td>Song</td><td>Artist</td>         
+                    </table>
+                </div>
+            </container>
+        </container>
     </body>
 </html>
