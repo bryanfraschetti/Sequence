@@ -3,7 +3,7 @@ body{
     margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-image: linear-gradient(to bottom, rgb(40,40,40), rgb(0,0,0));
+    background-image: linear-gradient(to bottom, rgb(60,60,60), rgb(0,0,0));
     /* background-image: linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788)); */
     /* background-image: linear-gradient(to bottom right, rgba(196, 34, 34, 0.877), rgba(21, 91, 124, 0.863)); */
     /* background-image: linear-gradient(to top left, #070347, #0a416e); */
@@ -26,7 +26,8 @@ body{
     transform: translate(-50%, -50%);
     padding: 10px 10px;
     border-radius: 30px;
-    background: rgb(9, 153, 21);
+    background-color: rgb(9, 153, 21);
+    /* background: #71A9AA80; */
 }
 
 #playlists{
@@ -40,7 +41,9 @@ body{
     height: 75%;
     width: 15%;
     color: white;
-    background: rgb(5, 114, 177);
+    /* background: rgb(5, 114, 177); */
+    /* background: #4F8383; */
+    background: rgb(4, 30, 60);
     border-radius: 15px;
     border: none;
     font-family: sans-serif;
@@ -49,7 +52,8 @@ body{
 
 #PlaylistSection input[type="button"]:hover{
     cursor: pointer;
-    background: rgb(61, 211, 248);
+    /* background: rgb(61, 211, 248); */
+    background: rgb(6, 109, 168);
 }
 
 #Tracks{
@@ -57,7 +61,21 @@ body{
     margin-left: auto;
     margin-right: auto;
     margin-top: 17%;
-    background-color: #fff;
+    /* background-color: #71A9AA80; */
+    background: rgb(4, 30, 60);
     border-radius: 30px;
-    visibility: hidden;
+    color: white;
+}
+
+#Static{
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+#Tracks tr[id]:not([id='Static']):hover{
+    color: steelblue;
+}
+
+td{
+    border-bottom: 1px solid rgb(200, 200, 200);
 }

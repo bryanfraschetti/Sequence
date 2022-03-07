@@ -6,8 +6,11 @@ var client_secret = "";
 
 var now = new Date();
 
-if(now.getHours()<8 || now.getHours()>=20){document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(40,40,40), rgb(0,0,0))"}
-else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
+if(now.getHours()<8 || now.getHours()>=20){
+    document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(70,70,70), rgb(0,0,0))"
+}
+// else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
+else{document.body.style.backgroundImage = "linear-gradient(to bottom right, #AA8E71 30%, #71AA8E";}
 
 /*Urls*/
 const AUTHORIZE = "https://accounts.spotify.com/authorize";

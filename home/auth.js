@@ -8,8 +8,17 @@ var refresh_token = "";
 
 var now = new Date();
 
-if(now.getHours()<8 || now.getHours()>=20){document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(40,40,40), rgb(0,0,0))"}
-else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
+if(now.getHours()<8 || now.getHours()>=20){
+    document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(60,60,60), rgb(0,0,0))"
+    document.getElementById("PlaylistSection").style.background = "rgb(9, 153, 21)";
+    document.getElementById("refresher").style.background = "rgb(4, 30, 60)";
+    document.getElementById("Tracks").style.background = "rgb(4, 30, 60)";
+}
+// else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
+else{
+    document.body.style.backgroundImage = "linear-gradient(to bottom right, #AA8E71 30%, #71AA8E";
+    document.getElementById("PlaylistSection").style.background = "#71A9AA80";
+}
 
 var playlist_id = ""
 
@@ -40,7 +49,6 @@ function callApi(method, url, body, callback){
 function handlePlaylistResponse(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
-        console.log(data);
         removeAllItems("playlists");
         data.items.forEach(el => addPlaylist(el));
     }
@@ -112,17 +120,29 @@ function handleAuthorizationResponse(){
 
 function selectPlaylist(s){
     playlist_id = s[s.selectedIndex].id;
-    var TRACKS = PLAYLISTS + "/" + playlist_id + "/tracks";
+    var TRACKS = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?";
     console.log(TRACKS);
     callApi("GET", TRACKS, null, handleTracksResponse);
 }
 
 function handleTracksResponse(){
     if(this.status == 200){
-        document.getElementById("Tracks").style.visibility = visible;
         var data = JSON.parse(this.responseText);
-        // console.log(data);
+
         removeAllItems("Tracks");
+
+        let node = document.createElement("tr");
+        node.id = "Static";
+        document.getElementById("Tracks").appendChild(node);
+
+        let nodetitle = document.createElement("td");
+        nodetitle.innerHTML = "Song Title";
+        document.getElementById("Static").appendChild(nodetitle);
+
+        let nodeartist = document.createElement("td");
+        nodeartist.innerHTML = "Artist";
+        document.getElementById("Static").appendChild(nodeartist);
+        
         data.items.forEach(el => addTracks(el));
     }
     else if(this.status == 401){
@@ -131,6 +151,42 @@ function handleTracksResponse(){
     else{
         console.log(this.responseText);
         alert(this.responseText);
-}}
+    }
+}
 
-function addTracks(){}
+// function addTracks(el){
+//     let nodetr = document.createElement("tr");
+//     nodetr.id = el.track.id;
+//     document.getElementById("Tracks").appendChild(nodetr);
+//     let nodetdtrack = document.createElement("td")
+//     nodetdtrack.id = el.track.name
+//     nodetdtrack.innerHTML = el.track.name;
+//     document.getElementById(el.track.id).appendChild(nodetdtrack);
+//     let nodetdartist = document.createElement("td")
+//     nodetdartist.id = el.track.artists[0].name;
+//     nodetdartist.innerHTML = el.track.artists[0].name;
+//     document.getElementById(el.track.id).appendChild(nodetdartist);
+// }
+
+function addTracks(el){
+    let nodetr = document.createElement("tr");
+    nodetr.id = el.track.name;
+    document.getElementById("Tracks").appendChild(nodetr);
+    let nodetdtrack = document.createElement("td")
+    nodetdtrack.id = el.track.id
+    nodetdtrack.innerHTML = el.track.name;
+    document.getElementById(el.track.name).appendChild(nodetdtrack);
+    let nodetdartist = document.createElement("td")
+    nodetdartist.id = el.track.id;
+    nodetdartist.innerHTML = el.track.artists[0].name;
+    document.getElementById(el.track.name).appendChild(nodetdartist);
+}
+
+var theParent = document.getElementById("Tracks");
+theParent.addEventListener("click", function selectTrack(e){
+    if(e.target !== e.currentTarget){
+        var clickedItem = e.target.id;
+        alert(clickedItem);
+    }
+})
+
