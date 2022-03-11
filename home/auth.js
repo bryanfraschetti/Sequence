@@ -104,7 +104,7 @@ function callAuthorizationApi(body){
 function handleAuthorizationResponse(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
-        console.log(data);
+        // console.log(data);
         var data = JSON.parse(this.responseText);
         if(data.access_token != undefined){
             access_token = data.access_token;
@@ -130,7 +130,7 @@ function handleAuthorizationResponse(){
 function selectPlaylist(s){
     playlist_id = s[s.selectedIndex].id;
     var TRACKS = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?";
-    console.log(TRACKS);
+    // console.log(TRACKS);
     callApi("GET", TRACKS, null, handleTracksResponse);
 }
 
@@ -181,13 +181,21 @@ function addTracks(el){
     let nodetr = document.createElement("tr");
     nodetr.id = el.track.name;
     document.getElementById("Tracks").appendChild(nodetr);
+
+    let nodepic = document.createElement('img');
+    // console.log(el.track);
+    nodepic.src = el.track.album.images[-1].url;
+    document.getElementById(el.track.name).appendChild(nodepic);
+
     let nodetdtrack = document.createElement("td")
     nodetdtrack.id = el.track.id
     nodetdtrack.innerHTML = el.track.name;
     document.getElementById(el.track.name).appendChild(nodetdtrack);
+
     let nodetdartist = document.createElement("td")
     nodetdartist.id = el.track.id;
     nodetdartist.innerHTML = el.track.artists[0].name;
+    console.log(el.track.artists[0])
     document.getElementById(el.track.name).appendChild(nodetdartist);
 }
 
