@@ -11,8 +11,8 @@ var now = new Date();
 if(now.getHours()<8 || now.getHours()>=20){
     document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(60,60,60), rgb(0,0,0))"
     document.getElementById("PlaylistSection").style.background = "rgb(9, 153, 21)";
-    document.getElementById("refresher").style.background = "rgb(4, 30, 60)";
-    document.getElementById("Tracks").style.background = "rgb(4, 30, 60)";
+    document.getElementById("refresher").style.background = "rgb(2, 20, 35)";
+    document.getElementById("Tracks").style.background = "rgb(2, 20, 35)";
 }
 // else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
 else{
@@ -48,8 +48,17 @@ function callApi(method, url, body, callback){
 
 function handlePlaylistResponse(){
     if(this.status == 200){
+
         var data = JSON.parse(this.responseText);
+
         removeAllItems("playlists");
+
+        // let notoption = document.createElement("option");
+        // notoption.style.display = "hidden";
+        // document.getElementById("playlists").appendChild(notoption);
+        
+        // document.getElementById("TrackSection").style.overflow = "scroll";
+
         data.items.forEach(el => addPlaylist(el));
     }
     else if(this.status == 401){

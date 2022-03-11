@@ -1,0 +1,41 @@
+body{
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(to bottom, rgb(60,60,60), rgb(0,0,0));
+    /* background-image: linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788)); */
+    /* background-image: linear-gradient(to bottom right, rgba(196, 34, 34, 0.877), rgba(21, 91, 124, 0.863)); */
+    /* background-image: linear-gradient(to top left, #070347, #0a416e); */
+    /* background: url("images/background.png") center; */
+    font-family: sans-serif;
+}
+
+#main{
+    width: 80%;
+    text-align: center;
+}
+
+.topnav{
+    background: black;
+    width: 100vw;
+    height: 5vh;
+    color: white;
+    position: fixed;
+}
+
+.topnav td{
+    padding-top: 6%;
+    border-bottom: none;
+}
+
+a:link, a:visited {
+    color: white;
+    text-decoration: none;
+    font: 1em sans-serif;
+    font-weight: normal;  
+}
+
+a:hover{
+    color: rgb(143, 255, 176);
+}

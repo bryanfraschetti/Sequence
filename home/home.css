@@ -16,6 +16,36 @@ body{
     text-align: center;
 }
 
+table{
+    border-collapse: collapse;
+}
+
+.topnav{
+    background: black;
+    width: 100vw;
+    height: 5vh;
+    color: white;
+    position: fixed;
+    top: 0;
+    z-index: 9999
+}
+
+.topnav td{
+    padding-top: 6%;
+    border-bottom: none;
+}
+
+a:link, a:visited {
+    color: white;
+    text-decoration: none;
+    font: 1em sans-serif;
+    font-weight: normal;  
+}
+
+a:hover{
+    color: rgb(143, 255, 176);
+}
+
 #PlaylistSection{
     width: 80%;
     height: 5%;
@@ -43,7 +73,7 @@ body{
     color: white;
     /* background: rgb(5, 114, 177); */
     /* background: #4F8383; */
-    background: rgb(4, 30, 60);
+    background: rgb(2, 20, 35);
     border-radius: 15px;
     border: none;
     font-family: sans-serif;
@@ -56,8 +86,13 @@ body{
     background: rgb(6, 109, 168);
 }
 
+/* #TrackSection{
+    height: 100vh;
+    overflow: scroll;
+} */
+
 #Tracks{
-    width: 80%;
+    width: 50%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 17%;
@@ -76,6 +111,14 @@ body{
     color: steelblue;
 }
 
-td{
-    border-bottom: 1px solid rgb(200, 200, 200);
+#Tracks td{
+    padding: 0.75%;
+}
+
+#Tracks tr:last-child > td {
+    border-bottom: none;
+}
+
+#Tracks tr:first-child > td {
+    padding: 1%;
 }
