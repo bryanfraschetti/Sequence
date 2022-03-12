@@ -28,10 +28,12 @@
         <container id="main">
             <container class="PlaylistBox">
                 <div id="PlaylistSection" class="row">
-                    <label for="playlists" class="form-label">Playlists: </label>
-                    <select id="playlists" onchange="selectPlaylist(this)" class="form-control">
-                    </select>
-                    <input id="refresher" type="button" onclick="refreshPlaylists()" value="Refresh Playlists">
+                    <container id="PlaylistInteractables">
+                        <label for="playlists" class="form-label">Playlists: </label>
+                        <select id="playlists" onchange="selectPlaylist(this)" class="form-control">
+                        </select>
+                        <input id="refresher" type="button" onclick="refreshPlaylists()" value="Refresh Playlists">
+                    </div>
                 </div>
             </container>
             <container class="TrackBox">

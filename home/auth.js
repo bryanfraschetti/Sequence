@@ -11,7 +11,6 @@ var now = new Date();
 if(now.getHours()<8 || now.getHours()>=20){
     document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(60,60,60), rgb(0,0,0))"
     document.getElementById("PlaylistSection").style.background = "rgb(9, 153, 21)";
-    document.getElementById("refresher").style.background = "rgb(2, 20, 35)";
     document.getElementById("Tracks").style.background = "rgb(2, 20, 35)";
 }
 // else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
@@ -131,12 +130,14 @@ function selectPlaylist(s){
     playlist_id = s[s.selectedIndex].id;
     var TRACKS = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?";
     // console.log(TRACKS);
+    // fields = "fields=items.track.name,items.track.artists.name,items.tracks.album.images"; idk this is breaking but we should minimize the data we request; probably passed as body ??
     callApi("GET", TRACKS, null, handleTracksResponse);
 }
 
 function handleTracksResponse(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
+        console.log(data)
 
         removeAllItems("Tracks");
 
@@ -204,7 +205,26 @@ var theParent = document.getElementById("Tracks");
 theParent.addEventListener("click", function selectTrack(e){
     if(e.target !== e.currentTarget){
         var clickedItem = e.target.id;
-        alert(clickedItem);
+        var AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + clickedItem;
+        callApi("GET", AUDIOANALYSIS, null, handleAudioAnalysis);
     }
 })
 
+function handleAudioAnalysis(){
+    if(this.status == 200){
+        var data = JSON.parse(this.responseText);
+        console.log(data);
+        alert("Key: " + data.track.key + " Confidence: " + data.track.key_confidence +
+        " Mode: " + data.track.mode + " Confidence: " + data.track.mode_confidence +
+        " Tempo: " + data.track.tempo + " Confidence: " + data.track.tempo_confidence);
+    }
+    
+    else if(this.status == 401){
+        refreshAccessToken();
+    }
+
+    else{
+        console.log(this.responseText);
+        alert(this.responseText);
+    }
+}
