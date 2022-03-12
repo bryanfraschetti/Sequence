@@ -108,7 +108,7 @@ a:hover{
 }
 
 #Tracks tr[id]:not([id='Static']):hover{
-    color: steelblue;
+    background-color: steelblue;
 }
 
 #Tracks td{
@@ -121,4 +121,9 @@ a:hover{
 
 #Tracks tr:first-child > td {
     padding: 1%;
+}
+
+img {
+    margin-top: 5%;
+    margin-left: 25%;
 }

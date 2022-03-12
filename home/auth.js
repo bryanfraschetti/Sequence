@@ -144,6 +144,9 @@ function handleTracksResponse(){
         node.id = "Static";
         document.getElementById("Tracks").appendChild(node);
 
+        let nodeempty = document.createElement("td");
+        document.getElementById("Static").appendChild(nodeempty);
+
         let nodetitle = document.createElement("td");
         nodetitle.innerHTML = "Song Title";
         document.getElementById("Static").appendChild(nodetitle);
@@ -183,8 +186,7 @@ function addTracks(el){
     document.getElementById("Tracks").appendChild(nodetr);
 
     let nodepic = document.createElement('img');
-    // console.log(el.track);
-    nodepic.src = el.track.album.images[-1].url;
+    nodepic.src = (el.track.album.images.slice(-1))[0].url;
     document.getElementById(el.track.name).appendChild(nodepic);
 
     let nodetdtrack = document.createElement("td")
@@ -195,7 +197,6 @@ function addTracks(el){
     let nodetdartist = document.createElement("td")
     nodetdartist.id = el.track.id;
     nodetdartist.innerHTML = el.track.artists[0].name;
-    console.log(el.track.artists[0])
     document.getElementById(el.track.name).appendChild(nodetdartist);
 }
 
