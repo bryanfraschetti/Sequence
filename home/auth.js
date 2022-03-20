@@ -167,20 +167,6 @@ function handleTracksResponse(){
     }
 }
 
-// function addTracks(el){
-//     let nodetr = document.createElement("tr");
-//     nodetr.id = el.track.id;
-//     document.getElementById("Tracks").appendChild(nodetr);
-//     let nodetdtrack = document.createElement("td")
-//     nodetdtrack.id = el.track.name
-//     nodetdtrack.innerHTML = el.track.name;
-//     document.getElementById(el.track.id).appendChild(nodetdtrack);
-//     let nodetdartist = document.createElement("td")
-//     nodetdartist.id = el.track.artists[0].name;
-//     nodetdartist.innerHTML = el.track.artists[0].name;
-//     document.getElementById(el.track.id).appendChild(nodetdartist);
-// }
-
 function addTracks(el){
     let nodetr = document.createElement("tr");
     nodetr.id = el.track.name;
@@ -214,6 +200,15 @@ function handleAudioAnalysis(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
         console.log(data);
+
+        let nodesequencer = document.createElement("div");
+        nodesequencer.id = "sequencerbox";
+        document.getElementById("Sequencer").appendChild(nodesequencer);
+
+        let nodetrackinfo = document.createElement("p");
+        nodetrackinfo.innerHTML = "This track is in the key of " + data.track.key + " " + modeEnum(data.track.mode);
+        document.getElementById("sequencerbox").appendChild(nodetrackinfo);
+
         alert("Key: " + data.track.key + " Confidence: " + data.track.key_confidence +
         " Mode: " + data.track.mode + " Confidence: " + data.track.mode_confidence +
         " Tempo: " + data.track.tempo + " Confidence: " + data.track.tempo_confidence);
@@ -227,4 +222,10 @@ function handleAudioAnalysis(){
         console.log(this.responseText);
         alert(this.responseText);
     }
+}
+
+function modeEnum(x){
+    if(x === 1){return "Major"}
+    else if(x === 0){return "Minor";}
+    else{return "Unknown";}
 }
