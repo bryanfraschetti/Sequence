@@ -25,27 +25,27 @@
         </div>
     </header>
     <body onload="onPageLoad()">
-        <container id="main">
-            <container class="PlaylistBox">
+        <div id="main">
+            <div class="PlaylistBox">
                 <div id="PlaylistSection" class="row">
-                    <container id="PlaylistInteractables">
+                    <div id="PlaylistInteractables">
                         <label for="playlists" class="form-label">Playlists: </label>
                         <select id="playlists" onchange="selectPlaylist(this)" class="form-control">
                         </select>
                         <input id="refresher" type="button" onclick="refreshPlaylists()" value="Refresh Playlists">
                     </div>
                 </div>
-            </container>
-            <container class="TrackBox">
+            </div>
+            <div class="TrackBox">
                 <div id="TrackSection" class="row">               
                     <table id="Tracks">
                     </table>
                 </div>
-            </container>
-        </container>
+            </div>
+        </div>
         <br/><br/>
-        <container id="Sequencer">
-        </container>
+        <div id="Sequencer">
+        </div>
         <br/><br/>
     </body>
 </html>

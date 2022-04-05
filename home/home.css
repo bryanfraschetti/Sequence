@@ -27,7 +27,7 @@ table{
     color: white;
     position: fixed;
     top: 0;
-    z-index: 9999
+    z-index: 9999;
 }
 
 .topnav td{
@@ -115,10 +115,6 @@ a:hover{
     padding: 0.75%;
 }
 
-#Tracks tr:last-child > td {
-    border-bottom: none;
-}
-
 #Tracks tr:first-child > td {
     padding: 1%;
 }
@@ -126,4 +122,22 @@ a:hover{
 img {
     margin-top: 4.75%;
     margin-left: 25%;
+}
+
+#Sequencer{
+    height: 300px;
+}
+
+#sequencerbox {
+    background-color: white;
+    border-radius: 10px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 30px;
+    color: grey;
+}
+
+#ptrackinfo {
+    text-align: center;
 }
