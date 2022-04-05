@@ -378,7 +378,7 @@ function CoFArr(){
             nextKey = 0
         }
     }
-    if(initSong.mode === 1){
+    else if(initSong.mode === 0){
         nextKey = (initSong.key + 3)%12
         if(nextKey<0){
             nextKey = 12 + nextKey
