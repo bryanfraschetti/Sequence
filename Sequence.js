@@ -1,5 +1,5 @@
 var redirect_uri = "http://127.0.0.1:8080/index.html";
-var home_uri = "http://127.0.0.1:8080/home/home.html";
+var home_uri = "http://127.0.0.1:8080/oldhome/home.html";
 
 var client_id = "";
 var client_secret = "";

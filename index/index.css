@@ -46,10 +46,6 @@ main{
     padding-right: 5%;
 }
 
-.login-form{
-    grid-area: login-form;
-}
-
 footer{
     grid-area: footer;
     display: flex;
@@ -82,17 +78,13 @@ footer{
     padding-left: 2vw;
 }
 
-/* #headline-title{
-    text-align: center;
-} */
-
 #headline-sentence{
     font-size: 1.4em;
     font-weight: 400;
 }
 
 .emptyleft{
-    background-color: #0f0f0f;
+    background-image: linear-gradient(#0f0f0f, #303030);
     grid-area: emptyleft;
     padding-right: 5%;
     /* -webkit-background-clip: content-box;
@@ -100,7 +92,7 @@ footer{
 }
 
 .emptyright{
-    background-color: #0f0f0f;
+    background-image: linear-gradient(#0f0f0f, #303030);
     grid-area: emptyright;
     padding-left: 5%;
     /* -webkit-background-clip: content-box;
