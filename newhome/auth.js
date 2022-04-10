@@ -203,7 +203,7 @@ function addTracks(el){
     AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + el.track.id
 
 
-    songlist.push({trackid: el.track.id, key: callApi("GET", AUDIOANALYSIS, null, getKey), mode: callApi("GET", AUDIOANALYSIS, null, getMode)})
+    songlist.push({trackid: el.track.id, key: getKey(AUDIOANALYSIS), mode: getMode(AUDIOANALYSIS)})
 
     let nodetdartist = document.createElement("td")
     nodetdartist.id = el.track.id;
@@ -212,13 +212,29 @@ function addTracks(el){
 }
 
 
-function getKey(){
-    var data = JSON.parse(this.responseText);
+function getKey(link){
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", link, false);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
+    xhr.send(null);
+    // console.log(xhr.responseText)
+    var data = JSON.parse(xhr.responseText);
+    // console.log(data)
     return data.track.key
 }
 
-function getMode(){
-    var data = JSON.parse(this.responseText);
+function getMode(link){
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", link, false);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
+    xhr.send(null);
+    // console.log(xhr.responseText)
+
+    var data = JSON.parse(xhr.responseText);
+
     return data.track.mode
 }
 

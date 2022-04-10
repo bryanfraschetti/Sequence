@@ -16,13 +16,20 @@
 //    }
 // ]
 
-// console.log(images.slice(-1).url)
+// // console.log(images.slice(-1).url)
 
-a = [1, 2, 3]
+// a = [1, 2, 3]
 
-b = [4, 5, 6]
+// b = [4, 5, 6]
 
-b.forEach(el => a.push(el))
-console.log(a)
+// b.forEach(el => a.push(el))
+// console.log(a)
 
-console.log((-7)%12)
+// console.log((-7)%12)
+
+obj = {"name": "Bryan",
+"peoplehere": ["Lukas", "Stef", "Bryan"]
+}
+
+console.log(obj.name)
+console.log(obj.peoplehere[1])

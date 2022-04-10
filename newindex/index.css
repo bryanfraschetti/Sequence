@@ -1,0 +1,139 @@
+body{
+    margin: 0;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, Ubuntu;
+    color: white;
+    display: grid;
+    grid-template-rows: 10vh 50vh auto 3vh;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-areas: "header header header"
+    "headline headline headline"
+    "emptyleft main emptyright"
+    "footer footer footer";
+}
+
+header{
+    grid-area: header;
+    font-size: 1.25em;
+    display: flex;
+    position: fixed;
+    width: 100vw;
+    height: 10vh;
+    font-weight: 400;
+    background-color: black;
+    justify-content: center;
+}
+
+.headline{
+    grid-area: headline;
+    background: url("../images/hm.jpg");
+    background-repeat: no-repeat;
+    background-size: 100vw 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+main{
+    grid-area: main;
+    background-color: #171717;
+    color:rgba(255,255,255,0.87);
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.login-form{
+    grid-area: login-form;
+}
+
+footer{
+    grid-area: footer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ededed;
+    color: #707070;
+    font-size: 0.8em;
+}
+
+ul{
+    list-style-type: none;
+}
+
+li{
+    display: inline-block;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+.transparent-overlay{
+    background-color: rgba(0,0,0,0.5);
+    padding-bottom: 1vh;
+    margin-left: 1.5vw;
+    margin-right: 1.5vw;
+    border-radius: 20px;
+}
+
+.headline-content{
+    padding-left: 2vw;
+}
+
+/* #headline-title{
+    text-align: center;
+} */
+
+#headline-sentence{
+    font-size: 1.4em;
+    font-weight: 400;
+}
+
+.emptyleft{
+    background-color: #0f0f0f;
+    grid-area: emptyleft;
+    padding-right: 5%;
+    /* -webkit-background-clip: content-box;
+    background-clip: content-box; */
+}
+
+.emptyright{
+    background-color: #0f0f0f;
+    grid-area: emptyright;
+    padding-left: 5%;
+    /* -webkit-background-clip: content-box;
+    background-clip: content-box; */
+}
+
+.overview{
+    margin:0;
+    text-align: justify;
+}
+
+.subheading{
+    margin: 4%;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.gen-text{
+    font-size: 1.15em;
+}
+
+.login{
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+.mybtn{
+    height: 6vh;
+    width: 15vw;
+    border-radius: 30px;
+    border: none;
+    background-color: #a00000;
+    color: white;
+    font-size: 1em;
+}
+
+.mybtn:hover{
+    background-color: rgb(255, 103, 129);
+}
