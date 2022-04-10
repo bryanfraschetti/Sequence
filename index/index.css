@@ -33,6 +33,11 @@ header{
     justify-content: center;
 }
 
+a{
+    color: rgba(255,255,255,0.87);
+    font-style: italic;
+}
+
 main{
     grid-area: main;
     background-color: #171717;
@@ -55,11 +60,11 @@ footer{
     font-size: 0.8em;
 }
 
-ul{
+.nav-bar > ul{
     list-style-type: none;
 }
 
-li{
+.nav-bar li{
     display: inline-block;
     margin-left: 2vw;
     margin-right: 2vw;

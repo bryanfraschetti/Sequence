@@ -1,23 +1,10 @@
-var redirect_uri = "http://127.0.0.1:8080/index.html";
+var redirect_uri = "http://127.0.0.1:8080/index/index.html";
 var home_uri = "http://127.0.0.1:8080/home/home.html";
 
 var client_id = "";
 var client_secret = "";
 var access_token = "";
 var refresh_token = "";
-
-// var now = new Date();
-
-// if(now.getHours()<8 || now.getHours()>=20){
-//     document.body.style.backgroundImage = "linear-gradient(to bottom, rgb(60,60,60), rgb(0,0,0))"
-//     document.getElementById("PlaylistSection").style.background = "rgb(9, 153, 21)";
-//     document.getElementById("Tracks").style.background = "rgb(2, 20, 35)";
-// }
-// // else{document.body.style.backgroundImage = "linear-gradient(to bottom right, rgba(196, 34, 161, 0.7), rgba(21, 91, 124, 0.788))";}
-// else{
-//     document.body.style.backgroundImage = "linear-gradient(to bottom right, #AA8E71 30%, #71AA8E";
-//     document.getElementById("PlaylistSection").style.background = "#71A9AA80";
-// }
 
 var user_id = ""
 var playlist_id = ""
@@ -203,7 +190,7 @@ function addTracks(el){
     AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + el.track.id
 
 
-    songlist.push({trackid: el.track.id, key: callApi("GET", AUDIOANALYSIS, null, getKey), mode: callApi("GET", AUDIOANALYSIS, null, getMode)})
+    songlist.push({trackid: el.track.id, key: getKey(AUDIOANALYSIS), mode: getMode(AUDIOANALYSIS)})
 
     let nodetdartist = document.createElement("td")
     nodetdartist.id = el.track.id;
@@ -212,13 +199,29 @@ function addTracks(el){
 }
 
 
-function getKey(){
-    var data = JSON.parse(this.responseText);
+function getKey(link){
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", link, false);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
+    xhr.send(null);
+    // console.log(xhr.responseText)
+    var data = JSON.parse(xhr.responseText);
+    // console.log(data)
     return data.track.key
 }
 
-function getMode(){
-    var data = JSON.parse(this.responseText);
+function getMode(link){
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", link, false);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
+    xhr.send(null);
+    // console.log(xhr.responseText)
+
+    var data = JSON.parse(xhr.responseText);
+
     return data.track.mode
 }
 

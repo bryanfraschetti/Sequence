@@ -1,5 +1,5 @@
 var redirect_uri = "http://127.0.0.1:8080/index.html";
-var home_uri = "http://127.0.0.1:8080/home/home.html";
+var home_uri = "http://127.0.0.1:8080/oldhome/home.html";
 
 var client_id = "";
 var client_secret = "";
@@ -203,7 +203,8 @@ function addTracks(el){
     AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + el.track.id
 
 
-    songlist.push({trackid: el.track.id, key: getKey(AUDIOANALYSIS), mode: getMode(AUDIOANALYSIS)})
+
+    songlist.push({trackid: el.track.id, key: callApi("GET", AUDIOANALYSIS, null, getKey), mode: callApi("GET", AUDIOANALYSIS, null, getMode)})
 
     let nodetdartist = document.createElement("td")
     nodetdartist.id = el.track.id;
@@ -212,29 +213,13 @@ function addTracks(el){
 }
 
 
-function getKey(link){
-
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", link, false);
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
-    xhr.send(null);
-    // console.log(xhr.responseText)
-    var data = JSON.parse(xhr.responseText);
-    // console.log(data)
+function getKey(){
+    var data = JSON.parse(this.responseText);
     return data.track.key
 }
 
-function getMode(link){
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", link, false);
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', ' Bearer ' + access_token);
-    xhr.send(null);
-    // console.log(xhr.responseText)
-
-    var data = JSON.parse(xhr.responseText);
-
+function getMode(){
+    var data = JSON.parse(this.responseText);
     return data.track.mode
 }
 

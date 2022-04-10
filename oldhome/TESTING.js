@@ -27,9 +27,18 @@
 
 // console.log((-7)%12)
 
-obj = {"name": "Bryan",
-"peoplehere": ["Lukas", "Stef", "Bryan"]
-}
+function xd(){
+    
+    return{
+    "name": "Bryan",
+    "peoplehere": ["Lukas", "Stef", "Bryan"]
+    }
 
-console.log(obj.name)
-console.log(obj.peoplehere[1])
+}
+a = xd()
+console.log(xd.peoplehere)
+
+// console.log(obj.name)
+// console.log(obj.peoplehere[1])
+
+
