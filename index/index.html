@@ -13,19 +13,19 @@
             <nav class="nav-bar">
                 <ul class="nav-list">
                     <li class="nav-item">
-                        Logo
-                    </li>
-                    <li>
-                        Home
-                    </li>
-                    <li>
-                        Contact
-                    </li>
-                    <li>
-                        Help
+                        <a class="nav-link nav-link-ltr" href="#">Logo</a>
                     </li>
                     <li class="nav-item">
-                        About
+                        <a class="nav-link nav-link-ltr" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-ltr" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-ltr" href="#">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-ltr" href="#">About</a>
                     </li>
                 </ul>
             </nav>
@@ -39,49 +39,18 @@
         <div class="emptyleft"></div>
         <main>
             <div class="overview">
-                <h3 class="subheading">How it works</h3>
-                <p class="gen-text">Upon logging in, this web app connects to your account data in the Spotify API, allowing the application access to your playlists and
-                the tracks therein. Having access to the tracks in your playlist allows us to collect relevant data on the songs via the Audio Analysis
-                endpoint. Moreover, this endpoint has data on the key signature, duration, BPM, timbre and pretty much anything you could imaginably want
-                to know about a track. When you select one of your playlists, it loads the data from each of the songs and presents you with a variety of
-                ways to organize your playlist. From which, your selection invokes a sorting algorithm that rearranges the tracks by the relevant metrics.
-                The new sequence then manifests in Spotify as a playlist with the same name as the initial playlist with an additional bit of text pertaining
-                to which organizing method you selected. More specifics are available in the about section.</p>
-                <h3 class="subheading">How it works</h3>
-                <p class="gen-text">When you click on the "Get Started" button you will be redirected to a Spotify login page asking you to grant certain permissions.
-                    The permissions required are for us to:</p>
-                    <ul>
-                        <li class="gen-text">
-                            View your spotify data such as your name and username, your profile picture, how many followers you have on
-                            Spotify and your public playlists.
-                        </li>
-                        <li class="gen-text">
-                            View the content you are playing
-                        </li>
-                        <li class="gen-text">
-                            Create, edit, and follow private playlists
-                            Create, edit, and follow playlists
-                        </li>
-                    </ul>
-                <p class="gen-text">Addressing these in a different order than presented, firstly we need to access your private and public playlists in order to view the songs
-                    on your playlist. We access this data via <a href="https://developer.spotify.com/documentation/web-api/reference/#/operations/get-a-list-of-current-users-playlists">this endpoint</a>. As it says,
-                    it shows us the playlists you own and follow. Sometimes, private playlists and followed playlists (strangely) do not show up when they are requested.
-                    The best practice for using this app is to own the playlist and make the playlist that you would like to resequence public; after reordering you can always revert this and make it private of course.
+                <h3 class="subheading">How it Works</h3>
+                <p class="gen-text">When you click "Get Started" you will be redirected to spotify, which will ask you to grant this app some permissions regarding your spotify account.
+                    These are explained on the <a href="#"></a>about section</a>. After accepting the permissions, simply load your playlist, select the sequencing method, pick the first song,
+                    and a new playlist will be created.
                 </p>
-                <p class="gen-text">We request the content you are currently playing as we are planning on integrating some features in the future that will make use of this.
-                </p>
-                <p class="gen-text">Lastly we need to access your user information for your spotify userid. This allows us to create a new playlist via <a href="https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist">this endpoint</a>,
-                    which requires a userid (to know where to put the playlist). Since this is modifying a playlist, we also need to have the permissions to "create, edit, and follow public/private playlists"</p>
-                <p class="gen-text">Knowing how much music matters, we would never want to jeopardize your playlists and so we never modify your playlists directly. Instead, we create a new playlist
-                    that has the same name as the playlist that you select to reorganize. In order to distinguish, we add a suffix phrase related to the organizational method selected.
-                    For example if your playlist is called "Chill Music," and you organize by the circle of fifths you will see a new playlist on spotify "Chill Music COF Sequenced."
-                </p>        
                 <!-- <form action="" class="login-form"> -->
                     <div class="login">
                         <button type="submit" class="mybtn" onclick="requestAuthorization()">Get Started</button>
                     </div>
                 <!-- </form> -->
             </div>
+            <h3 class="subheading">Some Example Playlists</h3>
         </main>
         <div class="emptyright"></div>
         <footer>

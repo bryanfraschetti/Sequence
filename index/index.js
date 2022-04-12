@@ -81,6 +81,6 @@ function requestAuthorization(){//happens on button click
     url += "&response_type=code";
     url += "&redirect_uri=" + encodeURI(redirect_uri);
     url += "&show_dialog=true";
-    url += "&scope=user-read-currently-playing%20playlist-modify-private%20playlist-modify-public";//requested permissions
+    url += "&scope=user-read-currently-playing%20playlist-read-private%20playlist-read-collaborative%20playlist-modify-private%20playlist-modify-public";//requested permissions
     window.location.href = url;//
 }
