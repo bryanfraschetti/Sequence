@@ -7,35 +7,76 @@ var client_secret = "";
 var access_token = "";
 var refresh_token = "";
 
-//globally needed variables initialized to nothing
+//Initialization of global variables
 var user_id = "";
+
+
 var playlist_id = "";
 var playlistName = "";
+
+
+var track_id = "";
+var track_id_list = [];
+
+
 var songlist = [];
+
+
 var selectedSong = "";
 var selectedSongKey = "";
 var rearr = [];
 
+
+var promise_list = [];
+
+
 //list of sequencing options
 var sequencingopts = ["Circle of Fifths"];
+
 
 //list of endpoints
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
-const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
 const CURRENTUSER = "https://api.spotify.com/v1/me";
+const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
+var TRACKS = ""; //"Needs global scope, structured: https://api.spotify.com/v1/playlists/{playlist_id}/tracks?;
+var AUDIOANALYSIS = ""; //Needs global scope but is dynamic and follows the structure: https://api.spotify.com/v1/audio-analysis/{track_id}
 
 //list of important nodes
 const playlist_table = document.getElementById("playlist-table")
 const tracks_table = document.getElementById("tracks-table")
 
 //Event listeners
-playlist_table.addEventListener("click", function selectTrack(e){
-    if(e.target !== e.currentTarget){//if clicked on element (child of event listener) is not the same as the element with the event listener 
-        var clickedItem = e.target.id;
-        var TRACKS = "https://api.spotify.com/v1/playlists/" + clickedItem + "/tracks?"
-        console.log(TRACKS)
-        callApi("GET", TRACKS, null, handleTracksResponse);
+
+/*We need event listeners on the playlists and the tracks to know what a user interacts with
+A user's playlists, and the tracks in a playlist are subject to change; They are retrieved from the API and their html elements dynamically generated
+It is, therefore, impossible to make event listeners in the traditional sense, since the elements are not known in advance
+
+This is the solution:
+    Add an event listener on the parent element,
+    listen for any events and if an event is registered check: is it the parent element itself?
+    if not, we know it was on one of the children
+    We know what is needed to access the spotify endpoint (ie. playlist_id or track_id) and we can choose to structure our html any which way
+    this is why later you will see the <td id="playlist_id">{{playlist name}}</td> has the id as such; an event on the playlist will retrieve the element's
+    id and go to that spotify endpoint. The tr gets this same id for good measure
+    A similar story applies to the td's of the tracks-table table
+*/
+
+playlist_table.addEventListener("click", function selectPlaylist(e){//listener on parent
+    e.preventDefault;//for good measure (probably does not really matter since there would not be a default action)
+    if(e.target !== e.currentTarget){//if clicked on element (child of event listener) is not the same as the element with the event listener (the parent)
+        playlist_id = e.target.id;//assign playlist_id
+        TRACKS = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?";//endpoint
+        callApi("GET", TRACKS, null, handleTracksResponse);//on callback, run handleTracksResponse function
+    }
+})
+
+tracks_table.addEventListener("click", function selectTrack(e){//parent listener
+    e.preventDefault;//good measure
+    if(e.target !== e.currentTarget){
+        track_id = e.target.id;//trackid
+        AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + track_id;//endpoint
+        callApi("GET", AUDIOANALYSIS, null, handleAudioAnalysis);//call
     }
 })
 
@@ -50,7 +91,7 @@ function onPageLoad(){//when page loads get all credentials; also load playlists
     callApi("GET", PLAYLISTS, null, handlePlaylistResponse);
 }
 
-function getUser(){
+function getUser(){//getting user
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
         user_id = data.id;//get user id
@@ -60,7 +101,7 @@ function getUser(){
     }
     else{
         console.log(this.responseText);
-        alert(this.responseText);//otherwise alert user
+        // alert(this.responseText);//otherwise alert user
     }
 }
 
@@ -75,17 +116,25 @@ function handlePlaylistResponse(){//getting playlists
     }
     else{
         console.log(this.responseText);
-        alert(this.responseText);//alert user
+        // alert(this.responseText);//alert user
     }
 }
 
 function addPlaylist(el){//for each element in the list of playlists
+    /*DESIRED OUTPUT HTML STRUCTURE:
+    <table class="playlist-table" id="playlist-table">
+        <tr id="{{playlist_id}}">
+            <td><img src="{{60px x 60px album art}}" class="cover-img"></td>
+            <td id="{{playlist_id}}">{{Playlist ID}</td>
+        </tr>
+    </table>
+    */
+
     let node = document.createElement("tr");//create a table row
     node.id = el.id;//row id = playlist id
 
     let playlist_cover_cell = document.createElement("td");//cell for cover art
     let playlist_cover = document.createElement("img");//img tag
-    console.log(el.images.length)
     if(el.images.length !== 0){
         playlist_cover.src = ((el.images.slice(-1))[0]).url;//src for img
     }
@@ -102,11 +151,11 @@ function addPlaylist(el){//for each element in the list of playlists
     playlist_table.appendChild(node);//append tr to table
 }
 
-function refreshPlaylists(){
-    callApi("GET", PLAYLISTS, null, handlePlaylistResponse);//for when the button is pressed
+function refreshPlaylists(){//get playlists (when the button is pressed)
+    callApi("GET", PLAYLISTS, null, handlePlaylistResponse);
 }
 
-function handleTracksResponse(){
+function handleTracksResponse(){//get a playlist's tracks
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
 
@@ -115,82 +164,141 @@ function handleTracksResponse(){
 //             sequencer.removeChild(sequencer.firstChild);
 //         } ///I mean idrk what this is at this point
 
-        removeAllItems("tracks-table");
+        removeAllItems("tracks-table");//remove all tracks and placeholder text
         let node = document.createElement("tr");
-        node.id = "Static";
-        document.getElementById("tracks-table").appendChild(node);
+        node.id = "column-headers";//first row
+        tracks_table.appendChild(node);//add to tracks table
 
-        let nodeempty = document.createElement("td");
-        document.getElementById("Static").appendChild(nodeempty);
+        let nodeempty = document.createElement("td");//empty data cell
+        node.appendChild(nodeempty);
 
-        let nodetitle = document.createElement("td");
+        let nodetitle = document.createElement("td");//song title header
         nodetitle.innerHTML = "Song Title";
-        document.getElementById("Static").appendChild(nodetitle);
+        node.appendChild(nodetitle);
 
-        let nodeartist = document.createElement("td");
+        let nodeartist = document.createElement("td");//artist header
         nodeartist.innerHTML = "Artist";
-        document.getElementById("Static").appendChild(nodeartist);
+        node.appendChild(nodeartist);
 
-        songlist=[];//IMPORTANT: reinitialized to empty before adding songs (in case user sequences a different playlist)
+        songlist = [];//IMPORTANT: reinitialized to empty before adding songs (in case user sequences a different playlist)
+        track_id_list = [];//same
 
-        data.items.forEach(el => addTracks(el));
+        data.items.forEach(el => addTracks(el, data.items.length));//add track
     }
     else if(this.status == 401){
-        refreshAccessToken();
+        refreshAccessToken();//refresh token
     }
     else{
         console.log(this.responseText);
-        alert(this.responseText);
+        // alert(this.responseText);
     }
-
 }
 
-function addTracks(el){
-    let nodetr = document.createElement("tr");
-    nodetr.id = el.track.name;
-    document.getElementById("tracks-table").appendChild(nodetr);
+function addTracks(el, maxlength){
 
-    let nodepic = document.createElement('img');
-    nodepic.src = (el.track.album.images.slice(-1))[0].url;
-    document.getElementById(el.track.name).appendChild(nodepic);
+    /*DESIRED OUTPUT HTML STRUCTURE:
+    <table class="tracks-table" id="tracks-table">
+        <tr id="{{SONG NAME}}">
+            <td><img src="{{medium size x medium album art}}" class="album-art" id={track_id}></td>
+            <td id="{{track_id}}">{{SONG NAME}</td>
+            <td id="{{track_id}}">{{ARTIST}}</td>
+        </tr>
+    </table>
+    */
 
-    let nodetdtrack = document.createElement("td")
-    nodetdtrack.id = el.track.id
-    nodetdtrack.innerHTML = el.track.name;
-    document.getElementById(el.track.name).appendChild(nodetdtrack);
+    track_id = el.track.id;//set track id
 
-    AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + el.track.id
+    let nodetr = document.createElement("tr");//for each song create a new row
+    nodetr.id = el.track.name;//give row the id of the track name
+    tracks_table.appendChild(nodetr);//append the row to track table
 
-    songlist.push({trackid: el.track.id, key: callApi("GET", AUDIOANALYSIS, null, getKey), mode: callApi("GET", AUDIOANALYSIS, null, getMode)})
+    let nodetd = document.createElement('td')//create td
+    let nodepic = document.createElement('img');//tag for album art
+    nodepic.src = el.track.album.images[1].url;//source the art
+    nodepic.id = track_id;//img id is track id
+    nodepic.className = "album-art";//class is album art
+    nodetd.appendChild(nodepic)//add img to td
+    nodetr.appendChild(nodetd);//add td to tr
 
-    let nodetdartist = document.createElement("td")
-    nodetdartist.id = el.track.id;
-    nodetdartist.innerHTML = el.track.artists[0].name;
+    let nodetdtrack = document.createElement("td");//new cell
+    nodetdtrack.id = track_id;//id is track id
+    nodetdtrack.innerHTML = el.track.name;//innerhtml is song name
+    nodetr.appendChild(nodetdtrack);//add td to tr
+
+    let nodetdartist = document.createElement("td")//new cell
+    nodetdartist.id = track_id;//cell id is track id
+    nodetdartist.innerHTML = el.track.artists[0].name;//innerhtml is artist[0] name
     document.getElementById(el.track.name).appendChild(nodetdartist);
+
+    track_id_list.push(track_id);//list of track ids
+
+    promise_list.push(
+        //callapi type thing
+    )
+
+    if(track_id_list.length === maxlength){
+        for(counter=0; counter<track_id_list.length; counter++){
+            //promise.all(promise_list) or something
+            AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + track_id_list[counter];//endpoint with key signature and similar info
+            callApi("GET", AUDIOANALYSIS, null, getTrackInfo)
+        }
+    }
 }
 
-
-function getKey(){
-    var data = JSON.parse(this.responseText);
-    return data.track.key
+function getTrackInfo(){
+    if(this.status == 200){
+        console.log("xaxaax")
+        var data = JSON.parse(this.responseText);
+        //list of song objects
+        songlist.push({
+            trackid: track_id_list[counter],//empty initialization, to make the structure more readable/understandable than if it is simply added later
+            key: data.track.key,
+            mode: data.track.mode
+        })
+        /*This is somewhat of a scuffed/brute force implementation but I did not really have a choice
+        Initially I did not even use a list of the track ids, I just had track_id and then executed songlist.push({trackid: track_id})
+        This proved to be problematic and strange because although the .forEach iterating through the tracks always manifests a unique
+        track id in the line track_id = el.track.id, what happens is the script executes each iteration of addTracks() before ever (seeming) to call
+        the api. The strange part is that when it did, it obtained all of the unique track key/mode data but the track_id of every song in the list
+        was equivalent to the id of the last track in the playlist
+        for example
+        songlist[{
+            trackid: "741KHLH3d9jRMtl5WJdkmE",
+            key: 3,
+            mode: 0
+        },
+        {
+            trackid: "741KHLH3d9jRMtl5WJdkmE",
+            key: 1,
+            mode: 1
+        },
+        {
+            trackid: "741KHLH3d9jRMtl5WJdkmE",
+            key: 8,
+            mode: 1
+        }]
+        Essentially, it seemed like instead of executing callApi as part of an addTracks iteration, it executed each iteration of callApi after
+        the last track. Strangely instead of producing an array of length = playlist length of identical entries, it retrieved all of the unique
+        key/mode information then, and this part makes sense if it calls the api after every addtracks iteration, it made the trackid of every entry
+        equal to the last one. This is because track_id = el.track.id would be the last track id and then it would be assigned to every songlist element
+        */
+        /* My solution is create a list of track ids, on the last iteration of the api call, retroactively go back and iterate through the songlist
+        correcting the empty track id to the corresponding id*/
+        // if(songlist.length === track_id_list.length){
+        //     for(let i=0; i<songlist.length;i++){
+        //         songlist[i].trackid = track_id_list[i]
+        //     }
+        // }
+    }
+    else if(this.status == 401){
+        refreshAccessToken();//refresh token
+    }
+    else {
+        console.log(this.responseText);
+        // alert(this.responseText);
+        window.location.href = redirect_uri;//send to index
+    }
 }
-
-function getMode(){
-    var data = JSON.parse(this.responseText);
-    return data.track.mode
-}
-
-// var theParent = document.getElementById("Tracks");
-// theParent.addEventListener("click", function selectTrack(e){
-//     if(e.target !== e.currentTarget){
-//         var clickedItem = e.target.id;
-//         var AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + clickedItem;
-//         callApi("GET", AUDIOANALYSIS, null, handleAudioAnalysis);
-
-//         selectedSong = e.target.id;
-//     }
-// })
-
 
 // function handleAudioAnalysis(){
 //     if(this.status == 200){
@@ -387,7 +495,7 @@ function getMode(){
 // }
 
 
-//generalized methods
+//*****generalized methods*****//
 function callApi(method, url, body, callback){
     //takes inputs:
     //method: post,get,delete
@@ -423,7 +531,7 @@ function callAuthorizationApi(body){
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('Authorization', 'Basic ' + btoa(client_id + ":" + client_secret));//pass headers
     xhr.send(body);
-    xhr.onload = handleAuthorizationResponse;//
+    xhr.onload = handleAuthorizationResponse;//when xhr load event fires, execute handleAuthResponse function
 }
 
 function handleAuthorizationResponse(){
@@ -431,20 +539,21 @@ function handleAuthorizationResponse(){
         var data = JSON.parse(this.responseText);
         if(data.access_token != undefined){
             access_token = data.access_token;
-            localStorage.setItem("access_token", access_token);
+            localStorage.setItem("access_token", access_token);//set auth token
         }
         if(data.refresh_token != undefined){
             refresh_token = data.refresh_token;
-            localStorage.setItem("refresh_token", refresh_token);
+            localStorage.setItem("refresh_token", refresh_token);//set refresh token
         }
-        window.location.href = home_uri;
+        window.location.href = home_uri;//redirect to home
     }
     else if(this.status == 401){
-        refreshAccessToken();
+        refreshAccessToken();//refresh token
     }
     else {
         console.log(this.responseText);
-        alert(this.responseText);
-        window.location.href = redirect_uri;
+        // alert(this.responseText);
+        window.location.href = redirect_uri;//send to index
     }
 }
+
