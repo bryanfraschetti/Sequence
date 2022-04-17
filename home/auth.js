@@ -12,14 +12,14 @@ var user_id = "";
 
 
 var playlist_id = "";
-var playlistName = "";
+var playlist_name = "";
 
 
 var track_id = "";
 var track_id_list = [];
 
 
-var songlist = [];
+var song_list = [];
 
 
 var selectedSong = "";
@@ -27,11 +27,11 @@ var selectedSongKey = "";
 var rearr = [];
 
 
-var promise_list = [];
-
-
 //list of sequencing options
 var sequencingopts = ["Circle of Fifths"];
+
+
+var counter = 0;
 
 
 //list of endpoints
@@ -40,7 +40,7 @@ const TOKEN = "https://accounts.spotify.com/api/token";
 const CURRENTUSER = "https://api.spotify.com/v1/me";
 const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
 var TRACKS = ""; //"Needs global scope, structured: https://api.spotify.com/v1/playlists/{playlist_id}/tracks?;
-var AUDIOANALYSIS = ""; //Needs global scope but is dynamic and follows the structure: https://api.spotify.com/v1/audio-analysis/{track_id}
+var AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/"; //Needs global scope but is dynamic and follows the structure: https://api.spotify.com/v1/audio-analysis/{track_id}
 
 //list of important nodes
 const playlist_table = document.getElementById("playlist-table")
@@ -63,11 +63,13 @@ This is the solution:
 */
 
 playlist_table.addEventListener("click", function selectPlaylist(e){//listener on parent
+    song_list = [];//IMPORTANT: reinitialized to empty before adding songs (in case user sequences a different playlist)
+    counter =  0; //reinit counter to 0 in case user selects new playlist  (or even the same)
     e.preventDefault;//for good measure (probably does not really matter since there would not be a default action)
     if(e.target !== e.currentTarget){//if clicked on element (child of event listener) is not the same as the element with the event listener (the parent)
         playlist_id = e.target.id;//assign playlist_id
         TRACKS = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?";//endpoint
-        callApi("GET", TRACKS, null, handleTracksResponse);//on callback, run handleTracksResponse function
+        callApi("GET", TRACKS, null, getPlaylistSongs);//on callback, run getPlaylistSongs function
     }
 })
 
@@ -76,7 +78,7 @@ tracks_table.addEventListener("click", function selectTrack(e){//parent listener
     if(e.target !== e.currentTarget){
         track_id = e.target.id;//trackid
         AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + track_id;//endpoint
-        callApi("GET", AUDIOANALYSIS, null, handleAudioAnalysis);//call
+        callApi("GET", AUDIOANALYSIS, null, getSelectedSong);//call
     }
 })
 
@@ -88,7 +90,7 @@ function onPageLoad(){//when page loads get all credentials; also load playlists
     access_token = localStorage.getItem("access_token");
     refresh_token = localStorage.getItem("refresh_token");
     callApi("GET", CURRENTUSER, null, getUser);//callApi is a generalized method call; ctrl+F callApi to see its declaration
-    callApi("GET", PLAYLISTS, null, handlePlaylistResponse);
+    callApi("GET", PLAYLISTS, null, getUserPlaylists);
 }
 
 function getUser(){//getting user
@@ -105,7 +107,7 @@ function getUser(){//getting user
     }
 }
 
-function handlePlaylistResponse(){//getting playlists
+function getUserPlaylists(){//getting playlists
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
         removeAllItems("playlist-table");//get rid of all playlists in the table
@@ -152,10 +154,10 @@ function addPlaylist(el){//for each element in the list of playlists
 }
 
 function refreshPlaylists(){//get playlists (when the button is pressed)
-    callApi("GET", PLAYLISTS, null, handlePlaylistResponse);
+    callApi("GET", PLAYLISTS, null, getUserPlaylists);
 }
 
-function handleTracksResponse(){//get a playlist's tracks
+function getPlaylistSongs(){//get a playlist's tracks
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
 
@@ -180,7 +182,6 @@ function handleTracksResponse(){//get a playlist's tracks
         nodeartist.innerHTML = "Artist";
         node.appendChild(nodeartist);
 
-        songlist = [];//IMPORTANT: reinitialized to empty before adding songs (in case user sequences a different playlist)
         track_id_list = [];//same
 
         data.items.forEach(el => addTracks(el, data.items.length));//add track
@@ -232,75 +233,37 @@ function addTracks(el, maxlength){
 
     track_id_list.push(track_id);//list of track ids
 
-    promise_list.push(
-        //callapi type thing
-    )
+    getAudioAnalysis(track_id, counter)//for each track get audio analysis
+    counter++;
+}
 
-    if(track_id_list.length === maxlength){
-        for(counter=0; counter<track_id_list.length; counter++){
-            //promise.all(promise_list) or something
-            AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + track_id_list[counter];//endpoint with key signature and similar info
-            callApi("GET", AUDIOANALYSIS, null, getTrackInfo)
+async function getAudioAnalysis(x, y) {
+    //cannot use callApi because this method (getAudioAnalysis) requires parameters and it would be cumbersome to do this with the xhr.onload in callApi()
+    //because of async, the order of completion does not correlate to call instantiation and so it is impossible to ensure that the correct track_id
+    //corresponds to the corresponding fetched data; besides, using trackid: track_id is unreliable since the track_id will be varying throughout the
+    //.forEach and the current track_id may not correspond to the currently fetched data, as would be seen in a synchronous fetch
+    //synchronous fetch performance is atrocious, so we make an async function and fetch with the passed variables as is seen
+    fetch(AUDIOANALYSIS + x, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': ' Bearer ' + access_token
         }
-    }
-}
-
-function getTrackInfo(){
-    if(this.status == 200){
-        console.log("xaxaax")
-        var data = JSON.parse(this.responseText);
-        //list of song objects
-        songlist.push({
-            trackid: track_id_list[counter],//empty initialization, to make the structure more readable/understandable than if it is simply added later
+    }).then(response => response.json())
+    .then(data => song_list.push(
+        {
+            trackid: track_id_list[y],
+            startkey: data.sections[0].key,
+            startmode: data.sections[0].mode,
             key: data.track.key,
-            mode: data.track.mode
-        })
-        /*This is somewhat of a scuffed/brute force implementation but I did not really have a choice
-        Initially I did not even use a list of the track ids, I just had track_id and then executed songlist.push({trackid: track_id})
-        This proved to be problematic and strange because although the .forEach iterating through the tracks always manifests a unique
-        track id in the line track_id = el.track.id, what happens is the script executes each iteration of addTracks() before ever (seeming) to call
-        the api. The strange part is that when it did, it obtained all of the unique track key/mode data but the track_id of every song in the list
-        was equivalent to the id of the last track in the playlist
-        for example
-        songlist[{
-            trackid: "741KHLH3d9jRMtl5WJdkmE",
-            key: 3,
-            mode: 0
-        },
-        {
-            trackid: "741KHLH3d9jRMtl5WJdkmE",
-            key: 1,
-            mode: 1
-        },
-        {
-            trackid: "741KHLH3d9jRMtl5WJdkmE",
-            key: 8,
-            mode: 1
-        }]
-        Essentially, it seemed like instead of executing callApi as part of an addTracks iteration, it executed each iteration of callApi after
-        the last track. Strangely instead of producing an array of length = playlist length of identical entries, it retrieved all of the unique
-        key/mode information then, and this part makes sense if it calls the api after every addtracks iteration, it made the trackid of every entry
-        equal to the last one. This is because track_id = el.track.id would be the last track id and then it would be assigned to every songlist element
-        */
-        /* My solution is create a list of track ids, on the last iteration of the api call, retroactively go back and iterate through the songlist
-        correcting the empty track id to the corresponding id*/
-        // if(songlist.length === track_id_list.length){
-        //     for(let i=0; i<songlist.length;i++){
-        //         songlist[i].trackid = track_id_list[i]
-        //     }
-        // }
-    }
-    else if(this.status == 401){
-        refreshAccessToken();//refresh token
-    }
-    else {
-        console.log(this.responseText);
-        // alert(this.responseText);
-        window.location.href = redirect_uri;//send to index
-    }
+            mode: data.track.mode,
+            endkey: data.sections[data.sections.length-1].key,
+            endmode: data.sections[data.sections.length-1].mode,
+        }
+    ))
 }
 
-// function handleAudioAnalysis(){
+function getSelectedSong(){
 //     if(this.status == 200){
 //         var data = JSON.parse(this.responseText);
 //         // console.log(data);
@@ -345,7 +308,7 @@ function getTrackInfo(){
 //         console.log(this.responseText);
 //         alert(this.responseText);
 //     }
-// }
+}
 
 // function keySigEnum(x,y){
 //     if(x === 0 && y === 0){return "This Track is in the key of C minor";}
@@ -397,10 +360,10 @@ function getTrackInfo(){
 // function CoFArr(){
 //     rearr = []
 
-//     initSong = songlist.find(obj => {return obj.trackid === selectedSong})
+//     initSong = song_list.find(obj => {return obj.trackid === selectedSong})
 //     rearr[0] = initSong
 
-//     sameKeys = songlist.filter(obj => {return (obj.key === initSong.key && obj.mode === initSong.mode)})
+//     sameKeys = song_list.filter(obj => {return (obj.key === initSong.key && obj.mode === initSong.mode)})
 //     sameKeys.forEach(el => {if(el.trackid !== selectedSong){rearr.push(el)}})
 
 //     var nextKey = (initSong.key - 7)%12
@@ -414,7 +377,7 @@ function getTrackInfo(){
     
 //     let i = 1;
 //     for(i; i<12; i=i+1){
-//         sameKeys = songlist.filter(obj => {return (obj.key === nextKey && obj.mode === nextMode)})
+//         sameKeys = song_list.filter(obj => {return (obj.key === nextKey && obj.mode === nextMode)})
 //         console.log(sameKeys)
 //         sameKeys.forEach(el => rearr.push(el))
 //         console.log(nextKey)
@@ -450,7 +413,7 @@ function getTrackInfo(){
 
 //     i=0
 //     for(i; i<12; i=i+1){
-//         sameKeys = songlist.filter(obj => {return (obj.key === nextKey && obj.mode === nextMode)})
+//         sameKeys = song_list.filter(obj => {return (obj.key === nextKey && obj.mode === nextMode)})
 //         sameKeys.forEach(el => rearr.push(el))
 //         console.log(nextKey)
 //         nextKey = (nextKey-7)%12
@@ -464,7 +427,7 @@ function getTrackInfo(){
 
 //     CREATEPLAYLISTURL = "https://api.spotify.com/v1/users/" + user_id + "/playlists"
 
-//     callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlistName + " COF Sequenced"}), intermediate)
+//     callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlist_name + " COF Sequenced"}), intermediate)
 
 //     console.log(rearr)
 
@@ -556,4 +519,3 @@ function handleAuthorizationResponse(){
         window.location.href = redirect_uri;//send to index
     }
 }
-
