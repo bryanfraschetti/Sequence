@@ -22,9 +22,9 @@ var track_id_list = [];
 var song_list = [];
 
 
-var selectedSong = "";
-var selectedSongKey = "";
-var rearr = [];
+var selected_song = "";
+
+var new_sequence = [];
 
 
 //list of sequencing options
@@ -43,8 +43,8 @@ var TRACKS = ""; //"Needs global scope, structured: https://api.spotify.com/v1/p
 var AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/"; //Needs global scope but is dynamic and follows the structure: https://api.spotify.com/v1/audio-analysis/{track_id}
 
 //list of important nodes
-const playlist_table = document.getElementById("playlist-table")
-const tracks_table = document.getElementById("tracks-table")
+const playlist_table = document.getElementById("playlist-table");
+const tracks_table = document.getElementById("tracks-table");
 
 //Event listeners
 
@@ -68,6 +68,7 @@ playlist_table.addEventListener("click", function selectPlaylist(e){//listener o
     e.preventDefault;//for good measure (probably does not really matter since there would not be a default action)
     if(e.target !== e.currentTarget){//if clicked on element (child of event listener) is not the same as the element with the event listener (the parent)
         playlist_id = e.target.id;//assign playlist_id
+        playlist_name = e.target.innerHTML;
         TRACKS = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?";//endpoint
         callApi("GET", TRACKS, null, getPlaylistSongs);//on callback, run getPlaylistSongs function
     }
@@ -76,8 +77,8 @@ playlist_table.addEventListener("click", function selectPlaylist(e){//listener o
 tracks_table.addEventListener("click", function selectTrack(e){//parent listener
     e.preventDefault;//good measure
     if(e.target !== e.currentTarget){
-        track_id = e.target.id;//trackid
-        AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + track_id;//endpoint
+        selected_song = e.target.id;
+        AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + selected_song;//endpoint
         callApi("GET", AUDIOANALYSIS, null, getSelectedSong);//call
     }
 })
@@ -102,8 +103,7 @@ function getUser(){//getting user
         refreshAccessToken();//refreshAccessToken if unauthorized
     }
     else{
-        console.log(this.responseText);
-        // alert(this.responseText);//otherwise alert user
+        window.location.href = redirect_uri;//send to index
     }
 }
 
@@ -117,8 +117,7 @@ function getUserPlaylists(){//getting playlists
         refreshAccessToken();
     }
     else{
-        console.log(this.responseText);
-        // alert(this.responseText);//alert user
+        window.location.href = redirect_uri;//send to index
     }
 }
 
@@ -190,8 +189,7 @@ function getPlaylistSongs(){//get a playlist's tracks
         refreshAccessToken();//refresh token
     }
     else{
-        console.log(this.responseText);
-        // alert(this.responseText);
+        window.location.href = redirect_uri;//send to index
     }
 }
 
@@ -264,9 +262,8 @@ async function getAudioAnalysis(x, y) {
 }
 
 function getSelectedSong(){
-//     if(this.status == 200){
-//         var data = JSON.parse(this.responseText);
-//         // console.log(data);
+    if(this.status == 200){
+        var data = JSON.parse(this.responseText);
 
 //         let node = document.getElementById("Sequencer");
 //         while (node.firstChild) {
@@ -297,49 +294,17 @@ function getSelectedSong(){
 //         ///////////////// alert("Key: " + keySigEnum(data.track.key, data.track.mode) +
 //         ///////////////// " Tempo: " + data.track.tempo + " Confidence: " + data.track.tempo_confidence);
 
-//         CoFArr();
-//     }
+        CoFArr();
+    }
     
-//     else if(this.status == 401){
-//         refreshAccessToken();
-//     }
+    else if(this.status == 401){
+        refreshAccessToken();
+    }
 
-//     else{
-//         console.log(this.responseText);
-//         alert(this.responseText);
-//     }
+    else{
+        window.location.href = redirect_uri;//send to index
+    }
 }
-
-// function keySigEnum(x,y){
-//     if(x === 0 && y === 0){return "This Track is in the key of C minor";}
-//     else if(x === 0 && y === 1){return "This Track is in the key of C major";}
-//     else if(x === 1 && y === 0){return "This Track is in the key of C# minor";}
-//     else if(x === 1 && y === 1){return "This Track is in the key of D♭ minor";}
-//     else if(x === 2 && y === 0){return "This Track is in the key of D minor";}
-//     else if(x === 2 && y === 1){return "This Track is in the key of D major";}
-//     else if(x === 3 && y === 0){return "This Track is in the key of E♭ minor";}
-//     else if(x === 3 && y === 1){return "This Track is in the key of E♭ major";}
-//     else if(x === 4 && y === 0){return "This Track is in the key of E minor";}
-//     else if(x === 4 && y === 1){return "This Track is in the key of E major";}
-//     else if(x === 5 && y === 0){return "This Track is in the key of F minor";}
-//     else if(x === 5 && y === 1){return "This Track is in the key of F major";}
-//     else if(x === 6 && y === 0){return "This Track is in the key of F# minor";}
-//     else if(x === 6 && y === 1){return "This Track is in the key of G♭ major";}
-//     else if(x === 7 && y === 0){return "This Track is in the key of G minor";}
-//     else if(x === 7 && y === 1){return "This Track is in the key of G major";}
-//     else if(x === 7 && y === 1){return "This Track is in the key of G major";}
-//     else if(x === 8 && y === 0){return "This Track is in the key of G# minor";}
-//     else if(x === 8 && y === 1){return "This Track is in the key of A♭ major";}
-//     else if(x === 9 && y === 0){return "This Track is in the key of A minor";}
-//     else if(x === 9 && y === 1){return "This Track is in the key of A major";}
-//     else if(x === 10 && y === 0){return "This Track is in the key of B♭ minor";}
-//     else if(x === 10 && y === 1){return "This Track is in the key of B♭ major";}
-//     else if(x === 11 && y === 0){return "This Track is in the key of B minor";}
-//     else if(x === 11 && y === 1){return "This Track is in the key of B major";}
-//     else if(x === -1){return "This track is in an unknown key"}
-//     else if(y !== 0 && y !== 1){return "This track is in an unknown mode"}
-//     else{return "Not enough information is known about this song";}
-// }
 
 
 //may need later
@@ -357,105 +322,100 @@ function getSelectedSong(){
 //     else{CoFArr()}
 // }
 
-// function CoFArr(){
-//     rearr = []
+function CoFArr(){
+    new_sequence = [];//reinit to have no tracks in case this is the second playlist someone is reorganizing
 
-//     initSong = song_list.find(obj => {return obj.trackid === selectedSong})
-//     rearr[0] = initSong
+    init_song = song_list.find(obj => {return obj.trackid === selected_song});
 
-//     sameKeys = song_list.filter(obj => {return (obj.key === initSong.key && obj.mode === initSong.mode)})
-//     sameKeys.forEach(el => {if(el.trackid !== selectedSong){rearr.push(el)}})
+    /* Search in the song_list for the track with the same name as that which was selected and return the whole song object 
+    Assign such a song to init_song, which is short for any of initial/initialize/initializing song */
 
-//     var nextKey = (initSong.key - 7)%12
-//     if(nextKey<0){
-//         nextKey = 12 + nextKey
-//     }
-//     else if(nextKey === -0){
-//         nextKey = 0
-//     }
-//     var nextMode = initSong.mode
+    new_sequence[0] = init_song; //Set the first song in the new list to be that track
+
+    same_keys = song_list.filter(obj => {return (obj.key === init_song.key && obj.mode === init_song.mode)});//songs of same key
+    same_keys.forEach(el => {if(el.trackid !== selected_song){new_sequence.push(el)}});//put all songs of the same key in the new_sequence
+
+    //resolving down the circle of fifths is equivalent to decrementing 7 semitones
+    // if 0<=key<12 (<=11), we are good since this corresponds to a note
+    // key = 12 would be C; this is because 12mod12 ≡ 0; Essentially, every 12 the key resets so we take mod12 (getting the remainder)
+    // D (enumeration: 2) resolves to G (enumeration: 7), this is because (2-7)mod(12) = -5mod(12) = 7
+    // strangely javascript mod function does not behave like mod in most languages, and so if it the subtraction
+    // produces a negative, the 12 must be added back
+
+    var next_key = (init_song.key - 7)%12;
+    if(next_key<0){
+        next_key = 12 + next_key; 
+    }
+    else if(next_key === -0){//sometimes the output would be -0; if this happens, simply correct it to 0
+        //(this is a safety measure, although it should not really matter since +0 == 0 == -0 are all true)
+        next_key = 0;
+    }
+    var next_mode = init_song.mode;//preserve modality
     
-//     let i = 1;
-//     for(i; i<12; i=i+1){
-//         sameKeys = song_list.filter(obj => {return (obj.key === nextKey && obj.mode === nextMode)})
-//         console.log(sameKeys)
-//         sameKeys.forEach(el => rearr.push(el))
-//         console.log(nextKey)
-//         nextKey = (nextKey-7)%12
-//         if(nextKey<0){
-//             nextKey = 12 + nextKey
-//         }
-//         else if(nextKey === -0){
-//             nextKey = 0
-//         }
-//     }
+    let i = 1;//we have just completed iteration 0, we then do this process until we get back to the starting key (12 times bc 12 keys per mode)
+    for(i; i<12; i=i+1){
+        //same algorithm
+        same_keys = song_list.filter(obj => {return (obj.key === next_key && obj.mode === next_mode)});
+        same_keys.forEach(el => new_sequence.push(el));
+        next_key = (next_key-7)%12;
+        // console.log(same_keys)
+        // console.log(next_key)
+        if(next_key<0){
+            next_key = 12 + next_key;
+        }
+        else if(next_key === -0){
+            next_key = 0;
+        }
+    }
     
-//     if(initSong.mode === 1){
-//         nextKey = (initSong.key - 3)%12
-//         if(nextKey<0){
-//             nextKey = 12 + nextKey
-//         }
-//         else if(nextKey === -0){
-//             nextKey = 0
-//         }
-//     }
-//     else if(initSong.mode === 0){
-//         nextKey = (initSong.key + 3)%12
-//         if(nextKey<0){
-//             nextKey = 12 + nextKey
-//         }
-//         else if(nextKey === -0){
-//             nextKey = 0
-//         }
-//     }
+    if(init_song.mode === 1){//if first song was major, relative minor is 3 semitones down
+        next_key = (init_song.key - 3)%12;//take mod 12
+        if(next_key<0){//modulo correction
+            next_key = 12 + next_key;
+        }
+        else if(next_key === -0){//precautionary
+            next_key = 0;
+        }
+    }
+    else if(init_song.mode === 0){//if first song was minor, relative major is +3
+        next_key = (init_song.key + 3)%12; //take mod 12 since (11+3)mod12=14mod12≡2mod12
+        if(next_key<0){//0<=init_song<=11 ... 3<=init_song+3<=14 so this should not happen, but for structural consistency
+            next_key = 12 + next_key;
+        }
+        else if(next_key === -0){
+            next_key = 0;
+        }
+    }
 
-//     nextMode = 1 - nextMode
+    next_mode = 1 - next_mode;
+    //a simple way of complementation
+    //if first song was major switch to minor: next_mode = 1-1 = 0
+    //if first song was minor switch to major: next_mode = 1-0 = 1
 
-//     i=0
-//     for(i; i<12; i=i+1){
-//         sameKeys = song_list.filter(obj => {return (obj.key === nextKey && obj.mode === nextMode)})
-//         sameKeys.forEach(el => rearr.push(el))
-//         console.log(nextKey)
-//         nextKey = (nextKey-7)%12
-//         if(nextKey<0){
-//             nextKey = 12 + nextKey
-//         }
-//         else if(nextKey === -0){
-//             nextKey = 0
-//         }
-//     }
+    //same process, iteration 0 has not been done yet so start with i=0
+    i=0;
+    for(i; i<12; i=i+1){
+        same_keys = song_list.filter(obj => {return (obj.key === next_key && obj.mode === next_mode)});
+        same_keys.forEach(el => new_sequence.push(el));
+        // console.log(next_key);
+        next_key = (next_key-7)%12;
+        if(next_key<0){
+            next_key = 12 + next_key;
+        }
+        else if(next_key === -0){
+            next_key = 0;
+        }
+    }
 
-//     CREATEPLAYLISTURL = "https://api.spotify.com/v1/users/" + user_id + "/playlists"
+    CREATEPLAYLISTURL = "https://api.spotify.com/v1/users/" + user_id + "/playlists";//url to post to
 
-//     callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlist_name + " COF Sequenced"}), intermediate)
+    //pass body
+    //see https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist for information on body parameters
+    callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlist_name + " COF Sequenced"}), populateNewPlaylist)//call api to create playlist
+    //has callback function that populates the playlist
 
-//     console.log(rearr)
-
-// }
-
-// function intermediate(){
-//     var data=JSON.parse(this.responseText)
-//     newPlaylistUriSplit = (data.href).split("/")
-//     newPlaylistId = newPlaylistUriSplit[newPlaylistUriSplit.length - 1]
-//     console.log(newPlaylistId)
-
-//     var uriList = []
-//     rearr.forEach(el => {
-//         uriList.push("spotify:track:" + el.trackid)
-//     }
-//     )
-
-//     console.log(rearr, uriList)
-
-//     uriJSON = JSON.stringify({"uris": uriList, "position": 0})
-
-//     callApi("POST", "https://api.spotify.com/v1/playlists/" + newPlaylistId + "/tracks", uriJSON, placeholder)
-// }
-
-// function placeholder(){
-//     console.log("xdxd")
-
-// }
+    // console.log(new_sequence)//view new sequence
+}
 
 
 //*****generalized methods*****//
@@ -514,8 +474,61 @@ function handleAuthorizationResponse(){
         refreshAccessToken();//refresh token
     }
     else {
-        console.log(this.responseText);
-        // alert(this.responseText);
         window.location.href = redirect_uri;//send to index
     }
+}
+
+/* Convert enumeration into something easily understandable */
+function keySigEnum(x,y){
+    if(x === 0 && y === 0){return "This Track is in the key of C minor";}
+    else if(x === 0 && y === 1){return "This Track is in the key of C major";}
+    else if(x === 1 && y === 0){return "This Track is in the key of C# minor";}
+    else if(x === 1 && y === 1){return "This Track is in the key of D♭ minor";}
+    else if(x === 2 && y === 0){return "This Track is in the key of D minor";}
+    else if(x === 2 && y === 1){return "This Track is in the key of D major";}
+    else if(x === 3 && y === 0){return "This Track is in the key of E♭ minor";}
+    else if(x === 3 && y === 1){return "This Track is in the key of E♭ major";}
+    else if(x === 4 && y === 0){return "This Track is in the key of E minor";}
+    else if(x === 4 && y === 1){return "This Track is in the key of E major";}
+    else if(x === 5 && y === 0){return "This Track is in the key of F minor";}
+    else if(x === 5 && y === 1){return "This Track is in the key of F major";}
+    else if(x === 6 && y === 0){return "This Track is in the key of F# minor";}
+    else if(x === 6 && y === 1){return "This Track is in the key of G♭ major";}
+    else if(x === 7 && y === 0){return "This Track is in the key of G minor";}
+    else if(x === 7 && y === 1){return "This Track is in the key of G major";}
+    else if(x === 7 && y === 1){return "This Track is in the key of G major";}
+    else if(x === 8 && y === 0){return "This Track is in the key of G# minor";}
+    else if(x === 8 && y === 1){return "This Track is in the key of A♭ major";}
+    else if(x === 9 && y === 0){return "This Track is in the key of A minor";}
+    else if(x === 9 && y === 1){return "This Track is in the key of A major";}
+    else if(x === 10 && y === 0){return "This Track is in the key of B♭ minor";}
+    else if(x === 10 && y === 1){return "This Track is in the key of B♭ major";}
+    else if(x === 11 && y === 0){return "This Track is in the key of B minor";}
+    else if(x === 11 && y === 1){return "This Track is in the key of B major";}
+    else if(x === -1){return "This track is in an unknown key"}
+    else if(y !== 0 && y !== 1){return "This track is in an unknown mode"}
+    else{return "Not enough information is known about this song";}
+}
+
+function populateNewPlaylist(){
+    var data=JSON.parse(this.responseText);//returns a lot of info, including the new playlist url
+    // console.log(data)
+    //playlist_id is after the last slash
+    new_playlist_uri_split = (data.href).split("/");//split by /
+    new_playlist_id = new_playlist_uri_split[new_playlist_uri_split.length - 1];//get string after the last /
+
+    var uri_list = []//array of uris
+
+    //for every element in the new sequencing, add an element in the uri list that is a string "spotify:track:"{{ track_id }}
+    //https://developer.spotify.com/documentation/web-api/reference/#/operations/add-tracks-to-playlist has info on how to do this
+    //see the section on that page: Body application/json > uris array of strings
+    new_sequence.forEach(el => {
+        uri_list.push("spotify:track:" + el.trackid);
+    })
+
+    uriJSON = JSON.stringify({"uris": uri_list, "position": 0});//convert uri_list to json and pass this as body
+
+    callApi("POST", "https://api.spotify.com/v1/playlists/" + new_playlist_id + "/tracks", uriJSON, null);
+
+    //maybe some sort of visual queue
 }
