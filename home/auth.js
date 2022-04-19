@@ -131,6 +131,7 @@ function addPlaylist(el){//for each element in the list of playlists
     </table>
     */
 
+
     let node = document.createElement("tr");//create a table row
     node.id = el.id;//row id = playlist id
 
@@ -167,18 +168,22 @@ function getPlaylistSongs(){//get a playlist's tracks
 
         removeAllItems("tracks-table");//remove all tracks and placeholder text
         let node = document.createElement("tr");
-        node.id = "column-headers";//first row
+        node.id = "header-row";//first row
         tracks_table.appendChild(node);//add to tracks table
 
-        let nodeempty = document.createElement("td");//empty data cell
-        node.appendChild(nodeempty);
+        let nodealbumart = document.createElement("td");//song title header
+        nodealbumart.innerHTML = "Album Art";
+        nodealbumart.className = "tracks-table-header"
+        node.appendChild(nodealbumart);
 
         let nodetitle = document.createElement("td");//song title header
         nodetitle.innerHTML = "Song Title";
+        nodetitle.className = "tracks-table-header"
         node.appendChild(nodetitle);
 
         let nodeartist = document.createElement("td");//artist header
         nodeartist.innerHTML = "Artist";
+        nodeartist.className = "tracks-table-header"
         node.appendChild(nodeartist);
 
         track_id_list = [];//same
@@ -213,7 +218,7 @@ function addTracks(el, maxlength){
 
     let nodetd = document.createElement('td')//create td
     let nodepic = document.createElement('img');//tag for album art
-    nodepic.src = el.track.album.images[1].url;//source the art
+    nodepic.src = el.track.album.images[0].url;//source the art
     nodepic.id = track_id;//img id is track id
     nodepic.className = "album-art";//class is album art
     nodetd.appendChild(nodepic)//add img to td
