@@ -1,19 +1,24 @@
+body {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll;
+}
+  
+body::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
 body{
     margin: 0;
     font-family: -apple-system, system-ui, BlinkMacSystemFont, Ubuntu;
     background-image: linear-gradient(165deg, #332F33 5%, rgb(12,10,22), rgb(12,10,22));
     background-repeat: no-repeat;
     color: white;
-    display: grid;
-    grid-template-rows: 10vh max(100vh, auto) 3vh;
-    grid-template-columns: 1fr 6fr 20fr;
-    grid-template-areas: "header header header"
-    "emptyleft playlists tracks"
-    "footer footer footer";
+    word-break: break-word;
 }
 
+/*navbar*/
 header{
-    grid-area: header;
     font-size: 1.25em;
     display: flex;
     position: fixed;
@@ -22,41 +27,20 @@ header{
     font-weight: 400;
     background-color: black;
     justify-content: center;
+    z-index: 9999;/*stays on top of all other elements*/
 }
 
-.emptyleft{
-    margin-top: 10vh;
-    grid-area: emptyleft;
-    padding-right: 5%;
-}
-
-.playlists{
-    margin-top: 10vh;
-    grid-area: playlists;
-    display: inline-block;
-    background-color: rgb(23,20,28);
-    color: white;
-}
-
-.tracks{
-    margin-top: 10vh;
-    grid-area: tracks;
-}
-
-
-footer{
-    grid-area: footer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #bbbbbb;
-    color: #dadada;
-    font-size: 0.8em;
-}
-
-.nav-bar > ul{
+.nav-list{
     list-style-type: none;
     padding-inline-start: 0px;
+    margin-block-end: 0;
+    margin-block-start: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: -0.5%;
+    height: 100%;
 }
 
 .nav-bar li{
@@ -99,19 +83,12 @@ footer{
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    font-weight: 500;
+    font-weight: 400;
 }
+/*end of navbar*/
 
-
-/* .transparent-overlay{
-    background-color: rgba(0,0,0,0.5);
-    padding-bottom: 1vh;
-    margin-left: 1.5vw;
-    margin-right: 1.5vw;
-    border-radius: 20px;
-} */
-
-.subheading{
+/*some general classes for headers/anchor tags in body text etc*/
+.subheading{/*subheadings*/
     margin: 2vh;
     margin-bottom: 1vh;
     font-size: 1.5em;
@@ -119,7 +96,7 @@ footer{
     padding-top: 2vh;
 }
 
-.gen-text{
+.gen-text{/*general text*/
     font-size: 1.1em;
 }
 
@@ -128,7 +105,7 @@ footer{
     font-style: italic;
 }
 
-.mybtn{
+.mybtn{/*my button*/
     height: 6vh;
     width: 15vw;
     border-radius: 30px;
@@ -136,14 +113,65 @@ footer{
     background-image: linear-gradient(175deg, rgb(255, 68, 99) 12%, rgb(255, 145, 0));
     color: white;
     font-size: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .mybtn:hover{
     background-image: linear-gradient(175deg, rgb(255, 90, 115) 12%, rgb(255, 165, 0));
 }
+/*end of general classes*/
 
-.playlists{
+/*sidebar*/
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    position: relative;
+    top: 10vh;
+}
+
+#sidebar{/*styling for when sidebar appears*/
     text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 25vw;
+    background: rgb(23,20,28);
+    transition: all 0.5s;
+    z-index: 1;
+}
+
+#sidebar.inactive{/*hides sidebar*/
+    margin: -25vw;
+    margin-top: 0;
+}
+
+.playlists{/*contains specifically user playlists*/
+    /* margin-top: 10vh; */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: rgb(23,20,28);
+    color: white;
+    gap: 2vh;
+}
+
+.playlists li{
+    align-items: center;
+    display: flex;
+    text-align: left;
+}
+
+#playlist-list{
+    list-style-type: none;
+    padding: 0;
+}
+
+#playlist-list li{
+    padding: 0;
 }
 
 .playlist-table {
@@ -156,17 +184,29 @@ footer{
     padding-left: 10%;
     padding-top: 3%;
     padding-bottom: 3%;
-    text-align: left;
 }
 
 .coverimg{
+    margin-left: 2vw;
+    margin-right: 1vw;
     max-height: 60px;
     max-width: 60px;
     border: 1px solid white;
 }
 
 .playlist-title{
-    padding: 2%;
+    padding: 0%;
+    width: 2vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    margin-right: 1vw;
+    width: 15vw;
+    height: 66px;
+    overflow: hidden;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    display: grid;
+    align-items: center;
 }
 
 .playlist-title:hover{
@@ -175,10 +215,23 @@ footer{
 }
 
 .tracks{
-    background-color: rgb(23,20,28);
-    margin-left: 5%;
-    margin-right: 5%;
+    background-color: rgb(27,25,32);
     text-align: center;
+    width: 125vw;
+    height: 100vh;
+    transition: all 0.5s;
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+}
+
+.tracks::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+#tracks.inactive{
+    width: 100vw;
+    padding-left: 25vw;
 }
 
 .tracks-table{
@@ -193,8 +246,19 @@ footer{
     font-size: 1.3em;
 }
 
+td:first-child{
+    border-top-left-radius: 17px;
+    border-bottom-left-radius: 17px;
+}
+
+td:last-child{
+    border-top-right-radius: 17px;
+    border-bottom-right-radius: 17px;
+}
+
 .tracks-table>tr[id]:not([id='header-row']):hover{
     background-color: rgb(40,36,52);
+    border-radius: 4px;
 }
 
 .tracks-table td{
@@ -212,3 +276,12 @@ footer{
 
 /*    a nice color ->background-color: #d02b40;
 */
+
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #bbbbbb;
+    color: #dadada;
+    font-size: 0.8em;
+}

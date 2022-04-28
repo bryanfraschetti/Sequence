@@ -43,7 +43,7 @@ var TRACKS = ""; //"Needs global scope, structured: https://api.spotify.com/v1/p
 var AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/"; //Needs global scope but is dynamic and follows the structure: https://api.spotify.com/v1/audio-analysis/{track_id}
 
 //list of important nodes
-const playlist_table = document.getElementById("playlist-table");
+const playlist_list = document.getElementById("playlist-list");
 const tracks_table = document.getElementById("tracks-table");
 
 //Event listeners
@@ -62,7 +62,7 @@ This is the solution:
     A similar story applies to the td's of the tracks-table table
 */
 
-playlist_table.addEventListener("click", function selectPlaylist(e){//listener on parent
+playlist_list.addEventListener("click", function selectPlaylist(e){//listener on parent
     song_list = [];//IMPORTANT: reinitialized to empty before adding songs (in case user sequences a different playlist)
     counter =  0; //reinit counter to 0 in case user selects new playlist  (or even the same)
     e.preventDefault;//for good measure (probably does not really matter since there would not be a default action)
@@ -94,6 +94,13 @@ function onPageLoad(){//when page loads get all credentials; also load playlists
     callApi("GET", PLAYLISTS, null, getUserPlaylists);
 }
 
+$(document).ready(function () {
+   $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('inactive');
+        $('#tracks').toggleClass('inactive')
+    });
+});
+
 function getUser(){//getting user
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
@@ -110,7 +117,7 @@ function getUser(){//getting user
 function getUserPlaylists(){//getting playlists
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
-        removeAllItems("playlist-table");//get rid of all playlists in the table
+        removeAllItems("playlist-list");//get rid of all playlists in the table
         data.items.forEach(el => addPlaylist(el));//add each of the just obtained playlists
     }
     else if(this.status == 401){//token expired
@@ -123,34 +130,40 @@ function getUserPlaylists(){//getting playlists
 
 function addPlaylist(el){//for each element in the list of playlists
     /*DESIRED OUTPUT HTML STRUCTURE:
-    <table class="playlist-table" id="playlist-table">
+    <table class="playlist-list" id="playlist-list">
         <tr id="{{playlist_id}}">
             <td><img src="{{60px x 60px album art}}" class="cover-img"></td>
             <td id="{{playlist_id}}">{{Playlist ID}</td>
         </tr>
     </table>
+    <ul class="playlists" id="playlist-list">
+        <li id="{{playlist_id}}">
+            <img src="{{60px x 60px album art}}" class="cover-img">
+            <p id="{{playlist_id}}">{{Playlist Name}</p>
+        </tr>
+    </table>
+
     */
 
+    
+    let node = document.createElement("li");//create a list item
+    node.id = el.id;//li id = playlist id
 
-    let node = document.createElement("tr");//create a table row
-    node.id = el.id;//row id = playlist id
-
-    let playlist_cover_cell = document.createElement("td");//cell for cover art
     let playlist_cover = document.createElement("img");//img tag
     if(el.images.length !== 0){
         playlist_cover.src = ((el.images.slice(-1))[0]).url;//src for img
     }
     playlist_cover.className = "coverimg" //all images are cover images
-    playlist_cover_cell.appendChild(playlist_cover);//append img to td
-    node.appendChild(playlist_cover_cell);//append td to tr
+    node.appendChild(playlist_cover);//append img to li
 
-    let playlist_title = document.createElement("td");//create td for title
+    let playlist_title = document.createElement("p");//create td for title
     playlist_title.className = "playlist-title"; //all titles are titles
     playlist_title.id = el.id ; //set table cell id to playlist id
     playlist_title.innerHTML = el.name;//inner html is the title
-    node.appendChild(playlist_title);//append td to tr
+    node.appendChild(playlist_title);//append p to li
 
-    playlist_table.appendChild(node);//append tr to table
+    playlist_list.appendChild(node);//append li to ul
+
 }
 
 function refreshPlaylists(){//get playlists (when the button is pressed)
