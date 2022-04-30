@@ -177,7 +177,7 @@ header{
 
 .playlists::-webkit-scrollbar-thumb{
     border-radius: 15px;
-    background-color: rgb(50,50,90,0.5);
+    background-color: rgb(50, 50, 80, 0.5);
     visibility: hidden;
 }
 
@@ -246,7 +246,7 @@ header{
 
 .tracks::-webkit-scrollbar-thumb{
     border-radius: 15px;
-    background-color: rgb(50,50,90,0.5);
+    background-color: rgb(50, 50, 80, 0.5);
     visibility: hidden;
 }
 
