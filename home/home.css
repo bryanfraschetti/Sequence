@@ -25,7 +25,7 @@ header{
     width: 100vw;
     height: 10vh;
     font-weight: 400;
-    background-color: black;
+    background-color: rgb(12,10,22);
     justify-content: center;
     z-index: 9999;/*stays on top of all other elements*/
 }
@@ -110,6 +110,8 @@ header{
     width: 15vw;
     border-radius: 30px;
     border: none;
+    margin-top: 1.75vh;
+    margin-bottom: 1.75vh;
     background-image: linear-gradient(175deg, rgb(255, 68, 99) 12%, rgb(255, 145, 0));
     color: white;
     font-size: 1em;
@@ -137,11 +139,12 @@ header{
     text-align: center;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 90vh;
     width: 25vw;
     background: rgb(23,20,28);
     transition: all 0.5s;
     z-index: 1;
+    /* padding-bottom: 5vh; */
 }
 
 #sidebar.inactive{/*hides sidebar*/
@@ -151,12 +154,35 @@ header{
 
 .playlists{/*contains specifically user playlists*/
     /* margin-top: 10vh; */
+    height: 67vh;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     background-color: rgb(23,20,28);
     color: white;
     gap: 2vh;
+    /* padding-bottom: 5vh; */
+}
+
+/* .playlists::-webkit-scrollbar{
+    display: none;
+} */
+
+.playlists::-webkit-scrollbar{
+    background-color: transparent;
+    border-radius: 15px;
+    width: 12px;
+}
+
+.playlists::-webkit-scrollbar-thumb{
+    border-radius: 15px;
+    background-color: rgb(50,50,90,0.5);
+    visibility: hidden;
+}
+
+.playlists.scroll-active::-webkit-scrollbar-thumb{
+    visibility: visible;
 }
 
 .playlists li{
@@ -174,20 +200,8 @@ header{
     padding: 0;
 }
 
-.playlist-table {
-    border-collapse: separate;
-    border-spacing: 1vw;
-}
-
-.playlist-table > tr{
-    width: 80%;
-    padding-left: 10%;
-    padding-top: 3%;
-    padding-bottom: 3%;
-}
-
 .coverimg{
-    margin-left: 2vw;
+    margin-left: 3vw;
     margin-right: 1vw;
     max-height: 60px;
     max-width: 60px;
@@ -196,10 +210,8 @@ header{
 
 .playlist-title{
     padding: 0%;
-    width: 2vw;
     padding-left: 1vw;
-    padding-right: 1vw;
-    margin-right: 1vw;
+    margin-right: 1.5vw;
     width: 15vw;
     height: 66px;
     overflow: hidden;
@@ -218,15 +230,28 @@ header{
     background-color: rgb(27,25,32);
     text-align: center;
     width: 125vw;
-    height: 100vh;
+    height: 87vh;
     transition: all 0.5s;
     overflow-y: scroll;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
+    padding-bottom: 3vh;
 }
 
-.tracks::-webkit-scrollbar {
-    display: none; /* for Chrome, Safari, and Opera */
+.tracks::-webkit-scrollbar{
+    background-color: transparent;
+    border-radius: 15px;
+    width: 12px;
+}
+
+.tracks::-webkit-scrollbar-thumb{
+    border-radius: 15px;
+    background-color: rgb(50,50,90,0.5);
+    visibility: hidden;
+}
+
+.tracks.scroll-active::-webkit-scrollbar-thumb{
+    visibility: visible;
 }
 
 #tracks.inactive{
@@ -281,7 +306,12 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #bbbbbb;
-    color: #dadada;
+    background-color: #dadada;
+    color: grey;
     font-size: 0.8em;
+    position: absolute;
+    top: 100vh;
+    height: 25px;
+    z-index: 9999;
+    width: 100vw;
 }

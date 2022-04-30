@@ -45,6 +45,7 @@ var AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/"; //Needs global
 //list of important nodes
 const playlist_list = document.getElementById("playlist-list");
 const tracks_table = document.getElementById("tracks-table");
+const tracks_DOM = document.getElementById("tracks");
 
 //Event listeners
 
@@ -74,6 +75,39 @@ playlist_list.addEventListener("click", function selectPlaylist(e){//listener on
     }
 })
 
+var isScrolling;
+
+//listener to make playlist scrollbar visible
+playlist_list.addEventListener('scroll', function (e) {
+    if (e.target.classList.contains("scroll-active") === false) {
+        e.target.classList.add("scroll-active");
+    }
+	// Clear our timeout throughout the scroll
+	window.clearTimeout(isScrolling);
+	// Set a timeout to run after scrolling ends
+	isScrolling = setTimeout(function(){
+		// Run the callback
+        e.target.classList.remove("scroll-active")
+	}, 300);
+
+}, false);
+
+//listener to make tracks scrollbar visible
+tracks_DOM.addEventListener('scroll', function (e) {
+    if (e.target.classList.contains("scroll-active") === false) {
+        e.target.classList.add("scroll-active");
+    }
+	// Clear our timeout throughout the scroll
+	window.clearTimeout(isScrolling);
+	// Set a timeout to run after scrolling ends
+	isScrolling = setTimeout(function(){
+		// Run the callback
+        e.target.classList.remove("scroll-active")
+	}, 300);
+
+}, false);
+
+//listener to create playlist
 tracks_table.addEventListener("click", function selectTrack(e){//parent listener
     e.preventDefault;//good measure
     if(e.target !== e.currentTarget){
@@ -82,6 +116,7 @@ tracks_table.addEventListener("click", function selectTrack(e){//parent listener
         callApi("GET", AUDIOANALYSIS, null, getSelectedSong);//call
     }
 })
+
 
 //*****at the bottom of the page are some generalized function calls such as callApi and removeAllItems*****//
 
@@ -94,6 +129,7 @@ function onPageLoad(){//when page loads get all credentials; also load playlists
     callApi("GET", PLAYLISTS, null, getUserPlaylists);
 }
 
+//collapse sidebar
 $(document).ready(function () {
    $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('inactive');
