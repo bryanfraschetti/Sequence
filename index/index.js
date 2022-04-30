@@ -12,8 +12,8 @@ const TOKEN = "https://accounts.spotify.com/api/token";
 
 //When html body loads, this function runs
 function onPageLoad(){
-    client_id = localStorage.getItem("client_id");
-    client_secret = localStorage.getItem("client_secret");
+    // client_id = localStorage.getItem("client_id");
+    // client_secret = localStorage.getItem("client_secret");
 
     if(window.location.search.length > 0){//query string including ?
         handleRedirect();
@@ -77,7 +77,7 @@ function requestAuthorization(){//happens on button click
     localStorage.setItem("client_secret", client_secret);
 
     let url = AUTHORIZE;//redirect to spotify permission requests
-    url += "?client_id=" + client_id;
+    url += "?client_id=" + "2843145f9a1341e6b0d6f8ea156c5f69";
     url += "&response_type=code";
     url += "&redirect_uri=" + encodeURI(redirect_uri);
     url += "&show_dialog=true";
