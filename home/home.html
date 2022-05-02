@@ -52,8 +52,18 @@
                 </ul>               
             </nav>
             <div class="tracks" id="tracks">
-                <h3 class="subheading">Playlist Tracklist</h3>
-                <br/>
+                <div class="sequencer" id="sequencer">
+                    <h3 class="subheading">Choose Sequencing</h3>
+                    <div class="button-container" id="button-container">
+                        <span>
+                            <button class="sequencer-buttons inactive-sequencer">Circle of Fifths</button>
+                            <button class="sequencer-buttons inactive-sequencer">Rising Semitone</button>
+                            <button class="sequencer-buttons inactive-sequencer">Descending Semitone</button>
+                        </span>
+                    </div>
+                    <hr class="separator" id="seq-track-sep">
+                </div>
+                <h3 class="subheading" id="tracklist-heading">Playlist Tracklist</h3>
                 <table class="tracks-table" id="tracks-table">
                     <tr><td class="gentext">This will autopopulate with tracks once you select a playlist.</td></tr>
                 </table>

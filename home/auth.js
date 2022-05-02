@@ -75,6 +75,17 @@ playlist_list.addEventListener("click", function selectPlaylist(e){//listener on
     }
 })
 
+//listener to create playlist
+tracks_table.addEventListener("click", function selectTrack(e){//parent listener
+    e.preventDefault;//good measure
+    if(e.target !== e.currentTarget){
+        selected_song = e.target.id;
+        AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + selected_song;//endpoint
+        callApi("GET", AUDIOANALYSIS, null, getSelectedSong);//call
+    }
+})
+
+//scrollbar only visible on scroll:
 var isScrolling;
 
 //listener to make playlist scrollbar visible
@@ -107,16 +118,22 @@ tracks_DOM.addEventListener('scroll', function (e) {
 
 }, false);
 
-//listener to create playlist
-tracks_table.addEventListener("click", function selectTrack(e){//parent listener
-    e.preventDefault;//good measure
-    if(e.target !== e.currentTarget){
-        selected_song = e.target.id;
-        AUDIOANALYSIS = "https://api.spotify.com/v1/audio-analysis/" + selected_song;//endpoint
-        callApi("GET", AUDIOANALYSIS, null, getSelectedSong);//call
-    }
-})
+//radio button emulation with actual buttons
+var btnTip = document.getElementsByClassName("sequencer-buttons");
+let activeBtn = null;//initially no active button
+for(i=0;i<btnTip.length;i++){//for each button add an event listener
+    btnTip[i].addEventListener("click", (e) => {
+        e.currentTarget.classList.remove("inactive-sequencer");//remove inactive class from clicked button
+        e.currentTarget.classList.add("active-sequencer");//add active class to clicked button
 
+        if ((activeBtn != null && activeBtn != e.currentTarget)){//remove active class from all other buttons
+            activeBtn.classList.add("inactive-sequencer");//make old stored button inactive
+            activeBtn.classList.remove("active-sequencer");//remove active
+        }
+    
+        activeBtn = e.currentTarget;//set stored active button equal to current target
+    });
+}
 
 //*****at the bottom of the page are some generalized function calls such as callApi and removeAllItems*****//
 
