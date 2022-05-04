@@ -125,10 +125,14 @@ for(i=0;i<btnTip.length;i++){//for each button add an event listener
     btnTip[i].addEventListener("click", (e) => {
         e.currentTarget.classList.remove("inactive-sequencer");//remove inactive class from clicked button
         e.currentTarget.classList.add("active-sequencer");//add active class to clicked button
+        e.currentTarget.parentElement.classList.remove("seq-wrapper-inactive");
+        e.currentTarget.parentElement.classList.add("seq-wrapper-active");
 
         if ((activeBtn != null && activeBtn != e.currentTarget)){//remove active class from all other buttons
             activeBtn.classList.add("inactive-sequencer");//make old stored button inactive
             activeBtn.classList.remove("active-sequencer");//remove active
+            activeBtn.parentElement.classList.add("seq-wrapper-inactive");
+            activeBtn.parentElement.classList.remove("seq-wrapper-active");
         }
     
         activeBtn = e.currentTarget;//set stored active button equal to current target
