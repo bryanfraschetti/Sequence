@@ -8,30 +8,29 @@ var access_token = "";
 var refresh_token = "";
 
 //Initialization of global variables
-var user_id = "";
+var user_id = "";//userid, obtained from callApi(x, x, x, getUser)
 
 
-var playlist_id = "";
-var playlist_name = "";
+var playlist_id = "";//playlistid, obtained when a click is detected on a playlist
+var playlist_name = "";//obtained at the same time as playlistid
 
 
-var track_id = "";
-var track_id_list = [];
+var track_id = "";//when a playlist is clicked, the tracks (and respective ids are fetched)
+var track_id_list = [];//used to hold all the trackids within a playlist; this is necessary to pseudo-enforce synchronous behaviour in the async function
 
 
-var song_list = [];
+var song_list = [];//list of songs in a playlist (AND THEIR DETAILS LIKE KEY/MODE/ETC.)
 
 
-var selected_song = "";
+var selected_song = "";//assigned on click of a track -> this is just the selected track id (just a string number)
+var init_song = "";//using the selected_song, we "query" song_list for this trackid, and assign all of the metrics (key/mode/etc.) to init_song (user defined obj)
 
-var new_sequence = [];
-
-
-//list of sequencing options
-var sequencingopts = ["Circle of Fifths"];
+var new_sequence = [];//used to store the new sequencing as it is developed and to post to spotify
 
 
 var counter = 0;
+//start counter at 0, everytime a new playlist is selected, reinitialize it to 0 to ensure that all the audio analysis calls work properly
+//note that once a playlist is selected, ALL songs and details are fetched, so there is no concern of selecting two songs within the same playlist
 
 
 //list of endpoints
@@ -121,7 +120,7 @@ tracks_DOM.addEventListener('scroll', function (e) {
 //radio button emulation with actual buttons
 var btnTip = document.getElementsByClassName("sequencer-buttons");
 let activeBtn = null;//initially no active button
-for(i=0;i<btnTip.length;i++){//for each button add an event listener
+for(let i=0;i<btnTip.length;i++){//for each button add an event listener
     btnTip[i].addEventListener("click", (e) => {
         e.currentTarget.classList.remove("inactive-sequencer");//remove inactive class from clicked button
         e.currentTarget.classList.add("active-sequencer");//add active class to clicked button
@@ -162,6 +161,7 @@ function getUser(){//getting user
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
         user_id = data.id;//get user id
+        CREATEPLAYLISTURL = "https://api.spotify.com/v1/users/" + user_id + "/playlists";//url to post to
     }
     else if(this.status == 401){
         refreshAccessToken();//refreshAccessToken if unauthorized
@@ -186,6 +186,7 @@ function getUserPlaylists(){//getting playlists
 }
 
 function addPlaylist(el){//for each element in the list of playlists
+
     /*DESIRED OUTPUT HTML STRUCTURE:
     <table class="playlist-list" id="playlist-list">
         <tr id="{{playlist_id}}">
@@ -199,9 +200,7 @@ function addPlaylist(el){//for each element in the list of playlists
             <p id="{{playlist_id}}">{{Playlist Name}</p>
         </tr>
     </table>
-
     */
-
     
     let node = document.createElement("li");//create a list item
     node.id = el.id;//li id = playlist id
@@ -231,11 +230,6 @@ function getPlaylistSongs(){//get a playlist's tracks
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
 
-//         let sequencer = document.getElementById("Sequencer")
-//         while (sequencer.firstChild) {
-//             sequencer.removeChild(sequencer.firstChild);
-//         } ///I mean idrk what this is at this point
-
         removeAllItems("tracks-table");//remove all tracks and placeholder text
         let node = document.createElement("tr");
         node.id = "header-row";//first row
@@ -258,7 +252,7 @@ function getPlaylistSongs(){//get a playlist's tracks
 
         track_id_list = [];//same
 
-        data.items.forEach(el => addTracks(el, data.items.length));//add track
+        data.items.forEach(el => addTracks(el));//add track
     }
     else if(this.status == 401){
         refreshAccessToken();//refresh token
@@ -268,7 +262,7 @@ function getPlaylistSongs(){//get a playlist's tracks
     }
 }
 
-function addTracks(el, maxlength){
+function addTracks(el){
 
     /*DESIRED OUTPUT HTML STRUCTURE:
     <table class="tracks-table" id="tracks-table">
@@ -305,15 +299,17 @@ function addTracks(el, maxlength){
     document.getElementById(el.track.name).appendChild(nodetdartist);
 
     track_id_list.push(track_id);//list of track ids
-
-    getAudioAnalysis(track_id, counter)//for each track get audio analysis
+    // console.log("here (phase 1)" + track_id)
+    getAudioAnalysis(track_id, counter);//for each track get audio analysis
     counter++;
+    // console.log("here (phase 3)" + track_id)
 }
 
 async function getAudioAnalysis(x, y) {
-    //cannot use callApi because this method (getAudioAnalysis) requires parameters and it would be cumbersome to do this with the xhr.onload in callApi()
+    // console.log("here (phase 2)" + track_id_list[y])
+    //cannot use callApi because this method (getAudioAnalysis) requires parameters (trackid, counter) and it would be cumbersome to do this with the xhr.onload in callApi()
     //because of async, the order of completion does not correlate to call instantiation and so it is impossible to ensure that the correct track_id
-    //corresponds to the corresponding fetched data; besides, using trackid: track_id is unreliable since the track_id will be varying throughout the
+    //corresponds to the corresponding fetched data; using trackid: track_id is unreliable since the track_id will be varying throughout the
     //.forEach and the current track_id may not correspond to the currently fetched data, as would be seen in a synchronous fetch
     //synchronous fetch performance is atrocious, so we make an async function and fetch with the passed variables as is seen
     fetch(AUDIOANALYSIS + x, {
@@ -340,36 +336,16 @@ function getSelectedSong(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText);
 
-//         let node = document.getElementById("Sequencer");
-//         while (node.firstChild) {
-//             node.removeChild(node.firstChild);
-//         }
+        if(activeBtn === null || activeBtn.innerHTML === "Circle of Fifths"){
+            CoFArr();
+        }
+        else if(activeBtn.innerHTML === "Rising Semitone"){
+            RisSemArr();
+        }
+        else if(activeBtn.innerHTML === "Descending Semitone"){
+            DescSemArr();
+        }
 
-//         let nodesequencer = document.createElement("div");
-//         nodesequencer.id = "sequencerbox";
-//         document.getElementById("Sequencer").appendChild(nodesequencer);
-
-//         let nodetrackinfo = document.createElement("p");
-//         nodetrackinfo.id = "ptrackinfo";
-//         nodetrackinfo.innerHTML = keySigEnum(data.track.key, data.track.mode);
-//         document.getElementById("sequencerbox").appendChild(nodetrackinfo);
-
-//         //will probably need something like this later
-//         // let nodeSeqOptSel = document.createElement("select")
-//         // nodeSeqOptSel.id ="availseqlist"
-//         // nodeSeqOptSel.onchange = "getSequencing(this)"
-//         // document.getElementById("Sequencer").appendChild(nodeSeqOptSel)
-
-//         // let defaultopt = document.createElement("option")
-//         // defaultopt.innerHTML = "----- Select a Sequencing -----"
-//         // nodeSeqOptSel.appendChild(defaultopt)
-
-//         // sequencingopts.forEach(el => addNodeOpt(el))
-
-//         ///////////////// alert("Key: " + keySigEnum(data.track.key, data.track.mode) +
-//         ///////////////// " Tempo: " + data.track.tempo + " Confidence: " + data.track.tempo_confidence);
-
-        CoFArr();
     }
     
     else if(this.status == 401){
@@ -381,28 +357,12 @@ function getSelectedSong(){
     }
 }
 
-
-//may need later
-// function addNodeOpt(x){
-//     let nodeOpt = document.createElement("option")
-//     nodeOpt.id = x;
-//     nodeOpt.innerHTML = x
-//     document.getElementById("availseqlist").appendChild(nodeOpt)
-// }
-
-// function getSequencing(elem){
-//     var selectedVal = elem.value;
-
-//     if(elem.value == "----- Select a Sequencing -----"){}
-//     else{CoFArr()}
-// }
-
 function CoFArr(){
     new_sequence = [];//reinit to have no tracks in case this is the second playlist someone is reorganizing
 
     init_song = song_list.find(obj => {return obj.trackid === selected_song});
 
-    /* Search in the song_list for the track with the same name as that which was selected and return the whole song object 
+    /* Search in the song_list for the track with the same id as that which was selected and return the whole song object 
     Assign such a song to init_song, which is short for any of initial/initialize/initializing song */
 
     new_sequence[0] = init_song; //Set the first song in the new list to be that track
@@ -482,15 +442,127 @@ function CoFArr(){
         }
     }
 
-    CREATEPLAYLISTURL = "https://api.spotify.com/v1/users/" + user_id + "/playlists";//url to post to
-
     //pass body
     //see https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist for information on body parameters
-    callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlist_name + " COF Sequenced"}), populateNewPlaylist)//call api to create playlist
+    callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlist_name + " C.O.F. Sequenced"}), populateNewPlaylist)//call api to create playlist
     //has callback function that populates the playlist
 
     // console.log(new_sequence)//view new sequence
 }
+
+function RisSemArr(){
+    new_sequence = [];//reinit to have no tracks in case this is the second playlist someone is reorganizing
+
+    init_song = song_list.find(obj => {return obj.trackid === selected_song});//get init song details
+
+    var mutable_song_list = song_list; //function scoped song_list where songs can be popped (removed) to ensure no duplicates
+    /* Search in the song_list for the track with the same id as that which was selected and return the whole song object 
+    Assign such a song to init_song, which is short for any of initial/initialize/initializing song */
+
+    var next_song = init_song;//next_song is init_song (first song)
+    new_sequence.push(next_song)//push first song
+
+    var next_key = init_song.key;//next_key is the first song's key (I call it this so I can generalize the while loop)
+
+    mutable_song_list = mutable_song_list.filter(obj => {return obj !== next_song})//remove song from mutable list (it will no longer be available for mutable_song_list.find() and so it won't duplicate)
+    
+    var check = 0;//need to make sure the while loop doesn't execute indefinitely
+    //there may be songs with no key, in which case next_song !== undefined will always be false, but mutable_song_list.length>0
+    //since there are 12 keys, the maximum amount of while loops between keys must be 12. If a key is found, reset check to 0 (the next key may be as far as 12 iterations away)
+    //whenever no key is found, we are one closer to the maximum furthest key, so we increment check
+    //if check exceeds 12, even though there are remaining songs, none are known to belong to a key, so to prevent indefinite iteration we break
+
+    while(mutable_song_list.length > 0){
+        if(next_key === 11){//if first song key is B (11), next key is C (0)
+            next_key = 0;
+        }
+        else{
+            next_key++;//else it is just incremented
+        }
+        
+        next_song = mutable_song_list.find(obj => {return obj.key === next_key})//find next song with the desired key
+
+        if(next_song !== undefined){//a song with the key signature exists
+            new_sequence.push(next_song)//push song
+            mutable_song_list = mutable_song_list.filter(obj => {return obj !== next_song})//remove song from available songs
+            check = 0;//reset check to 0
+        }
+        else{//no song exists with that key signature
+            if(check < 13){//we have not yet spanned an octave from the last found track
+                check++;//increment 1 to signify moving up a semitone
+                continue;
+            }
+            else{//we have gone an entire octave without finding a key signature
+                break;
+            }
+        }
+        
+    }
+    //pass body
+    //see https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist for information on body parameters
+    callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlist_name + " R.S. Sequenced"}), populateNewPlaylist)//call api to create playlist
+    //has callback function that populates the playlist
+
+    // console.log(new_sequence)//view new sequence
+}
+
+
+function DescSemArr(){
+    new_sequence = [];//reinit to have no tracks in case this is the second playlist someone is reorganizing
+
+    init_song = song_list.find(obj => {return obj.trackid === selected_song});//get init song details
+
+    var mutable_song_list = song_list; //function scoped song_list where songs can be popped (removed) to ensure no duplicates
+    /* Search in the song_list for the track with the same id as that which was selected and return the whole song object 
+    Assign such a song to init_song, which is short for any of initial/initialize/initializing song */
+
+    var next_song = init_song;//next_song is init_song (first song)
+    new_sequence.push(next_song)//push first song
+
+    var next_key = init_song.key;//next_key is the first song's key (I call it this so I can generalize the while loop)
+
+    mutable_song_list = mutable_song_list.filter(obj => {return obj !== next_song})//remove song from mutable list (it will no longer be available for mutable_song_list.find() and so it won't duplicate)
+    
+    var check = 0;//need to make sure the while loop doesn't execute indefinitely
+    //there may be songs with no key, in which case next_song !== undefined will always be false, but mutable_song_list.length>0
+    //since there are 12 keys, the maximum amount of while loops between keys must be 12. If a key is found, reset check to 0 (the next key may be as far as 12 iterations away)
+    //whenever no key is found, we are one closer to the maximum furthest key, so we increment check
+    //if check exceeds 12, even though there are remaining songs, none are known to belong to a key, so to prevent indefinite iteration we break
+
+    while(mutable_song_list.length > 0){
+        if(next_key === 0){//if first song key is C (0), next key is B (11)
+            next_key = 11;
+        }
+        else{
+            next_key--;//else it is just decremented
+        }
+        
+        next_song = mutable_song_list.find(obj => {return obj.key === next_key})//find next song with the desired key
+
+        if(next_song !== undefined){//a song with the key signature exists
+            new_sequence.push(next_song)//push song
+            mutable_song_list = mutable_song_list.filter(obj => {return obj !== next_song})//remove song from available songs
+            check = 0;//reset check to 0
+        }
+        else{//no song exists with that key signature
+            if(check < 13){//we have not yet spanned an octave from the last found track
+                check++;//increment 1 to signify moving up a semitone
+                continue;
+            }
+            else{//we have gone an entire octave without finding a key signature
+                break;
+            }
+        }
+        
+    }
+    //pass body
+    //see https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist for information on body parameters
+    callApi("POST", CREATEPLAYLISTURL, JSON.stringify({"name": playlist_name + " D.S. Sequenced"}), populateNewPlaylist)//call api to create playlist
+    //has callback function that populates the playlist
+
+    // console.log(new_sequence)//view new sequence
+}
+
 
 
 //*****generalized methods*****//
@@ -553,44 +625,12 @@ function handleAuthorizationResponse(){
     }
 }
 
-/* Convert enumeration into something easily understandable */
-function keySigEnum(x,y){
-    if(x === 0 && y === 0){return "This Track is in the key of C minor";}
-    else if(x === 0 && y === 1){return "This Track is in the key of C major";}
-    else if(x === 1 && y === 0){return "This Track is in the key of C# minor";}
-    else if(x === 1 && y === 1){return "This Track is in the key of D♭ minor";}
-    else if(x === 2 && y === 0){return "This Track is in the key of D minor";}
-    else if(x === 2 && y === 1){return "This Track is in the key of D major";}
-    else if(x === 3 && y === 0){return "This Track is in the key of E♭ minor";}
-    else if(x === 3 && y === 1){return "This Track is in the key of E♭ major";}
-    else if(x === 4 && y === 0){return "This Track is in the key of E minor";}
-    else if(x === 4 && y === 1){return "This Track is in the key of E major";}
-    else if(x === 5 && y === 0){return "This Track is in the key of F minor";}
-    else if(x === 5 && y === 1){return "This Track is in the key of F major";}
-    else if(x === 6 && y === 0){return "This Track is in the key of F# minor";}
-    else if(x === 6 && y === 1){return "This Track is in the key of G♭ major";}
-    else if(x === 7 && y === 0){return "This Track is in the key of G minor";}
-    else if(x === 7 && y === 1){return "This Track is in the key of G major";}
-    else if(x === 7 && y === 1){return "This Track is in the key of G major";}
-    else if(x === 8 && y === 0){return "This Track is in the key of G# minor";}
-    else if(x === 8 && y === 1){return "This Track is in the key of A♭ major";}
-    else if(x === 9 && y === 0){return "This Track is in the key of A minor";}
-    else if(x === 9 && y === 1){return "This Track is in the key of A major";}
-    else if(x === 10 && y === 0){return "This Track is in the key of B♭ minor";}
-    else if(x === 10 && y === 1){return "This Track is in the key of B♭ major";}
-    else if(x === 11 && y === 0){return "This Track is in the key of B minor";}
-    else if(x === 11 && y === 1){return "This Track is in the key of B major";}
-    else if(x === -1){return "This track is in an unknown key"}
-    else if(y !== 0 && y !== 1){return "This track is in an unknown mode"}
-    else{return "Not enough information is known about this song";}
-}
-
 function populateNewPlaylist(){
     var data=JSON.parse(this.responseText);//returns a lot of info, including the new playlist url
     // console.log(data)
     //playlist_id is after the last slash
-    new_playlist_uri_split = (data.href).split("/");//split by /
-    new_playlist_id = new_playlist_uri_split[new_playlist_uri_split.length - 1];//get string after the last /
+    var new_playlist_uri_split = (data.href).split("/");//split by /
+    var new_playlist_id = new_playlist_uri_split[new_playlist_uri_split.length - 1];//get string after the last /
 
     var uri_list = []//array of uris
 
@@ -599,7 +639,8 @@ function populateNewPlaylist(){
     //see the section on that page: Body application/json > uris array of strings
     new_sequence.forEach(el => {
         uri_list.push("spotify:track:" + el.trackid);
-    })
+    })//the list of spotify track uris goes in the order of new_sequence, thus, when this is passed to uriJSON, and then posted, the order is preserved
+    //hence no reason to do that weird counter and async stuff that was previously required for the track info
 
     uriJSON = JSON.stringify({"uris": uri_list, "position": 0});//convert uri_list to json and pass this as body
 
@@ -607,3 +648,41 @@ function populateNewPlaylist(){
 
     //maybe some sort of visual queue
 }
+
+
+
+
+
+
+
+/* Convert enumeration into something easily understandable */
+// function keySigEnum(x,y){
+//     if(x === 0 && y === 0){return "This Track is in the key of C minor";}
+//     else if(x === 0 && y === 1){return "This Track is in the key of C major";}
+//     else if(x === 1 && y === 0){return "This Track is in the key of C# minor";}
+//     else if(x === 1 && y === 1){return "This Track is in the key of D♭ minor";}
+//     else if(x === 2 && y === 0){return "This Track is in the key of D minor";}
+//     else if(x === 2 && y === 1){return "This Track is in the key of D major";}
+//     else if(x === 3 && y === 0){return "This Track is in the key of E♭ minor";}
+//     else if(x === 3 && y === 1){return "This Track is in the key of E♭ major";}
+//     else if(x === 4 && y === 0){return "This Track is in the key of E minor";}
+//     else if(x === 4 && y === 1){return "This Track is in the key of E major";}
+//     else if(x === 5 && y === 0){return "This Track is in the key of F minor";}
+//     else if(x === 5 && y === 1){return "This Track is in the key of F major";}
+//     else if(x === 6 && y === 0){return "This Track is in the key of F# minor";}
+//     else if(x === 6 && y === 1){return "This Track is in the key of G♭ major";}
+//     else if(x === 7 && y === 0){return "This Track is in the key of G minor";}
+//     else if(x === 7 && y === 1){return "This Track is in the key of G major";}
+//     else if(x === 7 && y === 1){return "This Track is in the key of G major";}
+//     else if(x === 8 && y === 0){return "This Track is in the key of G# minor";}
+//     else if(x === 8 && y === 1){return "This Track is in the key of A♭ major";}
+//     else if(x === 9 && y === 0){return "This Track is in the key of A minor";}
+//     else if(x === 9 && y === 1){return "This Track is in the key of A major";}
+//     else if(x === 10 && y === 0){return "This Track is in the key of B♭ minor";}
+//     else if(x === 10 && y === 1){return "This Track is in the key of B♭ major";}
+//     else if(x === 11 && y === 0){return "This Track is in the key of B minor";}
+//     else if(x === 11 && y === 1){return "This Track is in the key of B major";}
+//     else if(x === -1){return "This track is in an unknown key"}
+//     else if(y !== 0 && y !== 1){return "This track is in an unknown mode"}
+//     else{return "Not enough information is known about this song";}
+// }
