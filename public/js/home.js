@@ -1,12 +1,4 @@
-const entry_point = "http://127.0.0.1:3000/"
-
-
-var user_id = "";//userid
-
-var playlist_id = "";//playlistid, obtained when a click is detected on a playlist
-var playlist_name = "";//obtained at the same time as playlistid
-
-var track_id_list = [];//used to hold all the trackids within a playlist; this
+var trackIdList = [];//used to hold all the trackids within a playlist; this
 //is necessary to pseudo-enforce synchronous behaviour in the async function
 
 var song_list = [];//list of songs in a playlist (AND THEIR DETAILS LIKE KEY/MODE/ETC.)
@@ -14,11 +6,33 @@ var song_list = [];//list of songs in a playlist (AND THEIR DETAILS LIKE KEY/MOD
 var init_song = "";//using the selected_song, we "query"
 //song_list for this trackid, and assign all of the metrics (key/mode/etc.) to init_song (user defined obj)
 
+const sequenceNamespace = (function (){
+    //namespace for variables that need to be accessed by many functions
+    let globalVars = {
+        userId: null,
+        entryPoint: "http://127.0.0.1:3000/",
+        playlistName: null
+    };
+
+    return {
+        getVar: function(property){
+            return globalVars[property]
+        },
+        setVar: function(property, value){
+            globalVars[property] = value
+        }
+    };
+})();
+
 //list of important nodes
 const playlist_list = document.getElementById("playlist-list");
 const tracks_table = document.getElementById("tracks-table");
 
-const empty_state_srcs = ["/public/images/image.png", "/public/images/output-onlinepngtools.png", "/public/images/pngwing.com.png"]
+const empty_state_srcs = [
+    "/public/images/recordPlayer.png",
+    "/public/images/phonogram.png",
+    "/public/images/recordNotes.png"
+]
 
 const loading_container = document.getElementById("loading-container")
 function loadAnimation(){
@@ -74,12 +88,12 @@ async function Exchange(){
                     throw new Error("Response not Formatted as Expected")
                 }
             }
-            else{//something went wrong to my server
+            else{//something went wrong with my server
                 throw new Error("Response from Sequence not OK")
             }
         }
         catch (error) {
-            window.location.href = entry_point
+            window.location.href = sequenceNamespace.getVar("entryPoint")
         }
     }
 
@@ -123,7 +137,7 @@ async function refreshTokens(){
         }
     }
     catch (error) {
-        window.location.href = entry_point
+        window.location.href = sequenceNamespace.getVar("entryPoint")
     }
 }
 
@@ -149,7 +163,7 @@ function Unauthorize(){
         console.error(error)
     })
 
-    window.location.href = entry_point
+    window.location.href = sequenceNamespace.getVar("entryPoint")
 }
 
 
@@ -208,11 +222,11 @@ async function onTokenExchange(){//when page loads get all credentials; also loa
         }
     })
     .then(response => {
-        user_id = response.id//get user id
+        sequenceNamespace.setVar("userId", response.id)
     })
     .catch(error => {
-        alert(error)
-        window.location.href = entry_point
+        // alert(error)
+        window.location.href = sequenceNamespace.getVar("entryPoint")
     })
 
     await refreshPlaylists()
@@ -314,14 +328,14 @@ async function refreshPlaylists(){//get playlists (when the button is pressed)
                 })
             })
             .catch(error => {
-                alert(error)
-                window.location.href = entry_point
+                // alert(error)
+                window.location.href = sequenceNamespace.getVar("entryPoint")
             })
         }
     })
     .catch(error => {
-        alert(error)
-        window.location.href = entry_point
+        // alert(error)
+        window.location.href = sequenceNamespace.getVar("entryPoint")
     })
 }
 
@@ -602,6 +616,36 @@ function Fader(){
     createPlaylist("Fader Sequenced ", new_sequence)
 }
 
+function Timbre(){
+    var new_sequence = [];//reinit to have no tracks in case this is the second playlist someone is reorganizing
+
+    new_sequence.push(init_song)
+
+    var mutable_song_list = song_list.filter(obj => {return obj !== init_song})//remove song from mutable list (it will no longer be available for mutable_song_list.find() and so it won't duplicate)
+    
+    var cur = init_song
+    while(mutable_song_list.length != 0){
+        var minDist = null
+        var indexClosest
+        mutable_song_list.forEach((song, index) => {
+            if(minDist == null){
+                minDist = SquaredEuclideanDistance(cur.endTimbreCentroid, song.begTimbreCentroid)
+                indexClosest = index
+            }
+            else if(SquaredEuclideanDistance(cur.endTimbreCentroid, song.begTimbreCentroid) < minDist){
+                minDist = SquaredEuclideanDistance(cur.endTimbreCentroid, song.begTimbreCentroid)
+                indexClosest = index
+            }
+        })
+        cur = mutable_song_list.splice(indexClosest, 1)[0]
+        new_sequence.push(cur)
+    }
+
+    console.log(new_sequence)
+    createPlaylist("Timbre Sequenced ", new_sequence)
+
+}
+
 //Frequently used functions
 function modulo_12(x){//For negative numbers % modulo does not behave the way in which I want
     if(x>0){
@@ -639,21 +683,37 @@ function minDelta(list, target){
     return min_delta//return smallest
 }
 
+
+function SquaredEuclideanDistance(v1, v2){
+    let sumSquaredDifferences = 0;
+
+    for (let i = 0; i < v1.length; i++) {
+        const difference = v1[i] - v2[i];
+        sumSquaredDifferences += difference * difference;
+    }
+
+    return sumSquaredDifferences
+}
+
+
+
 async function createPlaylist(sequencing_mode, new_sequence){
     const access_token = localStorage.getItem("access_token");
-    const tokensExpired = tokenTimeValidity()
+    const tokensExpired = tokenTimeValidity();
+    const userId = sequenceNamespace.getVar("userId");
+    const playlistName = sequenceNamespace.getVar("playlistName");
 
     if(tokensExpired){
         await refreshTokens()
     }
 
-    fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists", {
+    fetch("https://api.spotify.com/v1/users/" + userId + "/playlists", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': ' Bearer ' + access_token
         },
-        body: JSON.stringify({'name': sequencing_mode + playlist_name})
+        body: JSON.stringify({'name': sequencing_mode + playlistName})
     })
     .then(response => {
         if(response.ok){
@@ -724,8 +784,9 @@ playlist_list.addEventListener("click", async function selectPlaylist(e){//liste
         //cant be the li element or the album image becomes part of the playlist title
         
         loadAnimation()
-        playlist_id = e.target.id;//assign playlist_id
-        playlist_name = e.target.innerHTML;
+        const playlistId = e.target.id;//assign playlist_id
+        const playlistName = e.target.innerHTML;
+        sequenceNamespace.setVar("playlistName", playlistName);
         const access_token = localStorage.getItem("access_token");
         const tokensExpired = tokenTimeValidity()
     
@@ -733,7 +794,7 @@ playlist_list.addEventListener("click", async function selectPlaylist(e){//liste
             await refreshTokens()
         }
 
-        fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
+        fetch("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks", {
             method: 'GET',
             headers: {
             'Content-Type': 'application/json',
@@ -749,7 +810,7 @@ playlist_list.addEventListener("click", async function selectPlaylist(e){//liste
             }
         })
         .then(response => {
-            tracks_header.innerHTML = '"' + playlist_name + '"' + " Tracklist"//use playlist name in header
+            tracks_header.innerHTML = '"' + playlistName + '"' + " Tracklist"//use playlist name in header
 
             var num_songs = response.total
         
@@ -791,7 +852,7 @@ playlist_list.addEventListener("click", async function selectPlaylist(e){//liste
                 nodeartist.className = "tracks-table-header"
                 node.appendChild(nodeartist);
 
-                track_id_list = [];//empty list of tracks
+                trackIdList = [];//empty list of tracks
             
                 
                 response.items.forEach((el, index) => {
@@ -831,13 +892,16 @@ playlist_list.addEventListener("click", async function selectPlaylist(e){//liste
                     nodetdartist.innerHTML = el.track.artists[0].name;//innerhtml is artist[0] name
                     nodetr.appendChild(nodetdartist);
                 
-                    track_id_list.push(track_id);//list of track ids
+                    trackIdList.push(track_id);//list of track ids
                     // console.log("here (phase 1)" + track_id)
                 
                     await = getAudioAnalysis(track_id, index, el.track.name);//for each track get audio analysis
 
+                    // await = getAudioFeatures(track_id, index, el.track.name)
+
                     if(index + 1 == num_songs){
                         loadAnimation()
+                        console.log(song_list)
                     }
 
                 });//add each track
@@ -856,7 +920,7 @@ async function getAudioAnalysis(track_id, index, track_name) {
     if(tokensExpired){
         await refreshTokens()
     }
-    // console.log("here (phase 2)" + track_id_list[y])
+    // console.log("here (phase 2)" + trackIdList[y])
     //cannot use callApi because this method (getAudioAnalysis) requires parameters (trackid, counter) and it would be cumbersome to do this with the xhr.onload in callApi()
     //because of async, the order of completion does not correlate to call instantiation and so it is impossible to ensure that the correct track_id
     //corresponds to the corresponding fetched data; using trackid: track_id is unreliable since the track_id will be varying throughout the
@@ -878,13 +942,56 @@ async function getAudioAnalysis(track_id, index, track_name) {
     })
     .then(data => {
 
-        if(data.sections[data.sections.length-1].tempo == 0){
-            data.sections[data.sections.length-1].tempo = data.track.tempo
+
+        const trackDuration = data.track.duration
+        const trackEnding = trackDuration-12
+
+        var beginningSegments = []
+        data.segments.every((el) => {
+            if(el.start <= 12){
+                beginningSegments.push(el.timbre)
+                return true
+            }
+            else{
+                return false
+            }
+        })
+
+        var begTimbreCentroid = []
+        for(var timbIt = 0; timbIt < 12; timbIt++){
+            var axisSum = 0
+            beginningSegments.forEach((el) =>{
+                axisSum = axisSum + el[timbIt]
+            })
+            var axisAvg = axisSum / beginningSegments.length
+            begTimbreCentroid.push(axisAvg)
+        }
+
+        var endingSegments = []
+        const reverse = data.segments.reverse()
+        reverse.every((el) => {
+            if(el.start >= trackEnding){
+                endingSegments.push(el.timbre)
+                return true
+            }
+            else{
+                return false
+            }
+        })
+
+        var endTimbreCentroid = []
+        for(var timbIt = 0; timbIt < 12; timbIt++){
+            var axisSum = 0
+            endingSegments.forEach((el) =>{
+                axisSum = axisSum + el[timbIt]
+            })
+            var axisAvg = axisSum / endingSegments.length
+            endTimbreCentroid.push(axisAvg)
         }
 
         song_list.push({
             songtitle: track_name,
-            trackid: track_id_list[index],
+            trackid: trackIdList[index],
 
             startkey: data.sections[0].key,
             startmode: data.sections[0].mode,
@@ -897,6 +1004,61 @@ async function getAudioAnalysis(track_id, index, track_name) {
             endkey: data.sections[data.sections.length-1].key,
             endmode: data.sections[data.sections.length-1].mode,
             endtempo: data.sections[data.sections.length-1].tempo,
+
+            beginningTimbres: beginningSegments,
+            endingTimbre: endingSegments,
+
+            begTimbreCentroid: begTimbreCentroid,
+            endTimbreCentroid: endTimbreCentroid
+        })
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+async function getAudioFeatures(track_id, index, track_name) {
+    const access_token = localStorage.getItem("access_token");
+    const tokensExpired = tokenTimeValidity()
+
+    if(tokensExpired){
+        await refreshTokens()
+    }
+    // console.log("here (phase 2)" + trackIdList[y])
+    //cannot use callApi because this method (getAudioAnalysis) requires parameters (trackid, counter) and it would be cumbersome to do this with the xhr.onload in callApi()
+    //because of async, the order of completion does not correlate to call instantiation and so it is impossible to ensure that the correct track_id
+    //corresponds to the corresponding fetched data; using trackid: track_id is unreliable since the track_id will be varying throughout the
+    //.forEach and the current track_id may not correspond to the currently fetched data, as would be seen in a synchronous fetch
+    //synchronous fetch performance is atrocious, so we make an async function and fetch with the passed variables as is seen
+    fetch("https://api.spotify.com/v1/audio-features/" + track_id, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': ' Bearer ' + access_token
+        }
+    }).then(response => {
+        if(response.ok){ 
+            return response.json()
+        }
+        else{
+            throw new Error(response)
+        }
+    })
+    .then(data => {
+        song_list.push({
+            songtitle: track_name,
+            trackid: trackIdList[index],
+            danceability: data.danceability,
+            energy: data.energy,
+            loudness: data.loudness,
+            speechiness: data.speechiness,
+            acousticness: data.acousticness,
+            instrumentalness: data.instrumentalness,
+            valence: data.valence,
+            time_signature: data.time_signature,
+            key: data.key,
+            mode: data.mode,
+            tempo: data.tempo
         })
     })
     .catch(error => {
@@ -906,7 +1068,7 @@ async function getAudioAnalysis(track_id, index, track_name) {
 
 //listener for track selection
 tracks_table.addEventListener("click", function selectTrack(e){//parent listener
-    e.preventDefault;//good measure
+    e.preventDefault;
     if(e.target !== e.currentTarget && e.target.nodeName.toLowerCase() !== "li" && e.target.id !== "gentext" && e.target.id !== "tableimg"){
         /* Search in the song_list for the track with the same id as that which was selected and return the whole song object 
         Assign such a song to init_song, which is short for any of initial/initialize/initializing song */
@@ -929,7 +1091,9 @@ tracks_table.addEventListener("click", function selectTrack(e){//parent listener
         }
         else if(activeBtn.innerHTML === "Fader"){
             Fader();
-            
+        }
+        else if(activeBtn.innerHTML === "Timbre"){
+            Timbre();
         }
     }
 })
