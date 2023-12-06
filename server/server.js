@@ -53,9 +53,9 @@ app.use(session({
     secret: cookieSigner
 }));
 
-app.get("/", (req, res) => {//main entry point always give index.html
-    res.sendFile(path.join(__dirname, "public", "html", "index.html"));
-});
+// app.get("/", (req, res) => {//main entry point always give index.html
+//     res.sendFile(path.join(__dirname, "public", "html", "index.html"));
+// });
 
 //onClick generate redirect uri to spotify authorization endpoint
 app.get("/initiateAuth", (req, res) => {
