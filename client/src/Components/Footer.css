@@ -1,0 +1,19 @@
+.footerContainer{
+    background-color: #e8e8e8;
+}
+
+.footerText{
+    padding: 8px;
+    margin: 0px;
+    color: black;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.socials{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    padding-bottom: 10px;
+}

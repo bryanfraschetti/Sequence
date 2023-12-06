@@ -1,0 +1,111 @@
+:root{
+  --myGradient: linear-gradient(to right, rgb(255, 68, 99) 12%, rgb(255, 145, 0));
+  --myGradientActive: linear-gradient(175deg, rgb(255, 90, 115) 12%, rgb(255, 165, 0));
+  --accentText: rgb(255, 165, 0);
+  --main-bg: rgb(23,20,28);
+}
+
+body {
+  margin: 0;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  }
+
+p{
+  margin: 0;
+}
+
+.accentText{
+  color: var(--accentText);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.gradientText{
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-image: var(--myGradient);
+  font-weight: 600;
+}
+
+.myTitle{
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+/* .bodyText{
+    font-size: 1.2rem;
+} */
+
+.subtleText{
+  color: #f2f2f2;
+  font-size: 1.2rem;
+}
+
+.myBtn{
+  color: white;
+  font-size: 1.1rem;
+  padding: 10px 30px;
+  background-image: var(--myGradient);
+  border: none;
+  border-radius: 25px;
+}
+
+.myBtn:hover{
+  cursor: pointer;
+  background-image: var(--myGradientActive);
+}
+
+.btnEmptyWrapper{
+  padding: 1px;
+  background-image: var(--myGradient);
+  border-radius: 10px;
+}
+
+.myBtnEmpty{
+  background: var(--main-bg);
+  font-size: 1.1rem;
+  padding: 10px 30px;
+  border: 1px;
+  border-radius: 10px;
+  width: 152px;
+}
+
+.myBtnEmpty:hover{
+  cursor: pointer;
+  color: white;
+  background-image: var(--myGradient);
+}
+
+.myBtnEmpty:hover .gradientText{
+  color:white;
+  font-weight: 400;
+}
+
+html{
+  scrollbar-width: none; /* for Firefox */
+}
+
+body {
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+
+.resize-animation-stopper * {
+  /* animation: none !important; */
+  transition: none !important;
+}
+
+.postNav{
+  padding-top: 70px;
+  background-color: var(--main-bg);
+}

@@ -1,0 +1,76 @@
+.carousel-container {
+    overflow: hidden;
+    position: relative;
+    height: 220px;
+    // border-color: #4b5563;
+    width: min(70vw, 900px);
+    //width must be less than Num_items*item_width + (Num_items-1)*gap = width of 1 carousel
+    //or else there will be whitespace on the right during the second carousel
+    margin-left: 10px;
+  }
+  
+  .carousel-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 200px;
+    border-radius: 20%;
+    box-shadow: 4px 4px 12px -2px #FFB44A;
+  }
+
+.carousel-card:hover {
+  cursor: pointer;
+  height: 200px;
+  transform: translateY(-5px);
+}
+
+  .carousel-card > img {
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  .carouselText {
+    color: white;
+    font-size: 1rem;
+    position: absolute;
+    bottom: 10px;
+    // backgroundImage: "linear-gradient(to bottom, rgba(255, 90, 115,0), rgba(255, 90, 115,0.7), rgb(255, 180, 74, 1)",
+    background-Image: linear-gradient(to bottom, rgba(255,180,74,0), rgba(255,180,74,0.7) 40%, rgba(255,180,74,1) 80%);
+    width: 130px;//150px = card width -> subtract padding
+    margin: 0px;
+    padding: 10px 10px 10px 10px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+
+  .carousel-card:hover .carouselText {
+    bottom: 0px;
+  }
+  
+  .carousel-track {
+    display: flex;
+    position: absolute;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    width: fit-content;
+    height: 100%;
+    animation: slide 30s linear infinite;
+    &:hover {
+        animation-play-state: paused;
+    }
+  }
+
+  @keyframes slide {
+    0% {
+      left: 0;
+    }
+    100% {
+      //(2*Num_items*item_width + (2*Num_items - 1)*gap)/2
+      //eg. for 7 items of width 150px and gap=32:  (14*150+13*32)/2 = 1258
+      left: -1258px;
+    }
+  }

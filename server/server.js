@@ -2,6 +2,7 @@
 require("dotenv").config();
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+const cookieSigner = process.env.COOKIE_SIGNER
 
 //frequent uris
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
@@ -38,11 +39,18 @@ app.use("/public", express.static(path.join(__dirname, "public"), {
     }
 }));
 
+//serve react
+app.use(express.static(path.join(__dirname, "../client/build")))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
+
 //define session parameters
 app.use(session({
     resave: false,
     saveUninitialized: false,
-    secret: "JababaJoePapa"
+    secret: cookieSigner
 }));
 
 app.get("/", (req, res) => {//main entry point always give index.html

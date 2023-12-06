@@ -1,0 +1,39 @@
+.navMenuText#override-antd:hover{
+    background-image: var(--myGradient);
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    transition: all 0.1s linear;
+}
+
+.navMenuText#override-antd::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    transform: translateY(-15px);
+    background-image: var(--myGradient);
+    opacity: 1;
+    transition: width 0.2s linear;
+    border-radius: 2px;
+  }
+  
+  .navMenuText#override-antd:hover::after {
+    width: 60%;
+  }
+
+#profile-btn{
+    margin-left: auto;
+}
+
+@media screen and (min-width: 720px) {
+    #profile-btn{
+        margin-left: auto;
+        margin-right: 30px
+    }
+
+    #Logo{
+        margin-left: 30px;
+    }
+}
+
