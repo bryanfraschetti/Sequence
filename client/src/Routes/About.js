@@ -17,6 +17,7 @@ const About = () => {
               Sequence is a web app that communicates with the Spotify API to access 
               information about the musical content in the songs that are in your music library 
               and reorganize your playlists based on your input. We also call it Sequence.js
+              Who might wanna use it ?!?!
             </p>   
             <p className='myTitle'>
               How Sequence Started
@@ -35,7 +36,8 @@ const About = () => {
             <p>
               From a technical standpoint, Sequence works based on principles of authorization and authentication. 
               What that means is when you click the "Get Started!" button, you will be redirected to Spotify's log in page 
-              to grant our app a variety of permissions. These are outlined in the scopes section 
+              to grant our app a variety of permissions. These are outlined in the scopes section
+              //url to github?? 
             </p>
             <p className='myTitle'>
               Want to Reach Out?
