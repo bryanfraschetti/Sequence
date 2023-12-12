@@ -37,7 +37,7 @@ const About = () => {
               From a technical standpoint, Sequence works based on principles of authorization and authentication. 
               What that means is when you click the "Get Started!" button, you will be redirected to Spotify's log in page 
               to grant our app a variety of permissions. These are outlined in the scopes section
-              //url to github?? 
+              /url to github?? GABAGPP
             </p>
             <p className='myTitle'>
               Want to Reach Out?
