@@ -8,7 +8,7 @@ const cookieSigner = process.env.COOKIE_SIGNER;
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 const entryPoint = "http://127.0.0.1:3000/";
-const authCallback = "http://127.0.0.1:3000/authorizationCallback";
+const authCallback = "http://127.0.0.1:3001/authorizationCallback";
 
 //modules
 const express = require("express");
@@ -19,7 +19,7 @@ const bodyParser = require("body-parser");
 
 //instantiate
 const app = express();
-app.listen(3000);
+app.listen(3001);
 
 //define session parameters
 app.use(
@@ -104,7 +104,7 @@ app.get("/authorizationCallback", (req, res) => {
       .then((tokens) => {
         //store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
-        res.redirect("/home");
+        res.redirect("http://127.0.0.1:3000/home");
       })
       .catch((error) => {
         //something went wrong, send user to index page
@@ -254,11 +254,11 @@ app.use(
   })
 );
 
-//serve built react
-app.use(express.static(path.join(__dirname, "../client/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
+// serve built react
+// app.use(express.static(path.join(__dirname, "../client/build")));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+// });
 
 // unresponsive original design
 // app.get("/", (req, res) => {
