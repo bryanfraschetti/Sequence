@@ -1,7 +1,7 @@
 import { ActivateAnimation } from "../styling/ActivateAnimation";
 import { tokenTimeValidity } from "./tokenTimeValidity";
 import { refreshTokens } from "./refreshTokens";
-import { onTokenExchange } from "../dataAcquisition/onTokenExchange";
+import { refreshPlaylists } from "../dataAcquisition/refreshPlaylists";
 
 export const Exchange = async () => {
   ActivateAnimation(); //loading animation
@@ -49,6 +49,7 @@ export const Exchange = async () => {
     }
   }
 
-  await onTokenExchange();
+  //function to get user profile could be nice
+  await refreshPlaylists();
   ActivateAnimation();
 };

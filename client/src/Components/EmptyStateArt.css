@@ -1,0 +1,9 @@
+#EmptyStateContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#EmptyStateArt{
+    height: 250px;
+}

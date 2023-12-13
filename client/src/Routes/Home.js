@@ -5,12 +5,17 @@ import LoadingAnimation from "./LoadingAnimation";
 import { toggleSidebar } from "../utils/styling/toggleSidebar";
 import { Exchange } from "../utils/tokenHandling/Exchange";
 import { refreshPlaylists } from "../utils/dataAcquisition/refreshPlaylists";
+import { addScrollListener } from "../utils/styling/addScrollListener";
 import "./Home.css";
+import EmptyStateArt from "../Components/EmptyStateArt";
+import { playlistSelectionListener } from "../utils/selectionListeners/playlistSelectionListener";
 
 const Home = () => {
-  //onload ensure Sequence, client, and Spotify agree on credentials
   useEffect(() => {
-    Exchange();
+    Exchange(); //onload ensure Sequence, client, and Spotify agree on credentials
+    addScrollListener(document.getElementById("playlist-list")); //add event listeners that do scroll styling
+    addScrollListener(document.getElementById("tracks"));
+    playlistSelectionListener();
   }, []);
 
   let resizeTimer;
@@ -76,6 +81,9 @@ const Home = () => {
           <h3 className="subheading" id="tracklist-heading">
             Playlist Tracklist
           </h3>
+          <EmptyStateArt
+            innerHTML={"This area will populate with songs once you select a playlist."}
+          ></EmptyStateArt>
           <table className="tracks-table" id="tracks-table"></table>
         </div>
       </div>
