@@ -2,8 +2,9 @@ import { SequenceNamespace } from "../SequenceNamespace";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
 
-export const RSA = (initSongId) => {
-  console.log("RSA");
+//Semitone modal (change by semitone, keep modality)
+export const SM = (initSongId, semitoneDirection) => {
+  console.log("SM");
   let songList = SequenceNamespace.getVar("songList");
   const initSong = songList.find((song) => {
     return song.track_id === initSongId;
@@ -18,8 +19,8 @@ export const RSA = (initSongId) => {
 
   const safeClosure = (function () {
     const songProperties = {
-      nextKey: modulo_12(initSong.endkey + 1), //rise by a semitone
-      nextMode: 1 - initSong.endmode, //alternate mode
+      nextKey: modulo_12(initSong.endkey + semitoneDirection),
+      nextMode: initSong.endmode,
       targetTempo: initSong.endtempo,
     };
 
@@ -34,7 +35,9 @@ export const RSA = (initSongId) => {
   })();
 
   while (songList.length > 0) {
-    let candidateSongs = songList.filter((song) => {
+    let candidateSongs = [];
+
+    candidateSongs = songList.filter((song) => {
       return (
         song.startkey === safeClosure.getVar("nextKey") &&
         song.startmode === safeClosure.getVar("nextMode")
@@ -42,8 +45,7 @@ export const RSA = (initSongId) => {
     });
 
     if (candidateSongs.length === 0) {
-      //keep initial modality
-      safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); //get initial mode back
+      safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); //toggle mode
       candidateSongs = songList.filter((song) => {
         return (
           song.startkey === safeClosure.getVar("nextKey") &&
@@ -51,34 +53,37 @@ export const RSA = (initSongId) => {
         );
       });
 
-      if (candidateSongs.length === 0) {
-        safeClosure.setVar("nextKey", modulo_12(safeClosure.getVar("nextKey") - 1)); //initial key
-        safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); //alternate mode
-        candidateSongs = songList.filter((song) => {
-          return (
-            song.startkey === safeClosure.getVar("nextKey") &&
-            song.startmode === safeClosure.getVar("nextMode")
-          );
-        });
+      // if (candidateSongs.length == 0) {
+      //   next_key = modulo_12(initSong.endkey - 7); //resolve
+      //   next_mode = 1 - next_mode; //reverse back to original mode
+      //   candidateSongs = songList.filter((obj) => {
+      //     return (
+      //       obj.startkey === next_key && obj.startmode === next_mode //find song in key above
+      //     );
+      //   });
 
-        if (candidateSongs.length === 0) {
-          candidateSongs = songList;
-        }
+      if (candidateSongs.length === 0) {
+        candidateSongs = songList;
       }
     }
-
     const closestByTempo = minDelta(candidateSongs, safeClosure.getVar("targetTempo"));
+
     const nextSong = closestByTempo.song;
 
     NewSequence.push(nextSong);
     songList = songList.filter((song) => {
       return song !== nextSong;
-    });
+    }); //remove song from mutable list (it will no longer be available for songList.find() and so it won't duplicate)
 
-    safeClosure.setVar("nextKey", modulo_12(nextSong.endkey + 1));
-    safeClosure.setVar("nextMode", 1 - nextSong.endmode);
+    safeClosure.setVar("nextKey", modulo_12(nextSong.endkey + semitoneDirection)); //set up key for next round
+    safeClosure.setVar("nextMode", nextSong.endmode);
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
+
   console.log(NewSequence);
-  // createPlaylist("R.S.A Sequenced ", NewSequence)
+  if (semitoneDirection === 1) {
+    // createPlaylist("R.S. Sequenced ", NewSequence);
+  } else if (semitoneDirection === -1) {
+    // createPlaylist("D.S. Sequenced ", NewSequence);
+  }
 };

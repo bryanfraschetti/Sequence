@@ -1,8 +1,7 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { ActivateAnimation } from "../styling/ActivateAnimation";
 import { CoF } from "../sequencingAlgorithms/CoF";
-import { RSM } from "../sequencingAlgorithms/RSM";
-import { DSM } from "../sequencingAlgorithms/DSM";
+import { SM } from "../sequencingAlgorithms/SM";
 import { RSA } from "../sequencingAlgorithms/RSA";
 import { Fader } from "../sequencingAlgorithms/Fader";
 import { Timbre } from "../sequencingAlgorithms/Timbre";
@@ -26,10 +25,10 @@ export const trackSelectionListener = async () => {
           CoF(initSongId);
           break;
         case "rsm":
-          RSM(initSongId);
+          SM(initSongId, 1); //+1 for rising
           break;
         case "dsm":
-          DSM(initSongId);
+          SM(initSongId, -1); //-1 for descending
           break;
         case "rsa":
           RSA(initSongId);
