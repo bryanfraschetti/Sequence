@@ -2,10 +2,9 @@ import { SequenceNamespace } from "../SequenceNamespace";
 import { relativeKey } from "../math/relativeKey";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
+import { createPlaylist } from "../dataAcquisition/createPlaylist";
 
 export const Fader = (initSongId) => {
-  console.log("Fader");
-
   let songList = SequenceNamespace.getVar("songList");
 
   const initSong = songList.find((song) => {
@@ -97,5 +96,5 @@ export const Fader = (initSongId) => {
   }
 
   console.log(NewSequence);
-  // createPlaylist("Fader Sequenced ", NewSequence);
+  createPlaylist("Fader Sequenced ", NewSequence);
 };

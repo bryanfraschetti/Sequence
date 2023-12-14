@@ -1,10 +1,10 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
+import { createPlaylist } from "../dataAcquisition/createPlaylist";
 
 //Semitone modal (change by semitone, keep modality)
 export const SM = (initSongId, semitoneDirection) => {
-  console.log("SM");
   let songList = SequenceNamespace.getVar("songList");
   const initSong = songList.find((song) => {
     return song.track_id === initSongId;
@@ -82,8 +82,8 @@ export const SM = (initSongId, semitoneDirection) => {
 
   console.log(NewSequence);
   if (semitoneDirection === 1) {
-    // createPlaylist("R.S. Sequenced ", NewSequence);
+    createPlaylist("R.S. Sequenced ", NewSequence);
   } else if (semitoneDirection === -1) {
-    // createPlaylist("D.S. Sequenced ", NewSequence);
+    createPlaylist("D.S. Sequenced ", NewSequence);
   }
 };

@@ -1,9 +1,9 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
+import { createPlaylist } from "../dataAcquisition/createPlaylist";
 
 export const RSA = (initSongId) => {
-  console.log("RSA");
   let songList = SequenceNamespace.getVar("songList");
   const initSong = songList.find((song) => {
     return song.track_id === initSongId;
@@ -79,6 +79,7 @@ export const RSA = (initSongId) => {
     safeClosure.setVar("nextMode", 1 - nextSong.endmode);
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
+
   console.log(NewSequence);
-  // createPlaylist("R.S.A Sequenced ", NewSequence)
+  createPlaylist("R.S.A Sequenced ", NewSequence);
 };

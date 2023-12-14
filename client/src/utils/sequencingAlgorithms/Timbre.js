@@ -1,8 +1,8 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { SquaredEuclideanDistance } from "../math/SquaredEuclideanDistance";
+import { createPlaylist } from "../dataAcquisition/createPlaylist";
 
 export const Timbre = (initSongId) => {
-  console.log("Timbre");
   let songList = SequenceNamespace.getVar("songList");
 
   const initSong = songList.find((song) => {
@@ -58,5 +58,5 @@ export const Timbre = (initSongId) => {
   }
 
   console.log(NewSequence);
-  // createPlaylist("Timbre Sequenced ", NewSequence)
+  createPlaylist("Timbre Sequenced ", NewSequence);
 };

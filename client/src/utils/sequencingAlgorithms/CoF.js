@@ -2,6 +2,7 @@ import { SequenceNamespace } from "../SequenceNamespace";
 import { relativeKey } from "../math/relativeKey";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
+import { createPlaylist } from "../dataAcquisition/createPlaylist";
 
 export const CoF = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
@@ -89,8 +90,7 @@ export const CoF = (initSongId) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  //pass body parameter
   //see https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist for information on body parameters
   console.log(NewSequence);
-  // createPlaylist("CoF Sequenced ", NewSequence);
+  createPlaylist("CoF Sequenced ", NewSequence);
 };
