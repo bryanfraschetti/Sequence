@@ -1,6 +1,7 @@
 import { tokenTimeValidity } from "../tokenHandling/tokenTimeValidity";
 import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { SumAxis } from "../math/SumAxis";
+import { SequenceNamespace } from "../SequenceNamespace";
 
 export const getAudioAnalysis = async (track_id, track_name) => {
   const access_token = localStorage.getItem("access_token");
@@ -39,6 +40,7 @@ export const getAudioAnalysis = async (track_id, track_name) => {
       });
 
       const begTimbreCentroid = [];
+      //axis may also be thought of as dimension in the featurespace
       for (let timbIt = 0; timbIt < 12; timbIt++) {
         const axisSum = SumAxis(beginningSegments, timbIt);
         const axisAvg = axisSum / beginningSegments.length;
@@ -86,9 +88,7 @@ export const getAudioAnalysis = async (track_id, track_name) => {
         endTimbreCentroid: endTimbreCentroid,
       };
 
-      console.log(songInfo);
-
-      return songInfo;
+      SequenceNamespace.appendArray("songList", songInfo);
     })
     .catch((error) => {
       console.log(error);

@@ -5,6 +5,7 @@ import { removeAllChildren } from "../styling/removeAllChildren";
 import { getAudioAnalysis } from "../dataAcquisition/getAudioAnalysis";
 import { InitializeTrackTable } from "../styling/InitializeTrackTable";
 import { addTrackToDom } from "../styling/addTrackToDom";
+import { SequenceNamespace } from "../SequenceNamespace";
 
 export const playlistSelectionListener = () => {
   const playlistList = document.getElementById("playlist-list");
@@ -12,6 +13,7 @@ export const playlistSelectionListener = () => {
   playlistList.addEventListener("click", async function selectPlaylist(e) {
     e.preventDefault();
     if (e.target.classList.contains("playlist-title")) {
+      SequenceNamespace.setVar("songList", []);
       ActivateAnimation();
       const playlistId = e.target.id;
       const playlistName = e.target.innerHTML;
@@ -55,7 +57,7 @@ export const playlistSelectionListener = () => {
           } else {
             EmptyStateContainer.style.display = "none"; //if songs, don't show empty state
             InitializeTrackTable();
-            response.items.forEach(async (trackInfo) => {
+            response.items.forEach((trackInfo) => {
               addTrackToDom(trackInfo);
 
               getAudioAnalysis(trackInfo.track.id, trackInfo.track.name); //for each track get audio analysis

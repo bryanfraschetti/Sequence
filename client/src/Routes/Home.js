@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
-import LoadingAnimation from "./LoadingAnimation";
+import LoadingAnimation from "../Components/LoadingAnimation";
 import { toggleSidebar } from "../utils/styling/toggleSidebar";
 import { Exchange } from "../utils/tokenHandling/Exchange";
 import { refreshPlaylists } from "../utils/dataAcquisition/refreshPlaylists";
@@ -9,23 +9,20 @@ import { addScrollListener } from "../utils/styling/addScrollListener";
 import "./Home.css";
 import EmptyStateArt from "../Components/EmptyStateArt";
 import { playlistSelectionListener } from "../utils/selectionListeners/playlistSelectionListener";
+import { trackSelectionListener } from "../utils/selectionListeners/trackSelectionListener";
+import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
+import { sequencingModeListener } from "../utils/selectionListeners/sequencingModeListener";
 
 const Home = () => {
   useEffect(() => {
     Exchange(); //onload ensure Sequence, client, and Spotify agree on credentials
-    addScrollListener(document.getElementById("playlist-list")); //add event listeners that do scroll styling
+    ResizeAnimationStopper();
+    addScrollListener(document.getElementById("playlist-list")); //add event listeners that style scrolling
     addScrollListener(document.getElementById("tracks"));
-    playlistSelectionListener();
+    playlistSelectionListener(); //event listeners for user input
+    trackSelectionListener();
+    sequencingModeListener();
   }, []);
-
-  let resizeTimer;
-  window.addEventListener("resize", () => {
-    document.body.classList.add("resize-animation-stopper");
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      document.body.classList.remove("resize-animation-stopper");
-    }, 400);
-  });
 
   return (
     <div>
@@ -54,26 +51,34 @@ const Home = () => {
             <h3 className="subheading">Choose Sequencing</h3>
             <div className="button-container" id="button-container">
               <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer">Circle of Fifths</span>
+                <span className="sequencer-buttons inactive-sequencer" id="cof">
+                  Circle of Fifths
+                </span>
               </span>
               <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer">Rising Semitone Modal</span>
+                <span className="sequencer-buttons inactive-sequencer" id="rsm">
+                  Rising Semitone Modal
+                </span>
               </span>
               <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer">
+                <span className="sequencer-buttons inactive-sequencer" id="dsm">
                   Descending Semitone Modal
                 </span>
               </span>
               <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer">
+                <span className="sequencer-buttons inactive-sequencer" id="rsa">
                   Rising Semitone Alternate
                 </span>
               </span>
               <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer">Fader</span>
+                <span className="sequencer-buttons inactive-sequencer" id="fader">
+                  Fader
+                </span>
               </span>
               <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer">Timbre</span>
+                <span className="sequencer-buttons inactive-sequencer" id="timbre">
+                  Timbre
+                </span>
               </span>
             </div>
             <hr className="separator" id="seq-track-sep" />

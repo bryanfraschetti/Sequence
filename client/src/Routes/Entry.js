@@ -5,35 +5,11 @@ import { Card } from "antd";
 import AutoplayCarousel from "../Components/AutoplayCarousel";
 import Footer from "../Components/Footer";
 import SoundWave from "../Components/SoundWave";
+import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
+import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
 
 const Entry = () => {
-  //remove animation for window resizing
-  let resizeTimer;
-
-  window.addEventListener("resize", () => {
-    document.body.classList.add("resize-animation-stopper");
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      document.body.classList.remove("resize-animation-stopper");
-    }, 400);
-  });
-
-  async function requestAuthorization() {
-    const entry_point = "/";
-    try {
-      const response = await fetch("/initiateAuth", {
-        method: "GET",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        window.location.href = data.next;
-      } else {
-        throw new Error("Response not OK");
-      }
-    } catch (error) {
-      window.location.href = entry_point;
-    }
-  }
+  ResizeAnimationStopper();
 
   return (
     <div>
