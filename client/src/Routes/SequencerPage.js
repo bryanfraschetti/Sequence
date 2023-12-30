@@ -6,14 +6,14 @@ import { toggleSidebar } from "../utils/styling/toggleSidebar";
 import { Exchange } from "../utils/tokenHandling/Exchange";
 import { refreshPlaylists } from "../utils/dataAcquisition/refreshPlaylists";
 import { addScrollListener } from "../utils/styling/addScrollListener";
-import "./Home.css";
+import "./SequencerPage.css";
 import EmptyStateArt from "../Components/EmptyStateArt";
 import { playlistSelectionListener } from "../utils/selectionListeners/playlistSelectionListener";
 import { trackSelectionListener } from "../utils/selectionListeners/trackSelectionListener";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import { sequencingModeListener } from "../utils/selectionListeners/sequencingModeListener";
 
-const Home = () => {
+const SequencerPage = () => {
   useEffect(() => {
     Exchange(); //onload ensure Sequence, client, and Spotify agree on credentials
     ResizeAnimationStopper();
@@ -97,4 +97,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default SequencerPage;

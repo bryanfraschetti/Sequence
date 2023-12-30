@@ -9,6 +9,8 @@
 .navMenuText#override-antd::after {
     content: "";
     display: block;
+    position: absolute;
+    left: 15%;
     width: 0;
     height: 2px;
     transform: translateY(-15px);
@@ -16,14 +18,26 @@
     opacity: 1;
     transition: width 0.2s linear;
     border-radius: 2px;
-  }
+}
   
-  .navMenuText#override-antd:hover::after {
-    width: 60%;
-  }
+.navMenuText#override-antd:hover::after {
+    width: 70%;
+}
 
 #profile-btn{
     margin-left: auto;
+}
+
+#Logo-img{
+    top: 50%;
+    transform: translateY(30%);
+}
+
+#Logo{
+    transition: all 0.5s ease-in-out;
+}
+#Logo:hover{
+    transform: rotate(50deg) translateY(4px) translateX(2px);
 }
 
 @media screen and (min-width: 720px) {

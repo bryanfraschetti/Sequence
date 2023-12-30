@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import NavBar from "../Components/NavBar";
 import "./Entry.css";
 import { Card } from "antd";
@@ -9,7 +10,9 @@ import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper"
 import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
 
 const Entry = () => {
-  ResizeAnimationStopper();
+  useEffect(() => {
+    ResizeAnimationStopper();
+  }, []);
 
   return (
     <div>
@@ -37,7 +40,7 @@ const Entry = () => {
               <span className="accentText gradientText"> inspiration.</span>
             </p>
 
-            <SoundWave></SoundWave>
+            {/* <SoundWave></SoundWave> */}
 
             <div className="heroBtnContainer" style={{ marginTop: "0px" }}>
               <div className="btnEmptyWrapper">

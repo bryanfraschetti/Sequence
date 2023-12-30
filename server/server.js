@@ -104,7 +104,7 @@ app.get("/authorizationCallback", (req, res) => {
       .then((tokens) => {
         //store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
-        res.redirect("http://127.0.0.1:3000/home");
+        res.redirect("http://127.0.0.1:3000/sequencer");
       })
       .catch((error) => {
         //something went wrong, send user to index page

@@ -1,9 +1,9 @@
 .footerContainer{
-    background-color: #e8e8e8;
+    background-color: #fafafa;
 }
 
 .footerText{
-    padding: 8px;
+    padding: 16px;
     margin: 0px;
     color: black;
     font-size: 0.8rem;
