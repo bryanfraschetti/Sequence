@@ -25,7 +25,7 @@ app.listen(3001);
 app.use(
   session({
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     secret: cookieSigner,
   })
 );
@@ -75,7 +75,6 @@ app.get("/authorizationCallback", (req, res) => {
       encodeURI(authCallback) +
       "&client_id=" +
       clientId;
-
     fetch(spotifyTokenUrl, {
       body: authBody,
       headers: {
@@ -255,10 +254,10 @@ app.use(
 );
 
 // serve built react
-// app.use(express.static(path.join(__dirname, "../client/build")));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-// });
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
 
 // unresponsive original design
 // app.get("/", (req, res) => {

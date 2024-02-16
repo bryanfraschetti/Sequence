@@ -2,6 +2,7 @@ import { ActivateAnimation } from "../styling/ActivateAnimation";
 import { tokenTimeValidity } from "./tokenTimeValidity";
 import { refreshTokens } from "./refreshTokens";
 import { refreshPlaylists } from "../dataAcquisition/refreshPlaylists";
+import { getUserid } from "./getUserid";
 
 export const Exchange = async () => {
   ActivateAnimation(); //loading animation
@@ -49,6 +50,7 @@ export const Exchange = async () => {
     }
   }
 
+  getUserid();
   //function to get user profile could be nice
   await refreshPlaylists();
   ActivateAnimation();

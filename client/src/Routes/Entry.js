@@ -40,7 +40,7 @@ const Entry = () => {
               <span className="accentText gradientText"> inspiration.</span>
             </p>
 
-            {/* <SoundWave></SoundWave> */}
+            <SoundWave></SoundWave>
 
             <div className="heroBtnContainer" style={{ marginTop: "0px" }}>
               <div className="btnEmptyWrapper">

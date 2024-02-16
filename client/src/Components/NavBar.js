@@ -82,7 +82,7 @@ const NavBar = () => {
     //   path: "/about",
     // },
     {
-      icon: <RxAvatar size={32} style={{ transform: "translateY(7px)" }} alt="avatar"></RxAvatar>,
+      icon: <RxAvatar size={32} alt="avatar"></RxAvatar>,
       key: "submenu",
       id: "profile-btn",
       children: [
