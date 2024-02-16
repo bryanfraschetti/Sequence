@@ -12,6 +12,7 @@ import { playlistSelectionListener } from "../utils/selectionListeners/playlistS
 import { trackSelectionListener } from "../utils/selectionListeners/trackSelectionListener";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import { sequencingModeListener } from "../utils/selectionListeners/sequencingModeListener";
+import LogOut from "../Components/LogOut";
 
 const SequencerPage = () => {
   useEffect(() => {
@@ -27,6 +28,7 @@ const SequencerPage = () => {
   return (
     <div>
       <LoadingAnimation></LoadingAnimation>
+      <LogOut></LogOut>
       <NavBar></NavBar>
       <div className="wrapper">
         <nav id="sidebar" className="">

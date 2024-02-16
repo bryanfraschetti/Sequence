@@ -8,6 +8,7 @@ import Footer from "../Components/Footer";
 import SoundWave from "../Components/SoundWave";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
+import LogOut from "../Components/LogOut";
 
 const Entry = () => {
   useEffect(() => {
@@ -16,6 +17,7 @@ const Entry = () => {
 
   return (
     <div>
+      <LogOut></LogOut>
       <NavBar></NavBar>
       <div className="entry postNav">
         <div className="summaryWrapper heroSection">

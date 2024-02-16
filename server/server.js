@@ -7,7 +7,7 @@ const cookieSigner = process.env.COOKIE_SIGNER;
 //frequent uris
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
-const entryPoint = "http://127.0.0.1:3000/";
+const entryPoint = "http://127.0.0.1:3001/";
 const authCallback = "http://127.0.0.1:3001/authorizationCallback";
 
 //modules
@@ -103,7 +103,7 @@ app.get("/authorizationCallback", (req, res) => {
       .then((tokens) => {
         //store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
-        res.redirect("http://127.0.0.1:3000/sequencer");
+        res.redirect("http://127.0.0.1:3001/sequencer");
       })
       .catch((error) => {
         //something went wrong, send user to index page

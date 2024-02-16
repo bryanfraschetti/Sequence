@@ -4,12 +4,14 @@ import Footer from "../Components/Footer";
 import "../index.css";
 import "./About.css";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
+import LogOut from "../Components/LogOut";
 
 const About = () => {
   ResizeAnimationStopper();
 
   return (
     <div>
+      <LogOut></LogOut>
       <NavBar></NavBar>
       <div className="postNav centerContent">
         <div className="paragraphContainer">
