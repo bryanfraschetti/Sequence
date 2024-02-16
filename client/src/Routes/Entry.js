@@ -9,9 +9,14 @@ import SoundWave from "../Components/SoundWave";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
 import LogOut from "../Components/LogOut";
+import { getUserid } from "../utils/dataAcquisition/getUserid";
 
 const Entry = () => {
   useEffect(() => {
+    if (localStorage.getItem("userId")) {
+      getUserid();
+    }
+    // getUserid();
     ResizeAnimationStopper();
   }, []);
 

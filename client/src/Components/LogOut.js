@@ -1,5 +1,4 @@
 import React from "react";
-import "./LogOut.css";
 
 const LogOut = () => {
   const CancelLogout = () => {

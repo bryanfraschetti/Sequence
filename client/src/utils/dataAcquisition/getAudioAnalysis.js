@@ -91,6 +91,6 @@ export const getAudioAnalysis = async (track_id, track_name) => {
       SequenceNamespace.appendArray("songList", songInfo);
     })
     .catch((error) => {
-      console.log(error);
+      // console.error(error);
     });
 };

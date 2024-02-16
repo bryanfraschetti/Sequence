@@ -1,3 +1,5 @@
+import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
+
 export const refreshTokens = async () => {
   try {
     const access_token = localStorage.getItem("access_token");
@@ -23,7 +25,7 @@ export const refreshTokens = async () => {
         localStorage.setItem("expires", data.expires);
       } else if (data.redirect_uri) {
         //something went wrong, controlled redirect
-        window.location.href = data.redirect_uri;
+        ActivateErrorNotice();
       } else {
         //something went wrong
         throw new Error("Response not Formatted as Expected");
@@ -32,6 +34,6 @@ export const refreshTokens = async () => {
       throw new Error("Response not OK");
     }
   } catch (error) {
-    window.location.href = "/";
+    ActivateErrorNotice();
   }
 };

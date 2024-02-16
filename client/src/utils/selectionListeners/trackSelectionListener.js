@@ -40,24 +40,6 @@ export const trackSelectionListener = async () => {
           Timbre(initSongId);
           break;
       }
-
-      // console.log(SequenceNamespace.getVar("sequencingMode"), initialSong, songList);
     }
-
-    // //Get sequencing mode
-    // if (activeBtn === null || activeBtn.innerHTML === "Circle of Fifths") {
-    //   //activeBtn === null -> not set -> default is CofArr
-    //   CoFArr();
-    // } else if (activeBtn.innerHTML === "Rising Semitone Modal") {
-    //   RisSemArr();
-    // } else if (activeBtn.innerHTML === "Descending Semitone Modal") {
-    //   DescSemArr();
-    // } else if (activeBtn.innerHTML === "Rising Semitone Alternate") {
-    //   RisSemArrAlt();
-    // } else if (activeBtn.innerHTML === "Fader") {
-    //   Fader();
-    // } else if (activeBtn.innerHTML === "Timbre") {
-    //   Timbre();
-    // }
   });
 };

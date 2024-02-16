@@ -81,7 +81,6 @@ const NavBar = () => {
       onClick={(e) => {
         if (e.key === "logout") {
           ConfirmLogout();
-          console.log("logout");
         } else {
           const reroute = items.find((el) => el.key === e.key);
           if (reroute !== undefined) {

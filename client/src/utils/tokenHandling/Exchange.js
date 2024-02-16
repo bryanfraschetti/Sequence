@@ -2,7 +2,8 @@ import { ActivateAnimation } from "../styling/ActivateAnimation";
 import { tokenTimeValidity } from "./tokenTimeValidity";
 import { refreshTokens } from "./refreshTokens";
 import { refreshPlaylists } from "../dataAcquisition/refreshPlaylists";
-import { getUserid } from "./getUserid";
+import { getUserid } from "../dataAcquisition/getUserid";
+import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 
 export const Exchange = async () => {
   ActivateAnimation(); //loading animation
@@ -35,8 +36,8 @@ export const Exchange = async () => {
           localStorage.setItem("refresh_token", data.refresh_token);
           localStorage.setItem("expires", data.expires);
         } else if (data.redirect_uri) {
+          ActivateErrorNotice();
           //something went wrong refreshing with spotify, controlled redirect
-          window.location.href = data.redirect_uri;
         } else {
           //something unforeseen went wrong
           throw new Error("Response not Formatted as Expected");
@@ -46,12 +47,11 @@ export const Exchange = async () => {
         throw new Error("Response from Sequence not OK");
       }
     } catch (error) {
-      window.location.href = "/";
+      ActivateErrorNotice();
     }
   }
 
   getUserid();
-  //function to get user profile could be nice
   await refreshPlaylists();
   ActivateAnimation();
 };

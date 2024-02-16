@@ -13,6 +13,7 @@ import { trackSelectionListener } from "../utils/selectionListeners/trackSelecti
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import { sequencingModeListener } from "../utils/selectionListeners/sequencingModeListener";
 import LogOut from "../Components/LogOut";
+import ErrorNotice from "../Components/ErrorNotice";
 
 const SequencerPage = () => {
   useEffect(() => {
@@ -28,6 +29,7 @@ const SequencerPage = () => {
   return (
     <div>
       <LoadingAnimation></LoadingAnimation>
+      <ErrorNotice></ErrorNotice>
       <LogOut></LogOut>
       <NavBar></NavBar>
       <div className="wrapper">

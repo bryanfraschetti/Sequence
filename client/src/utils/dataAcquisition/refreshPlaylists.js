@@ -2,6 +2,7 @@ import { tokenTimeValidity } from "../tokenHandling/tokenTimeValidity";
 import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { removeAllChildren } from "../styling/removeAllChildren";
 import { addPlaylistToDom } from "../styling/addPlaylistToDom";
+import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 
 export const refreshPlaylists = async () => {
   const access_token = localStorage.getItem("access_token");
@@ -49,11 +50,11 @@ export const refreshPlaylists = async () => {
             response.items.forEach((playlistItem) => addPlaylistToDom(playlistItem));
           })
           .catch((error) => {
-            window.location.href = "/";
+            ActivateErrorNotice();
           });
       }
     })
     .catch((error) => {
-      window.location.href = "/";
+      ActivateErrorNotice();
     });
 };

@@ -6,6 +6,7 @@ import { getAudioAnalysis } from "../dataAcquisition/getAudioAnalysis";
 import { InitializeTrackTable } from "../styling/InitializeTrackTable";
 import { addTrackToDom } from "../styling/addTrackToDom";
 import { SequenceNamespace } from "../SequenceNamespace";
+// import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 
 export const playlistSelectionListener = () => {
   const playlistList = document.getElementById("playlist-list");
@@ -68,7 +69,7 @@ export const playlistSelectionListener = () => {
           ActivateAnimation();
         })
         .catch((error) => {
-          console.log(error);
+          // ActivateErrorNotice();
         });
     }
   });

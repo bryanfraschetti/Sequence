@@ -1,5 +1,6 @@
+import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
+
 export const requestAuthorization = async () => {
-  const entry_point = "/";
   try {
     const response = await fetch("/initiateAuth", {
       method: "GET",
@@ -11,6 +12,6 @@ export const requestAuthorization = async () => {
       throw new Error("Response not OK");
     }
   } catch (error) {
-    window.location.href = entry_point;
+    ActivateErrorNotice();
   }
 };

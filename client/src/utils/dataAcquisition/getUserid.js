@@ -20,12 +20,12 @@ export const getUserid = () => {
     .then((response) => {
       localStorage.setItem("userId", response.id);
       const images = response.images;
-      console.log(images);
       if (images.length > 0) {
         setProfileImage(images[0].url);
       }
     })
     .catch((error) => {
-      window.location.href = "/";
+      // console.error(error);
+      // window.location.href = "/";
     });
 };
