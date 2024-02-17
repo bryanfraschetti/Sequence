@@ -1,4 +1,5 @@
 //confidential app credentials
+require("dotenv").config();
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const cookieSigner = process.env.COOKIE_SIGNER;
@@ -6,7 +7,7 @@ const cookieSigner = process.env.COOKIE_SIGNER;
 //frequent uris
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
-const entryPoint = "http://127.0.0.1:3001/";
+const entryPoint = "http://127.0.0.1:3000/";
 const authCallback = "http://127.0.0.1:3001/authorizationCallback";
 
 //modules
@@ -14,7 +15,6 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-// const { createProxyMiddleware } = require("http-proxy-middleware");
 
 //instantiate
 const app = express();
@@ -102,7 +102,7 @@ app.get("/authorizationCallback", (req, res) => {
       .then((tokens) => {
         //store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
-        res.redirect("http://127.0.0.1:3001/sequencer");
+        res.redirect("http://127.0.0.1:3000/sequencer");
       })
       .catch((error) => {
         //something went wrong, send user to index page

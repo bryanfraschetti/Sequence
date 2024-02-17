@@ -1,0 +1,10 @@
+version: '3'
+services:
+  your-service:
+    image: sequence
+    environment:
+      SPOTIFY_CLIENT_ID: MY CLIENT ID
+      SPOTIFY_CLIENT_SECRET: MY CLIENT SECRET
+      COOKIE_SIGNER: MY COOKIE SIGNER
+    ports:
+      - 3001:3001
