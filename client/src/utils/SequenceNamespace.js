@@ -1,3 +1,5 @@
+import { ActivateAnimation } from "./styling/ActivateAnimation";
+
 //closure and encapsulation for shared state
 export const SequenceNamespace = (function () {
   const globalVars = {
@@ -15,6 +17,10 @@ export const SequenceNamespace = (function () {
     appendArray: function (arrayKey, valueToPush) {
       if (Array.isArray(globalVars[arrayKey])) {
         globalVars[arrayKey].push(valueToPush);
+        // console.log(globalVars[arrayKey]);
+        if (globalVars[arrayKey].length == localStorage.getItem("expectedNumSongs")) {
+          ActivateAnimation();
+        }
       }
     },
   };

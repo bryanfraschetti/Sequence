@@ -26,51 +26,102 @@ export const playlistSelectionListener = () => {
         await refreshTokens();
       }
 
-      fetch("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: " Bearer " + access_token,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error(response);
+      // await fetch("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: " Bearer " + access_token,
+      //   },
+      // })
+      //   .then((response) => {
+      //     if (response.ok) {
+      //       return response.json();
+      //     } else {
+      //       throw new Error(response);
+      //     }
+      //   })
+      //   .then((response) => {
+      //     //Update UI
+      //     removeAllChildren("tracks-table"); //clear any existing tracks
+
+      //     const tracksHeader = document.getElementById("tracklist-heading");
+      //     tracksHeader.innerHTML = '"' + playlistName + '" Tracklist'; //Reflect selected playlist
+
+      //     const EmptyStateContainer = document.getElementById("EmptyStateContainer");
+
+      //     const num_songs = response.total;
+      //     if (num_songs === 0) {
+      //       //if no songs, display empty state art
+      //       EmptyStateContainer.style.display = "block"; //if songs, don't show empty state
+      //       EmptyStateContainer.children[1].innerHTML =
+      //         "This playlist does not appear to have any songs :( Try adding some and coming back later";
+      //     } else {
+      //       EmptyStateContainer.style.display = "none"; //if songs, don't show empty state
+      //       InitializeTrackTable();
+      //       response.items.forEach((trackInfo) => {
+      //         addTrackToDom(trackInfo);
+
+      //         getAudioAnalysis(trackInfo.track.id, trackInfo.track.name); //for each track get audio analysis
+      //         //getAudioFeatures(trackInfo.track.id, trackInfo.track.name)
+      //       });
+      //     }
+
+      //     ActivateAnimation();
+      //   })
+      //   .catch((error) => {
+      //     // ActivateErrorNotice();
+      //   });
+      try {
+        const response = await fetch(
+          `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + access_token,
+            },
           }
-        })
-        .then((response) => {
-          //Update UI
-          removeAllChildren("tracks-table"); //clear any existing tracks
+        );
 
-          const tracksHeader = document.getElementById("tracklist-heading");
-          tracksHeader.innerHTML = '"' + playlistName + '" Tracklist'; //Reflect selected playlist
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-          const EmptyStateContainer = document.getElementById("EmptyStateContainer");
+        const responseData = await response.json();
 
-          const num_songs = response.total;
-          if (num_songs === 0) {
-            //if no songs, display empty state art
-            EmptyStateContainer.style.display = "block"; //if songs, don't show empty state
-            EmptyStateContainer.children[1].innerHTML =
-              "This playlist does not appear to have any songs :( Try adding some and coming back later";
-          } else {
-            EmptyStateContainer.style.display = "none"; //if songs, don't show empty state
-            InitializeTrackTable();
-            response.items.forEach((trackInfo) => {
-              addTrackToDom(trackInfo);
+        // Update UI
+        removeAllChildren("tracks-table");
+        const tracksHeader = document.getElementById("tracklist-heading");
+        tracksHeader.innerHTML = `"${playlistName}" Tracklist`;
 
-              getAudioAnalysis(trackInfo.track.id, trackInfo.track.name); //for each track get audio analysis
-              //getAudioFeatures(trackInfo.track.id, trackInfo.track.name)
-            });
-          }
+        const emptyStateContainer = document.getElementById("EmptyStateContainer");
 
-          ActivateAnimation();
-        })
-        .catch((error) => {
-          // ActivateErrorNotice();
+        const filteredTracks = responseData.items.filter((trackInfo) => {
+          return trackInfo.track.type === "track";
         });
+        const numSongs = filteredTracks.length;
+        localStorage.setItem("expectedNumSongs", numSongs);
+
+        if (numSongs === 0) {
+          emptyStateContainer.style.display = "block";
+          emptyStateContainer.children[1].innerHTML =
+            "This playlist does not appear to have any songs :( Try adding some and coming back later";
+        } else {
+          emptyStateContainer.style.display = "none";
+          InitializeTrackTable();
+          for (const trackInfo of filteredTracks) {
+            addTrackToDom(trackInfo);
+            await getAudioAnalysis(trackInfo.track.id, trackInfo.track.name);
+            // await getAudioFeatures(trackInfo.track.id, trackInfo.track.name);
+          }
+        }
+
+        // ActivateAnimation();
+      } catch (error) {
+        // Handle errors here
+        // ActivateErrorNotice();
+        console.error("Error:", error);
+      }
     }
   });
 };
