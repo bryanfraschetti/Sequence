@@ -125,18 +125,16 @@
 
 .coverimg{
     margin-left: 30px;
-    margin-right: 20px;
+    margin-right: 10px;
     height: 60px;
     width: 60px;
     border: 1px solid rgb(220, 220, 220);
 }
 
 .playlist-title{
-    padding: 0%;
-    padding-left: 1vw;
-    margin-right: 1.5vw;
+    padding-left: 20px;
     height: 66px;
-    width: 260px;
+    width: 240px;
     overflow: hidden;
     margin-block-start: 0.5em;
     margin-block-end: 0.5em;

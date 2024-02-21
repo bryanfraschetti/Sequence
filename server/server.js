@@ -1,4 +1,5 @@
 //confidential app credentials
+require("dotenv").config();
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const cookieSigner = process.env.COOKIE_SIGNER;
@@ -14,7 +15,6 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-// const { createProxyMiddleware } = require("http-proxy-middleware");
 
 //instantiate
 const app = express();
@@ -38,11 +38,11 @@ app.get("/initiateAuth", (req, res) => {
   url += "&redirect_uri=" + encodeURI(authCallback);
   url += "&show_dialog=true";
   url +=
-    "&scope=user-read-currently-playing" +
-    "%20playlist-read-private" +
+    "&scope=playlist-read-private" +
     "%20playlist-read-collaborative" +
     "%20playlist-modify-private" +
-    "%20playlist-modify-public";
+    "%20playlist-modify-public" +
+    "%20ugc-image-upload";
   url += "&state=" + state;
   req.session.state = state;
   res.status(200).json({ next: url });
@@ -227,44 +227,8 @@ const generateRandomString = function (length) {
   return text;
 };
 
-//handle css serving
-app.use(express.static(path.join(__dirname, "public")));
-app.use(
-  "/public",
-  express.static(path.join(__dirname, "public"), {
-    setHeaders: (res, path) => {
-      if (path.endsWith(".css")) {
-        res.set("Content-Type", "text/css");
-      }
-    },
-  })
-);
-
-//handle js serving
-app.use(
-  "/public",
-  express.static(path.join(__dirname, "public"), {
-    setHeaders: (res, path) => {
-      if (path.endsWith(".js")) {
-        res.set("Content-Type", "text/javascript");
-      }
-    },
-  })
-);
-
 // serve built react
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
-
-// unresponsive original design
-// app.get("/", (req, res) => {
-//   //main entry point always give index.html
-//   res.sendFile(path.join(__dirname, "public", "html", "index.html"));
-// });
-
-// app.get("/home", (req, res) => {
-//   //always give home.html
-//   res.sendFile(path.join(__dirname, "public", "html", "home.html"));
-// });

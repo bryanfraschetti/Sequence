@@ -1,3 +1,5 @@
+import phonogram from "../../Assets/EmptyStateArt/phonogram.png";
+
 export const addPlaylistToDom = (playlistInfo) => {
   const playlistList = document.getElementById("playlist-list");
 
@@ -8,7 +10,7 @@ export const addPlaylistToDom = (playlistInfo) => {
   if (playlistInfo.images.length !== 0) {
     playlistArt.src = playlistInfo.images.slice(-1)[0].url; //src for img
   } else {
-    playlistArt.src = "/public/images/phonogram.png";
+    playlistArt.src = phonogram;
   }
   playlistArt.className = "coverimg";
   node.appendChild(playlistArt); //append img to li

@@ -1,12 +1,11 @@
 import React from "react";
 import "./EmptyStateArt.css";
-import phonogram from "../Assets/phonogram.png";
-import recordNotes from "../Assets/recordNotes.png";
-import recordPlayer from "../Assets/recordPlayer.png";
+import phonogram from "../Assets/EmptyStateArt/phonogram.png";
+import recordNotes from "../Assets/EmptyStateArt/recordNotes.png";
+import recordPlayer from "../Assets/EmptyStateArt/recordPlayer.png";
 
 const EmptyStateArt = ({ innerHTML }) => {
   const emptyStateSrcs = [phonogram, recordNotes, recordPlayer];
-
   const randomSelection = emptyStateSrcs[Math.floor(Math.random() * 3)];
 
   return (

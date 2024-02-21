@@ -10,6 +10,7 @@ import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper"
 import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
 import LogOut from "../Components/LogOut";
 import { getUserid } from "../utils/dataAcquisition/getUserid";
+import NotLoggedIn from "../Components/notLoggedIn";
 
 const Entry = () => {
   useEffect(() => {
@@ -23,9 +24,16 @@ const Entry = () => {
   return (
     <div>
       <LogOut></LogOut>
+      <NotLoggedIn></NotLoggedIn>
       <NavBar></NavBar>
       <div className="entry postNav">
-        <div className="summaryWrapper heroSection">
+        <div
+          className="summaryWrapper heroSection"
+          // style={{
+          //   background:
+          //     "linear-gradient(150deg, rgb(255,111, 43), rgba(255, 165, 0, 0) 7%, rgba(255, 165, 0, 0) 93%, rgba(255, 90, 115, 1))",
+          // }}
+        >
           <div className="appSummary">
             <h3 className="appSummaryText myTitle">
               Sequence:

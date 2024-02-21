@@ -7,8 +7,13 @@ import sequenceLogo from "../Assets/sequence.png";
 
 const NavBar = () => {
   function ConfirmLogout() {
-    const logoutContainer = document.getElementById("log-out-container");
-    logoutContainer.style.display = "block";
+    if (!localStorage.getItem("userId")) {
+      const notLoggedIn = document.getElementById("not-logged-in");
+      notLoggedIn.style.display = "block";
+    } else {
+      const logoutContainer = document.getElementById("log-out-container");
+      logoutContainer.style.display = "block";
+    }
   }
 
   const menuStyle = {

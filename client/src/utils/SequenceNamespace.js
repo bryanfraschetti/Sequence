@@ -18,7 +18,7 @@ export const SequenceNamespace = (function () {
       if (Array.isArray(globalVars[arrayKey])) {
         globalVars[arrayKey].push(valueToPush);
         // console.log(globalVars[arrayKey]);
-        if (globalVars[arrayKey].length == localStorage.getItem("expectedNumSongs")) {
+        if (globalVars[arrayKey].length === parseInt(localStorage.getItem("expectedNumSongs"))) {
           ActivateAnimation();
         }
       }

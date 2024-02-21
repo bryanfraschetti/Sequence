@@ -57,6 +57,5 @@ export const Timbre = (initSongId) => {
     NewSequence.push(safeClosure.getCur());
   }
 
-  console.log(NewSequence);
   createPlaylist("Timbre Sequenced ", NewSequence);
 };

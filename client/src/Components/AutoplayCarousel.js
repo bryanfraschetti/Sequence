@@ -7,23 +7,25 @@ export default function AutoplayCarousel() {
   return (
     <div className="carousel-container">
       <div className="carousel-track">
-        {Object.keys(cardDetails).map((detailKey) => {
+        {Object.keys(cardDetails).map((detailKey, idx) => {
           return (
             <CarouselItem
               imgUrl={cardDetails[detailKey].imgUrl}
               imgTitle={cardDetails[detailKey].title}
               text={cardDetails[detailKey].text}
               destination={cardDetails[detailKey].destination}
-              ></CarouselItem>
+              key={idx}
+            ></CarouselItem>
           );
         })}
-        {Object.keys(cardDetails).map((detailKey) => {
+        {Object.keys(cardDetails).map((detailKey, idx) => {
           return (
             <CarouselItem
               imgUrl={cardDetails[detailKey].imgUrl}
               imgTitle={cardDetails[detailKey].title}
               text={cardDetails[detailKey].text}
               destination={cardDetails[detailKey].destination}
+              key={idx}
             ></CarouselItem>
           );
         })}

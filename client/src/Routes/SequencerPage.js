@@ -14,6 +14,8 @@ import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper"
 import { sequencingModeListener } from "../utils/selectionListeners/sequencingModeListener";
 import LogOut from "../Components/LogOut";
 import ErrorNotice from "../Components/ErrorNotice";
+import NotLoggedIn from "../Components/notLoggedIn";
+import SequenceModeButton from "../Components/SequenceModeButton";
 
 const SequencerPage = () => {
   useEffect(() => {
@@ -31,6 +33,7 @@ const SequencerPage = () => {
       <LoadingAnimation></LoadingAnimation>
       <ErrorNotice></ErrorNotice>
       <LogOut></LogOut>
+      <NotLoggedIn></NotLoggedIn>
       <NavBar></NavBar>
       <div className="wrapper">
         <nav id="sidebar" className="">
@@ -54,36 +57,12 @@ const SequencerPage = () => {
           <div className="sequencer" id="sequencer">
             <h3 className="subheading">Choose Sequencing</h3>
             <div className="button-container" id="button-container">
-              <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer" id="cof">
-                  Circle of Fifths
-                </span>
-              </span>
-              <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer" id="rsm">
-                  Rising Semitone Modal
-                </span>
-              </span>
-              <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer" id="dsm">
-                  Descending Semitone Modal
-                </span>
-              </span>
-              <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer" id="rsa">
-                  Rising Semitone Alternate
-                </span>
-              </span>
-              <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer" id="fader">
-                  Fader
-                </span>
-              </span>
-              <span className="seq-wrapper-inactive">
-                <span className="sequencer-buttons inactive-sequencer" id="timbre">
-                  Timbre
-                </span>
-              </span>
+              <SequenceModeButton id="cof" text="Circle of Fifths"></SequenceModeButton>
+              <SequenceModeButton id="rsm" text="Rising Semitone Modal"></SequenceModeButton>
+              <SequenceModeButton id="dsm" text="Descending Semitone Modal"></SequenceModeButton>
+              <SequenceModeButton id="rsa" text="Rising Semitone Alternate"></SequenceModeButton>
+              <SequenceModeButton id="fader" text="Fader"></SequenceModeButton>
+              <SequenceModeButton id="timbre" text="Timbre"></SequenceModeButton>
             </div>
             <hr className="separator" id="seq-track-sep" />
           </div>

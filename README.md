@@ -15,10 +15,13 @@ docker-compose.yaml is also not version tracked. An example docker-compose witho
 
 ## Production Steps
 
+First build the client locally. It will be copied to the container and only the final build product is needed. Building locally helps minimize the Docker build and runtime.
+
 ### Building Client
 
 ```
 cd client
+npm install # If dependencies not yet installed
 npm run build
 ```
 
@@ -43,6 +46,7 @@ In development, services like nodemon allow for changes and updates to be observ
 
 ```
 cd client
+npm install # If dependencies not yet installed
 npm start
 ```
 
@@ -50,5 +54,6 @@ npm start
 
 ```
 cd ../server
+npm install # If dependencies not yet installed
 npm run devStart
 ```

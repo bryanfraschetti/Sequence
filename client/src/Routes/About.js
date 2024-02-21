@@ -5,6 +5,7 @@ import "../index.css";
 import "./About.css";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import LogOut from "../Components/LogOut";
+import NotLoggedIn from "../Components/notLoggedIn";
 
 const About = () => {
   ResizeAnimationStopper();
@@ -12,6 +13,7 @@ const About = () => {
   return (
     <div>
       <LogOut></LogOut>
+      <NotLoggedIn></NotLoggedIn>
       <NavBar></NavBar>
       <div className="postNav centerContent">
         <div className="paragraphContainer">

@@ -37,7 +37,8 @@
     position: absolute;
     bottom: 10px;
     // backgroundImage: "linear-gradient(to bottom, rgba(255, 90, 115,0), rgba(255, 90, 115,0.7), rgb(255, 180, 74, 1)",
-    background-Image: linear-gradient(to bottom, rgba(255,180,74,0), rgba(255,180,74,0.7) 40%, rgba(255,180,74,1) 80%);
+    // background-Image: linear-gradient(to bottom, rgba(255,180,74,0), rgba(255,180,74,0.7) 40%, rgba(255,180,74,1) 80%);
+    background-image: linear-gradient(to bottom, rgb(255 180 74 / 5%), rgba(255, 165, 0, 0.9) 30%, rgb(255, 159, 23) 80%);
     width: 130px;//150px = card width -> subtract padding
     margin: 0px;
     padding: 10px 10px 10px 10px;
@@ -58,7 +59,7 @@
     gap: 32px;
     width: fit-content;
     height: 100%;
-    animation: slide 30s linear infinite;
+    animation: slide 35s linear infinite;
     &:hover {
         animation-play-state: paused;
     }
@@ -69,8 +70,8 @@
       left: 0;
     }
     100% {
-      //(2*Num_items*item_width + (2*Num_items - 1)*gap)/2
-      //eg. for 7 items of width 150px and gap=32:  (14*150+13*32)/2 = 1258
-      left: -1258px;
+      //(2*Num_items*item_width + (2*Num_items - 1)*gap)/2 + ~~20px
+      //eg. for 7 items of width 150px and gap=32:  (14*150+13*32)/2 + 20 = 1278
+      left: -1637px;
     }
   }

@@ -1,5 +1,4 @@
 import React from "react";
-import "./SidebarElement.css";
 
 const SidebarElement = ({ image, title }) => {
   return (

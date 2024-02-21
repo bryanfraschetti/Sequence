@@ -2,8 +2,11 @@ import React from "react";
 
 const ErrorNotice = () => {
   const goHome = () => {
-    window.location.href = "/";
+    const errorNotice = document.getElementById("error-notice");
+    errorNotice.style.display = "none";
+    // window.location.href = "/";
   };
+
   return (
     <div
       id="error-notice"
