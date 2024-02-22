@@ -80,6 +80,6 @@ export const RSA = (initSongId) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  console.log(NewSequence);
+  // console.log(NewSequence);
   createPlaylist("R.S.A Sequenced ", NewSequence);
 };

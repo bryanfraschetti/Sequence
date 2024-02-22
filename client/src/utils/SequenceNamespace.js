@@ -4,6 +4,8 @@ import { ActivateAnimation } from "./styling/ActivateAnimation";
 export const SequenceNamespace = (function () {
   const globalVars = {
     songList: [],
+    playlistId: null,
+    playlistName: null,
     sequencingMode: null,
   };
 

@@ -11,7 +11,6 @@ export const Fader = (initSongId) => {
     return song.track_id === initSongId;
   });
 
-  console.log(initSong);
   const NewSequence = [];
 
   NewSequence.push(initSong);
@@ -95,6 +94,6 @@ export const Fader = (initSongId) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  console.log(NewSequence);
+  // console.log(NewSequence);
   createPlaylist("Fader Sequenced ", NewSequence);
 };

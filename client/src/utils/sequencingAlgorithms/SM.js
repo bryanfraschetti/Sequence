@@ -80,7 +80,7 @@ export const SM = (initSongId, semitoneDirection) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  console.log(NewSequence);
+  // console.log(NewSequence);
   if (semitoneDirection === 1) {
     createPlaylist("R.S. Sequenced ", NewSequence);
   } else if (semitoneDirection === -1) {

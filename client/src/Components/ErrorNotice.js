@@ -1,7 +1,7 @@
 import React from "react";
 
 const ErrorNotice = () => {
-  const goHome = () => {
+  const goBack = () => {
     const errorNotice = document.getElementById("error-notice");
     errorNotice.style.display = "none";
     // window.location.href = "/";
@@ -27,9 +27,9 @@ const ErrorNotice = () => {
         <button
           className="mybtn"
           style={{ width: "200px", color: "white", marginTop: "2rem" }}
-          onClick={goHome}
+          onClick={goBack}
         >
-          Okay! Go back home.
+          Okay! Go back.
         </button>
       </div>
     </div>

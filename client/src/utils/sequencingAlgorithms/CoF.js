@@ -91,6 +91,6 @@ export const CoF = (initSongId) => {
   }
 
   //see https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist for information on body parameters
-  console.log(NewSequence);
+  // console.log(NewSequence);
   createPlaylist("CoF Sequenced ", NewSequence);
 };
