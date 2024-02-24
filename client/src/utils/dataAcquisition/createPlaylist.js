@@ -67,7 +67,7 @@ export const createPlaylist = async (SequencingModeString, NewSequence) => {
       });
     })
     .catch((error) => {
-      ActivateErrorNotice();
+      ActivateErrorNotice(error);
       // console.error(error);
     });
 };

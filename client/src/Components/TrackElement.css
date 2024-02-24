@@ -1,0 +1,34 @@
+.spotify-btn{
+    border: 2px solid #1ED760;
+    border-radius: 5px;
+    width: 130px;
+    height: 45px;
+    position: relative;
+}
+
+.art-cell{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.spotify-btn-div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    width: 130px;
+    justify-content: space-evenly;
+}
+
+.spotify-logo{
+    width: 70px;
+}
+
+.fa-link-ext{
+    height: 21px;
+    color: #1ED760;
+}

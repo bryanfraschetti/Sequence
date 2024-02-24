@@ -36,7 +36,7 @@ export const Exchange = async () => {
           localStorage.setItem("refresh_token", data.refresh_token);
           localStorage.setItem("expires", data.expires);
         } else if (data.redirect_uri) {
-          ActivateErrorNotice();
+          ActivateErrorNotice("no redirect_uri");
           //something went wrong refreshing with spotify, controlled redirect
         } else {
           //something unforeseen went wrong
@@ -47,7 +47,7 @@ export const Exchange = async () => {
         throw new Error("Response from Sequence not OK");
       }
     } catch (error) {
-      ActivateErrorNotice();
+      ActivateErrorNotice(error);
     }
   }
 

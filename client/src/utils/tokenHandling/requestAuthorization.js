@@ -12,6 +12,6 @@ export const requestAuthorization = async () => {
       throw new Error("Response not OK");
     }
   } catch (error) {
-    ActivateErrorNotice();
+    ActivateErrorNotice(error);
   }
 };

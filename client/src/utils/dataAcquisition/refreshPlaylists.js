@@ -50,11 +50,11 @@ export const refreshPlaylists = async () => {
             response.items.forEach((playlistItem) => addPlaylistToDom(playlistItem));
           })
           .catch((error) => {
-            ActivateErrorNotice();
+            ActivateErrorNotice(error);
           });
       }
     })
     .catch((error) => {
-      ActivateErrorNotice();
+      ActivateErrorNotice(error);
     });
 };

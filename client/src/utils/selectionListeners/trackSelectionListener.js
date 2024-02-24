@@ -11,7 +11,13 @@ export const trackSelectionListener = async () => {
   tracksTable.addEventListener("click", function selectTrack(e) {
     //parent listener
     e.preventDefault();
-    if (!e.target.classList.contains("tracks-table-header")) {
+
+    if (e.target.classList.contains("spotify-btn") || e.target.classList.contains("spotify-logo")) {
+      const trackId = e.target.id;
+      const spotifyUrl = `https://open.spotify.com/track/${trackId}`;
+      window.open(spotifyUrl, "_blank", "noopener,noreferrer");
+      return;
+    } else if (!e.target.classList.contains("tracks-table-header")) {
       ActivateAnimation();
 
       const sequencingMode = SequenceNamespace.getVar("sequencingMode");

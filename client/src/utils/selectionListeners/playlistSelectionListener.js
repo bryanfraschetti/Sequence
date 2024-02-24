@@ -72,7 +72,7 @@ export const playlistSelectionListener = () => {
           }
         })
         .catch((error) => {
-          ActivateErrorNotice();
+          ActivateErrorNotice(error);
         });
     }
   });

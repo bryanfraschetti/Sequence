@@ -282,11 +282,11 @@ td:last-child{
     padding: 0.5%;
     margin-left: 5%;
     margin-right: 5%;
-    width: 33.333%;
 }
 
 .album-art{
     margin-top: 4px;
     max-height: 100px;
     max-width: 100px;
+    margin-bottom: 10px;
 }
