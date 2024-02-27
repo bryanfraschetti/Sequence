@@ -17,7 +17,6 @@ const Entry = () => {
     if (localStorage.getItem("userId")) {
       getUserid();
     }
-    // getUserid();
     ResizeAnimationStopper();
   }, []);
 
@@ -46,12 +45,16 @@ const Entry = () => {
               </span>
             </h3>
 
-            <p className="appSummaryText bodyText subtleText" style={{ maxWidth: "500px" }}>
+            <p
+              className="appSummaryText bodyText subtleText"
+              style={{ maxWidth: "500px" }}
+            >
               Our innovative app, which we call <i>Sequence</i>,
               <span className="accentText gradientText"> harnesses </span>
-              the power of the Spotify API to dynamically rearrange your playlists based on music
-              theory and musical similarity. Whether you're a musician, music theory buff, or casual
-              music enthusiast, you'll love our app. Start today and find
+              the power of the Spotify API to dynamically rearrange your
+              playlists based on music theory and musical similarity. Whether
+              you're a musician, music theory buff, or casual music enthusiast,
+              you'll love our app. Start today and find
               <span className="accentText gradientText"> inspiration.</span>
             </p>
 
@@ -72,7 +75,11 @@ const Entry = () => {
                 </button>
               </div>
 
-              <button className="myBtn" id="startCTA" onClick={requestAuthorization}>
+              <button
+                className="myBtn"
+                id="startCTA"
+                onClick={requestAuthorization}
+              >
                 Get Started!
               </button>
             </div>
@@ -86,7 +93,10 @@ const Entry = () => {
             textAlign: "center",
           }}
         >
-          <h3 className="appSummaryText myTitle" style={{ marginBottom: "20px" }}>
+          <h3
+            className="appSummaryText myTitle"
+            style={{ marginBottom: "20px" }}
+          >
             Check out our Favourite Playlists:
           </h3>
           <div className="carouselTileContainer">

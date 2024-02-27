@@ -12,7 +12,7 @@ export const refreshPlaylists = async () => {
     await refreshTokens();
   }
 
-  fetch("https://api.spotify.com/v1/me/playlists?limit=0&offset=0", {
+  fetch("https://api.spotify.com/v1/me/playlists?limit=50&offset=0", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -27,18 +27,23 @@ export const refreshPlaylists = async () => {
       }
     })
     .then((response) => {
-      removeAllChildren("playlist-list"); //get rid of all playlists in the table
+      removeAllChildren("playlist-list"); // Get rid of all playlists in the table
 
-      const num_playlists = response.total; //total number of playlists
-      for (let i = 0; i <= Math.floor(num_playlists / 50); i++) {
-        //get maximum number of playlists as many times as needed to get all playlists
-        fetch("https://api.spotify.com/v1/me/playlists?limit=50&offset=" + 50 * i, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: " Bearer " + access_token,
-          },
-        })
+      const numPlaylists = response.total; // Total number of playlists
+      // 50 can be fetched at a time
+      const numFetches = Math.ceil(numPlaylists / 50) - 1; // Total number of required fetches (one fetch has already occured)
+      for (let i = 1; i <= numFetches; i++) {
+        // Get maximum number of playlists as many times as needed to get all playlists
+        fetch(
+          "https://api.spotify.com/v1/me/playlists?limit=50&offset=" + 50 * i,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: " Bearer " + access_token,
+            },
+          }
+        )
           .then((response) => {
             if (response.ok) {
               return response.json();
@@ -47,7 +52,9 @@ export const refreshPlaylists = async () => {
             }
           })
           .then((response) => {
-            response.items.forEach((playlistItem) => addPlaylistToDom(playlistItem));
+            response.items.forEach((playlistItem) =>
+              addPlaylistToDom(playlistItem)
+            );
           })
           .catch((error) => {
             ActivateErrorNotice(error);

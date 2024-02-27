@@ -29,13 +29,13 @@ npm run build
 
 ```
 cd ..
-docker build -t sequence
+docker build -t sequence .
 ```
 
 ### Start Docker Service
 
 ```
-docker-compose up
+docker compose up
 ```
 
 ## Development Steps

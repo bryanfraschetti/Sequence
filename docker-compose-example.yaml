@@ -1,6 +1,6 @@
-version: '3'
+version: "3"
 services:
-  your-service:
+  sequence:
     image: sequence
     environment:
       SPOTIFY_CLIENT_ID: MY CLIENT ID
@@ -8,3 +8,9 @@ services:
       COOKIE_SIGNER: MY COOKIE SIGNER
     ports:
       - 3001:3001
+    depends_on:
+      - redis
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
