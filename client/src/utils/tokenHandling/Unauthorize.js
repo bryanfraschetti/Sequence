@@ -1,11 +1,13 @@
 export const Unauthorize = () => {
-  const entry_point = "/";
-  Object.keys(localStorage).forEach((el) => {
-    localStorage.removeItem(el);
-  });
-
+  const userId = localStorage.getItem("userId");
   fetch("/Unauthorize", {
-    method: "GET",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId: userId,
+    }),
   })
     .then((response) => {
       if (response.ok) {
@@ -22,6 +24,9 @@ export const Unauthorize = () => {
     .catch((error) => {
       console.error(error);
     });
-
+  const entry_point = "/";
+  Object.keys(localStorage).forEach((el) => {
+    localStorage.removeItem(el);
+  });
   window.location.href = entry_point;
 };

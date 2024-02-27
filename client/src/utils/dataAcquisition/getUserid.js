@@ -10,7 +10,7 @@ export const getUserid = async () => {
   } else {
     // Check cache
     const cached = await getUserInfoCache(userId);
-    console.log(cached);
+    // console.log(cached);
     if (!cached) {
       // Failure in cache
       getUserInfoSpotify();

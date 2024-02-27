@@ -18,6 +18,7 @@ const bodyParser = require("body-parser");
 
 // Create redis client
 const redis = require("redis");
+const { error } = require("console");
 const client = redis.createClient();
 client
   .connect()
@@ -213,7 +214,9 @@ app.post("/RefreshToken", (req, res) => {
   }
 });
 
-app.get("/Unauthorize", (req, res) => {
+app.use("/Unauthorize", bodyParser.json());
+app.post("/Unauthorize", async (req, res) => {
+  // Destroy session (if it exists)
   if (req.session) {
     req.session.destroy((error) => {
       if (error) {
@@ -231,6 +234,12 @@ app.get("/Unauthorize", (req, res) => {
       destroyed: true,
     });
   }
+  const userId = req.body.userId;
+  try {
+    await client.del(`user:${userId}`);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 app.use("/createUserCache", bodyParser.json());
@@ -240,6 +249,9 @@ app.post("/createUserCache", async (req, res) => {
     userId: userId,
     profilePicUrl: profilePicUrl,
   });
+  const currentTime = new Date();
+  const expireCache = currentTime + 3600000;
+  await client.expireAt(`user:${userId}`, expireCache); // Expire key in one hour
   res.status(200).send("OK");
 });
 
@@ -247,6 +259,9 @@ app.use("/getUserCache", bodyParser.json());
 app.post("/getUserCache", async (req, res) => {
   const userId = req.body.userId;
   const cachedUser = await client.json.get(`user:${userId}`);
+  const currentTime = new Date();
+  const expireCache = currentTime + 3600000;
+  await client.expireAt(`user:${userId}`, expireCache); // Refresh key to last another one hour
   if (cachedUser) {
     // Cached user
     res.json({ userCache: cachedUser });
