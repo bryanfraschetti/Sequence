@@ -28,13 +28,16 @@ export const playlistSelectionListener = () => {
       if (tokensExpired) {
         await refreshTokens();
       }
-      await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: " Bearer " + access_token,
-        },
-      })
+      await fetch(
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: " Bearer " + access_token,
+          },
+        }
+      )
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -43,10 +46,10 @@ export const playlistSelectionListener = () => {
           }
         })
         .then((response) => {
-          //Update UI
-          removeAllChildren("tracks-table"); //clear any existing tracks
+          // Update UI
+          removeAllChildren("tracks-table"); // Clear any existing tracks
           const tracksHeader = document.getElementById("tracklist-heading");
-          tracksHeader.innerHTML = '"' + playlistName + '" Tracklist'; //Reflect selected playlist
+          tracksHeader.innerHTML = '"' + playlistName + '" Tracklist'; // Reflect selected playlist
 
           const filteredTracks = response.items.filter((trackInfo) => {
             return trackInfo.track.type === "track";
@@ -55,14 +58,16 @@ export const playlistSelectionListener = () => {
           const numSongs = filteredTracks.length;
           localStorage.setItem("expectedNumSongs", numSongs);
 
-          const EmptyStateContainer = document.getElementById("EmptyStateContainer");
+          const EmptyStateContainer = document.getElementById(
+            "EmptyStateContainer"
+          );
           if (numSongs === 0) {
-            //if no songs, display empty state art
-            EmptyStateContainer.style.display = "block"; //if songs, don't show empty state
+            // If no songs, display empty state art
+            EmptyStateContainer.style.display = "block"; // If songs, don't show empty state
             EmptyStateContainer.children[1].innerHTML =
               "This playlist does not appear to have any songs :( Try adding some and coming back later";
           } else {
-            EmptyStateContainer.style.display = "none"; //if songs, don't show empty state
+            EmptyStateContainer.style.display = "none"; // If songs, don't show empty state
             InitializeTrackTable();
             filteredTracks.forEach((trackInfo) => {
               addTrackToDom(trackInfo);

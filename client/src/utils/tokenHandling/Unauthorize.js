@@ -1,5 +1,5 @@
 export const Unauthorize = () => {
-  const userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId"); // Post userId to Sequence endpoint
   fetch("/Unauthorize", {
     method: "POST",
     headers: {
@@ -11,6 +11,7 @@ export const Unauthorize = () => {
   })
     .then((response) => {
       if (response.ok) {
+        // Session and cache destroyed
         return response.json();
       } else {
         throw new Error("Response not OK");
@@ -24,9 +25,13 @@ export const Unauthorize = () => {
     .catch((error) => {
       console.error(error);
     });
-  const entry_point = "/";
+
+  // Clear local storage credentials
   Object.keys(localStorage).forEach((el) => {
     localStorage.removeItem(el);
   });
+
+  // User is no longer logged in, redirect them back to home page
+  const entry_point = "/";
   window.location.href = entry_point;
 };

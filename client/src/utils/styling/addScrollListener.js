@@ -7,7 +7,7 @@ export const addScrollListener = (scrollableElement) => {
       }
 
       // Clear our timeout throughout the scroll
-      let isScrolling = null; //give default value
+      let isScrolling = null; // Give default value
       window.clearTimeout(isScrolling);
       // Set a timeout to run after scrolling ends
       isScrolling = setTimeout(function () {

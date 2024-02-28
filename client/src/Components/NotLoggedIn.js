@@ -4,6 +4,7 @@ const NotLoggedIn = () => {
   const CloseAlert = () => {
     const logoutContainer = document.getElementById("not-logged-in");
     logoutContainer.style.display = "none";
+    window.location.href = "/";
   };
 
   return (

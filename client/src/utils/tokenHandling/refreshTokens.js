@@ -4,8 +4,9 @@ export const refreshTokens = async () => {
   try {
     const access_token = localStorage.getItem("access_token");
     const refresh_token = localStorage.getItem("refresh_token");
-    const expires = localStorage.getItem("expires"); //get current states
+    const expires = localStorage.getItem("expires"); // Get current client state
     const response = await fetch("/RefreshToken", {
+      // Send current state to Sequence
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,15 +20,16 @@ export const refreshTokens = async () => {
     if (response.ok) {
       const data = await response.json();
       if (data.access_token && data.refresh_token && data.expires) {
-        //all are successfully defined
+        // All are successfully defined
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refresh_token", data.refresh_token);
         localStorage.setItem("expires", data.expires);
       } else if (data.redirect_uri) {
-        //something went wrong, controlled redirect
-        ActivateErrorNotice("no redirect_uri");
+        // Something went wrong, controlled redirect
+        ActivateErrorNotice("redirect_uri");
+        // window.location.href = data.redirect_uri;
       } else {
-        //something went wrong
+        // Something went wrong
         throw new Error("Response not Formatted as Expected");
       }
     } else {

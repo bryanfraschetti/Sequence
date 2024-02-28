@@ -5,21 +5,21 @@ import { minDelta } from "../math/minDelta";
 import { createPlaylist } from "../dataAcquisition/createPlaylist";
 
 export const CoF = (initSongId) => {
-  let songList = SequenceNamespace.getVar("songList");
+  let songList = SequenceNamespace.getVar("songList"); // Mutable list of candidate songs
   const initSong = songList.find((song) => {
     return song.track_id === initSongId;
-  });
+  }); // Get details based on selected song
 
   const NewSequence = [];
   NewSequence.push(initSong);
 
   songList = songList.filter((song) => {
     return song !== initSong;
-  });
+  }); // Remove initSong from candidate songs
 
   const safeClosure = (function () {
     const songProperties = {
-      nextKey: modulo_12(initSong.endkey - 7), //resolving is equivalent to moving down 7 semitones
+      nextKey: modulo_12(initSong.endkey - 7), // Resolving is equivalent to moving down 7 semitones
       nextMode: initSong.endmode,
       targetTempo: initSong.endtempo,
     };
@@ -35,6 +35,7 @@ export const CoF = (initSongId) => {
   })();
 
   while (songList.length > 0) {
+    // While not every song has been used
     let candidateSongs = [];
 
     candidateSongs = songList.filter((song) => {
@@ -45,8 +46,11 @@ export const CoF = (initSongId) => {
     });
 
     if (candidateSongs.length === 0) {
-      //no keys to resolve to, find song in same key
-      safeClosure.setVar("nextKey", modulo_12(safeClosure.getVar("nextKey") + 7));
+      // No keys to resolve to, find song in same key
+      safeClosure.setVar(
+        "nextKey",
+        modulo_12(safeClosure.getVar("nextKey") + 7)
+      );
 
       candidateSongs = songList.filter((song) => {
         return (
@@ -56,10 +60,13 @@ export const CoF = (initSongId) => {
       });
 
       if (candidateSongs.length === 0) {
-        //no matches -> relative key
+        // No matches -> relative key
         safeClosure.setVar(
           "nextKey",
-          relativeKey(safeClosure.getVar("nextKey"), safeClosure.getVar("nextMode"))
+          relativeKey(
+            safeClosure.getVar("nextKey"),
+            safeClosure.getVar("nextMode")
+          )
         );
         safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode"));
 
@@ -71,26 +78,28 @@ export const CoF = (initSongId) => {
         });
 
         if (candidateSongs.length === 0) {
-          //no relative key -> closest tempo
+          // No relative key -> closest tempo
           candidateSongs = songList;
         }
       }
     }
 
-    const closestByTempo = minDelta(candidateSongs, safeClosure.getVar("targetTempo"));
+    const closestByTempo = minDelta(
+      candidateSongs,
+      safeClosure.getVar("targetTempo")
+    );
     const nextSong = closestByTempo.song;
 
     NewSequence.push(nextSong);
     songList = songList.filter((song) => {
       return song !== nextSong;
-    }); //remove song from mutable list
+    }); // Remove song from mutable list
 
     safeClosure.setVar("nextKey", modulo_12(nextSong.endkey - 7));
     safeClosure.setVar("nextMode", nextSong.endmode);
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  //see https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist for information on body parameters
   // console.log(NewSequence);
   createPlaylist("CoF Sequenced ", NewSequence);
 };

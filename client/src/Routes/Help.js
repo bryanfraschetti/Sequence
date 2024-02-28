@@ -3,7 +3,7 @@ import NavBar from "../Components/NavBar";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import LogOut from "../Components/LogOut";
 import { getUserid } from "../utils/dataAcquisition/getUserid";
-import NotLoggedIn from "../Components/notLoggedIn";
+import NotLoggedIn from "../Components/NotLoggedIn";
 
 const Help = () => {
   useEffect(() => {

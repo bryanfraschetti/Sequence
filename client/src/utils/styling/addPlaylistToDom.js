@@ -6,7 +6,9 @@ export const addPlaylistToDom = (playlistInfo) => {
   // Playlist Info
   const playlistId = playlistInfo.id;
   const coverArtSrc =
-    playlistInfo.images.length !== 0 ? playlistInfo.images.slice(-1)[0].url : phonogram;
+    playlistInfo.images.length !== 0
+      ? playlistInfo.images.slice(-1)[0].url
+      : phonogram;
   const titleText = playlistInfo.name;
 
   // Create React Element Server Side
@@ -14,6 +16,7 @@ export const addPlaylistToDom = (playlistInfo) => {
     <PlaylistRow id={playlistId} src={coverArtSrc} titleText={titleText} />
   );
 
+  // Inject Rendered Element into DOM
   const tempContainer = document.createElement("div");
   tempContainer.innerHTML = playlistElementString;
   const playlistList = document.getElementById("playlist-list");

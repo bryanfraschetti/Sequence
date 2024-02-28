@@ -14,7 +14,7 @@ import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper"
 import { sequencingModeListener } from "../utils/selectionListeners/sequencingModeListener";
 import LogOut from "../Components/LogOut";
 import ErrorNotice from "../Components/ErrorNotice";
-import NotLoggedIn from "../Components/notLoggedIn";
+import NotLoggedIn from "../Components/NotLoggedIn";
 import SequenceModeButton from "../Components/SequenceModeButton";
 
 const SequencerPage = () => {
@@ -46,7 +46,11 @@ const SequencerPage = () => {
           <ul className="playlists" id="playlist-list"></ul>
         </nav>
         <div className="tracks" id="tracks">
-          <button className="show-hide active" id="sidebarCollapse" onClick={toggleSidebar}>
+          <button
+            className="show-hide active"
+            id="sidebarCollapse"
+            onClick={toggleSidebar}
+          >
             <span className="arrow active" id="left-arrow">
               ◂
             </span>
@@ -57,12 +61,27 @@ const SequencerPage = () => {
           <div className="sequencer" id="sequencer">
             <h3 className="subheading">Choose Sequencing</h3>
             <div className="button-container" id="button-container">
-              <SequenceModeButton id="cof" text="Circle of Fifths"></SequenceModeButton>
-              <SequenceModeButton id="rsm" text="Rising Semitone Modal"></SequenceModeButton>
-              <SequenceModeButton id="dsm" text="Descending Semitone Modal"></SequenceModeButton>
-              <SequenceModeButton id="rsa" text="Rising Semitone Alternate"></SequenceModeButton>
+              <SequenceModeButton
+                id="cof"
+                text="Circle of Fifths"
+              ></SequenceModeButton>
+              <SequenceModeButton
+                id="rsm"
+                text="Rising Semitone Modal"
+              ></SequenceModeButton>
+              <SequenceModeButton
+                id="dsm"
+                text="Descending Semitone Modal"
+              ></SequenceModeButton>
+              <SequenceModeButton
+                id="rsa"
+                text="Rising Semitone Alternate"
+              ></SequenceModeButton>
               <SequenceModeButton id="fader" text="Fader"></SequenceModeButton>
-              <SequenceModeButton id="timbre" text="Timbre"></SequenceModeButton>
+              <SequenceModeButton
+                id="timbre"
+                text="Timbre"
+              ></SequenceModeButton>
             </div>
             <hr className="separator" id="seq-track-sep" />
           </div>
@@ -70,7 +89,9 @@ const SequencerPage = () => {
             Playlist Tracklist
           </h3>
           <EmptyStateArt
-            innerHTML={"This area will populate with songs once you select a playlist."}
+            innerHTML={
+              "This area will populate with songs once you select a playlist."
+            }
           ></EmptyStateArt>
           <table className="tracks-table" id="tracks-table"></table>
         </div>

@@ -10,9 +10,15 @@ export const addTrackToDom = (trackInfo) => {
 
   // Create React Element Server Side
   const trackElementString = renderToString(
-    <TrackElement id={trackId} src={albumArtSrc} trackName={trackName} artist={artist} />
+    <TrackElement
+      id={trackId}
+      src={albumArtSrc}
+      trackName={trackName}
+      artist={artist}
+    />
   );
 
+  // Inject Rendered Element into DOM
   const tempContainer = document.createElement("tbody");
   tempContainer.innerHTML = trackElementString;
   const tracksBody = document.getElementById("tracks-body");

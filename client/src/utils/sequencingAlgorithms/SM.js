@@ -3,7 +3,7 @@ import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
 import { createPlaylist } from "../dataAcquisition/createPlaylist";
 
-//Semitone modal (change by semitone, keep modality)
+// Semitone modal (change by semitone, keep modality)
 export const SM = (initSongId, semitoneDirection) => {
   let songList = SequenceNamespace.getVar("songList");
   const initSong = songList.find((song) => {
@@ -45,7 +45,7 @@ export const SM = (initSongId, semitoneDirection) => {
     });
 
     if (candidateSongs.length === 0) {
-      safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); //toggle mode
+      safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); // Toggle mode
       candidateSongs = songList.filter((song) => {
         return (
           song.startkey === safeClosure.getVar("nextKey") &&
@@ -66,16 +66,22 @@ export const SM = (initSongId, semitoneDirection) => {
         candidateSongs = songList;
       }
     }
-    const closestByTempo = minDelta(candidateSongs, safeClosure.getVar("targetTempo"));
+    const closestByTempo = minDelta(
+      candidateSongs,
+      safeClosure.getVar("targetTempo")
+    );
 
     const nextSong = closestByTempo.song;
 
     NewSequence.push(nextSong);
     songList = songList.filter((song) => {
       return song !== nextSong;
-    }); //remove song from mutable list (it will no longer be available for songList.find() and so it won't duplicate)
+    }); // Remove song from mutable list (it will no longer be available for songList.find() and so it won't duplicate)
 
-    safeClosure.setVar("nextKey", modulo_12(nextSong.endkey + semitoneDirection)); //set up key for next round
+    safeClosure.setVar(
+      "nextKey",
+      modulo_12(nextSong.endkey + semitoneDirection)
+    ); // Set up key for next round
     safeClosure.setVar("nextMode", nextSong.endmode);
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }

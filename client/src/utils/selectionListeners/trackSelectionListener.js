@@ -9,10 +9,13 @@ import { Timbre } from "../sequencingAlgorithms/Timbre";
 export const trackSelectionListener = async () => {
   const tracksTable = document.getElementById("tracks-table");
   tracksTable.addEventListener("click", function selectTrack(e) {
-    //parent listener
+    // Parent listener
     e.preventDefault();
 
-    if (e.target.classList.contains("spotify-btn") || e.target.classList.contains("spotify-logo")) {
+    if (
+      e.target.classList.contains("spotify-btn") ||
+      e.target.classList.contains("spotify-logo")
+    ) {
       const trackId = e.target.id;
       const spotifyUrl = `https://open.spotify.com/track/${trackId}`;
       window.open(spotifyUrl, "_blank", "noopener,noreferrer");
@@ -31,10 +34,10 @@ export const trackSelectionListener = async () => {
           CoF(initSongId);
           break;
         case "rsm":
-          SM(initSongId, 1); //+1 for rising
+          SM(initSongId, 1); // +1 for rising
           break;
         case "dsm":
-          SM(initSongId, -1); //-1 for descending
+          SM(initSongId, -1); // -1 for descending
           break;
         case "rsa":
           RSA(initSongId);

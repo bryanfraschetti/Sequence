@@ -1,4 +1,5 @@
 export const SquaredEuclideanDistance = (v1, v2) => {
+  // Squared elementwise vector difference: ||(v1-v2)||.^2
   let sumSquaredDifferences = 0;
 
   for (let i = 0; i < v1.length; i++) {

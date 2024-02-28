@@ -14,11 +14,11 @@ export const Timbre = (initSongId) => {
 
   songList = songList.filter((obj) => {
     return obj !== initSong;
-  }); //remove song from mutable list (it will no longer be available for mutable_song_list.find() and so it won't duplicate)
+  }); // Remove song from mutable list (it will no longer be available for mutable_song_list.find() and so it won't duplicate)
 
-  //safe reference to current song since its scope
-  //resides outside the loop (so that it is accessible in each iteration)
-  //but it will change every iteration of the loop
+  // Safe reference to current song since its scope
+  // Resides outside the loop (so that it is accessible in each iteration)
+  // But it will change every iteration of the loop
   const safeClosure = (function () {
     let cur = initSong;
 
@@ -43,8 +43,10 @@ export const Timbre = (initSongId) => {
         );
         indexClosest = index;
       } else if (
-        SquaredEuclideanDistance(safeClosure.getCur().endTimbreCentroid, song.begTimbreCentroid) <
-        minDist
+        SquaredEuclideanDistance(
+          safeClosure.getCur().endTimbreCentroid,
+          song.begTimbreCentroid
+        ) < minDist
       ) {
         minDist = SquaredEuclideanDistance(
           safeClosure.getCur().endTimbreCentroid,

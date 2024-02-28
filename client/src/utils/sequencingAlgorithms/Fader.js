@@ -40,38 +40,47 @@ export const Fader = (initSongId) => {
     let candidateSongs = songList.filter((song) => {
       return (
         song.startkey === safeClosure.getVar("nextKey") &&
-        song.startmode === safeClosure.getVar("nextMode") //find song in same key
+        song.startmode === safeClosure.getVar("nextMode") // Find song in same key
       );
     });
 
     if (candidateSongs.length === 0) {
-      //no matches
+      // No matches
       safeClosure.setVar(
         "nextKey",
-        relativeKey(safeClosure.getVar("nextKey"), safeClosure.getVar("nextMode"))
-      ); //look for relative key
+        relativeKey(
+          safeClosure.getVar("nextKey"),
+          safeClosure.getVar("nextMode")
+        )
+      ); // Look for relative key
       safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode"));
 
       candidateSongs = songList.filter((song) => {
         return (
           song.startkey === safeClosure.getVar("nextKey") &&
-          song.startmode === safeClosure.setVar("nextMode") //relative key
+          song.startmode === safeClosure.setVar("nextMode") // Relative key
         );
       });
 
       if (candidateSongs.length === 0) {
-        //no exact key match nor relative key
+        // No exact key match nor relative key
         safeClosure.setVar(
           "nextKey",
-          relativeKey(safeClosure.getVar("nextKey"), safeClosure.getVar("nextMode"))
-        ); //go back to original ending key
+          relativeKey(
+            safeClosure.getVar("nextKey"),
+            safeClosure.getVar("nextMode")
+          )
+        ); // Go back to original ending key
         safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode"));
-        safeClosure.setVar("nextKey", modulo_12(safeClosure.getVar("nextKey") - 7)); //try resolving down
+        safeClosure.setVar(
+          "nextKey",
+          modulo_12(safeClosure.getVar("nextKey") - 7)
+        ); // Try resolving down
 
         candidateSongs = songList.filter((song) => {
           return (
             song.startkey === safeClosure.getVar("nextKey") &&
-            song.startmode === safeClosure.getVar("nextMode") //relative key
+            song.startmode === safeClosure.getVar("nextMode") // Relative key
           );
         });
 
@@ -81,13 +90,16 @@ export const Fader = (initSongId) => {
       }
     }
 
-    const closestByTempo = minDelta(candidateSongs, safeClosure.getVar("targetTempo"));
+    const closestByTempo = minDelta(
+      candidateSongs,
+      safeClosure.getVar("targetTempo")
+    );
     const nextSong = closestByTempo.song;
 
     NewSequence.push(nextSong);
     songList = songList.filter((song) => {
       return song !== nextSong;
-    }); //remove song from mutable list
+    }); // Remove song from mutable list
 
     safeClosure.setVar("nextKey", nextSong.endkey);
     safeClosure.setVar("nextMode", nextSong.endmode);

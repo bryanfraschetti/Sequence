@@ -18,8 +18,8 @@ export const RSA = (initSongId) => {
 
   const safeClosure = (function () {
     const songProperties = {
-      nextKey: modulo_12(initSong.endkey + 1), //rise by a semitone
-      nextMode: 1 - initSong.endmode, //alternate mode
+      nextKey: modulo_12(initSong.endkey + 1), // Rise by a semitone
+      nextMode: 1 - initSong.endmode, // Alternate mode
       targetTempo: initSong.endtempo,
     };
 
@@ -42,8 +42,8 @@ export const RSA = (initSongId) => {
     });
 
     if (candidateSongs.length === 0) {
-      //keep initial modality
-      safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); //get initial mode back
+      // Keep initial modality
+      safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); // Get initial mode back
       candidateSongs = songList.filter((song) => {
         return (
           song.startkey === safeClosure.getVar("nextKey") &&
@@ -52,8 +52,11 @@ export const RSA = (initSongId) => {
       });
 
       if (candidateSongs.length === 0) {
-        safeClosure.setVar("nextKey", modulo_12(safeClosure.getVar("nextKey") - 1)); //initial key
-        safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); //alternate mode
+        safeClosure.setVar(
+          "nextKey",
+          modulo_12(safeClosure.getVar("nextKey") - 1)
+        ); // Initial key
+        safeClosure.setVar("nextMode", 1 - safeClosure.getVar("nextMode")); // Alternate mode
         candidateSongs = songList.filter((song) => {
           return (
             song.startkey === safeClosure.getVar("nextKey") &&
@@ -67,7 +70,10 @@ export const RSA = (initSongId) => {
       }
     }
 
-    const closestByTempo = minDelta(candidateSongs, safeClosure.getVar("targetTempo"));
+    const closestByTempo = minDelta(
+      candidateSongs,
+      safeClosure.getVar("targetTempo")
+    );
     const nextSong = closestByTempo.song;
 
     NewSequence.push(nextSong);

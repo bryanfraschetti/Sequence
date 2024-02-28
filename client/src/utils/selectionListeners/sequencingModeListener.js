@@ -6,10 +6,10 @@ export const sequencingModeListener = () => {
   const btnSet = document.getElementsByClassName("sequencer-buttons");
 
   for (let i = 0; i < btnSet.length; i++) {
-    //for each button add an event listener
+    // For each button add an event listener
     btnSet[i].addEventListener("click", (e) => {
-      e.currentTarget.classList.remove("inactive-sequencer"); //remove inactive class from clicked button
-      e.currentTarget.classList.add("active-sequencer"); //add active class to clicked button
+      e.currentTarget.classList.remove("inactive-sequencer"); // Remove inactive class from clicked button
+      e.currentTarget.classList.add("active-sequencer"); // Add active class to clicked button
       e.currentTarget.parentElement.classList.remove("seq-wrapper-inactive");
       e.currentTarget.parentElement.classList.add("seq-wrapper-active");
 
@@ -17,13 +17,13 @@ export const sequencingModeListener = () => {
 
       if (prevActiveBtnId !== null && prevActiveBtnId !== e.currentTarget) {
         const prevActiveBtn = document.getElementById(prevActiveBtnId);
-        prevActiveBtn.classList.add("inactive-sequencer"); //make old stored button inactive
-        prevActiveBtn.classList.remove("active-sequencer"); //remove active
+        prevActiveBtn.classList.add("inactive-sequencer"); // Make old stored button inactive
+        prevActiveBtn.classList.remove("active-sequencer"); // Remove active
         prevActiveBtn.parentElement.classList.add("seq-wrapper-inactive");
         prevActiveBtn.parentElement.classList.remove("seq-wrapper-active");
       }
 
-      SequenceNamespace.setVar("sequencingMode", e.currentTarget.id); //set stored active button equal to current target
+      SequenceNamespace.setVar("sequencingMode", e.currentTarget.id); // Set stored active button equal to current target
     });
   }
 };

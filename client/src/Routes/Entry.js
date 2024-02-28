@@ -10,7 +10,7 @@ import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper"
 import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
 import LogOut from "../Components/LogOut";
 import { getUserid } from "../utils/dataAcquisition/getUserid";
-import NotLoggedIn from "../Components/notLoggedIn";
+import NotLoggedIn from "../Components/NotLoggedIn";
 
 const Entry = () => {
   useEffect(() => {
