@@ -249,26 +249,52 @@ app.post("/createUserCache", async (req, res) => {
     userId: userId,
     profilePicUrl: profilePicUrl,
   });
-  console.log("CREATED USER");
+  //   console.log("CREATED USER")
   await client.expire(`user:${userId}`, 3600); // Expire key in one hour
   res.status(200).send("OK");
 });
 
 app.use("/getUserCache", bodyParser.json());
 app.post("/getUserCache", async (req, res) => {
-  console.log(req.body.userId);
   const userId = req.body.userId;
   const cachedUser = await client.json.get(`user:${userId}`);
-  console.log("Cached user", cachedUser);
+  //   console.log("Cached user", cachedUser);
   if (cachedUser) {
     await client.expire(`user:${userId}`, 3600); // Refresh key to last another one hour
-    res.json({ userCache: cachedUser });
+    res.status(200).json({ userCache: cachedUser });
   } else {
-    console.log("No user");
     // No user cached (e.g. returning user that has been dropped from memory)
+    // console.log("No user");
     res.status(404).json();
   }
 });
+
+app.use("/updatePlaylistCache", bodyParser.json());
+app.post("/updatePlaylistCache", async (req, res) => {
+  // console.log("UPDATING PLAYLIST CACHE");
+  console.log(req.body);
+  const { userId, playlistList } = req.body;
+  // Update Redis JSON in place
+  await client.json.set(`user:${userId}`, "$.playlistList", playlistList);
+  await client.expire(`user:${userId}`, 3600); // Expire key in one hour
+  res.status(200).json();
+});
+
+app.use("/getPlaylistCache", bodyParser.json());
+app.post("/getPlaylistCache", async (req, res) => {
+  const userId = req.body.userId;
+  await client.expire(`user:${userId}`, 3600); // Refresh key to last another one hour
+  const cachedUser = await client.json.get(`user:${userId}`);
+  const cachedPlaylists = cachedUser.playlistList;
+  if (cachedPlaylists) {
+    res.status(200).json({ cachedPlaylists: cachedPlaylists });
+  } else {
+    // No cached playlist
+    // console.log("No cached playlists");
+    res.status(404).json();
+  }
+});
+
 const generateRandomString = function (length) {
   let text = "";
   let possible =

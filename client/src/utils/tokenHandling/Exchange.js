@@ -1,7 +1,7 @@
 import { ActivateAnimation } from "../styling/ActivateAnimation";
 import { tokenTimeValidity } from "./tokenTimeValidity";
 import { refreshTokens } from "./refreshTokens";
-import { refreshPlaylists } from "../dataAcquisition/refreshPlaylists";
+import { getPlaylists } from "../dataAcquisition/getPlaylists";
 import { getUserid } from "../dataAcquisition/getUserid";
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 
@@ -56,8 +56,8 @@ export const Exchange = async () => {
   }
 
   await getUserid();
-  console.log("user is received");
-  await refreshPlaylists();
-  console.log("playlists refreshed");
+  //   console.log("user is received");
+  await getPlaylists();
+  //   console.log("playlists refreshed");
   ActivateAnimation();
 };

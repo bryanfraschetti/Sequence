@@ -1,11 +1,12 @@
 import { setProfileImage } from "../styling/setProfileImage";
 import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { tokenTimeValidity } from "../tokenHandling/tokenTimeValidity";
+import { updateUserCache } from "../updateCache/updateUserCache";
 
 export const getUserInfoSpotify = async () => {
   const refresh_token = localStorage.getItem("refresh_token");
   const tokensExpired = tokenTimeValidity();
-  console.log("in spotify get user");
+  // console.log("in spotify get user");
 
   if (refresh_token && tokensExpired) {
     await refreshTokens();
@@ -13,7 +14,7 @@ export const getUserInfoSpotify = async () => {
 
   const access_token = localStorage.getItem("access_token");
 
-  fetch("https://api.spotify.com/v1/me", {
+  await fetch("https://api.spotify.com/v1/me", {
     // Spotify user end point
     method: "GET",
     headers: {
@@ -28,7 +29,7 @@ export const getUserInfoSpotify = async () => {
         throw new Error(response);
       }
     })
-    .then((response) => {
+    .then(async (response) => {
       // Get User Id and their profile image
       const userId = response.id;
       localStorage.setItem("userId", userId);
@@ -40,17 +41,7 @@ export const getUserInfoSpotify = async () => {
         setProfileImage(profilePicUrl);
       }
 
-      fetch("/createUserCache", {
-        // Cache Image (or the lack thereof)
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: userId,
-          profilePicUrl: profilePicUrl,
-        }),
-      });
+      await updateUserCache(userId, profilePicUrl);
     })
     .catch((error) => {
       console.error(error);

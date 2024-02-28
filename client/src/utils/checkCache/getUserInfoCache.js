@@ -13,15 +13,15 @@ export const getUserInfoCache = async (userID) => {
       }),
     });
 
-    console.log("RESPONSE:", response);
-    console.log("RESPONSE.json():", response.json);
+    // console.log("RESPONSE:", response);
+    // console.log("RESPONSE.json():", response.json);
     if (!response.ok) {
       throw new Error(response.statusText);
     }
 
     // Read cached data
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     const cachedUser = data.userCache;
     const profileUrl = cachedUser.profilePicUrl;
 

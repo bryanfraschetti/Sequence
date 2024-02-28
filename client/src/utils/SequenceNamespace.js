@@ -4,6 +4,7 @@ import { ActivateAnimation } from "./styling/ActivateAnimation";
 export const SequenceNamespace = (function () {
   const globalVars = {
     songList: [],
+    playlistList: [],
     playlistId: null,
     playlistName: null,
     sequencingMode: null,
@@ -19,13 +20,14 @@ export const SequenceNamespace = (function () {
     }, // Set closed value
 
     appendArray: function (arrayKey, valueToPush) {
-      // Append a value to an array (the only array is songList)
+      // Append a value to an array
       if (Array.isArray(globalVars[arrayKey])) {
         globalVars[arrayKey].push(valueToPush);
-        // console.log(globalVars[arrayKey]);
         if (
+          // If modifying songList, check to see if we have captured all songs
+          arrayKey === "songList" &&
           globalVars[arrayKey].length ===
-          parseInt(localStorage.getItem("expectedNumSongs"))
+            parseInt(localStorage.getItem("expectedNumSongs"))
         ) {
           // The expected number of songs have been successfully fetched
           ActivateAnimation(); // Toggle animation state

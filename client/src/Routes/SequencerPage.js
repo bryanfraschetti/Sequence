@@ -4,7 +4,7 @@ import Footer from "../Components/Footer";
 import LoadingAnimation from "../Components/LoadingAnimation";
 import { toggleSidebar } from "../utils/styling/toggleSidebar";
 import { Exchange } from "../utils/tokenHandling/Exchange";
-import { refreshPlaylists } from "../utils/dataAcquisition/refreshPlaylists";
+import { getPlaylistsSpotify } from "../utils/acessSpotify/getPlaylistsSpotify";
 import { addScrollListener } from "../utils/styling/addScrollListener";
 import "./SequencerPage.css";
 import EmptyStateArt from "../Components/EmptyStateArt";
@@ -40,7 +40,7 @@ const SequencerPage = () => {
           <div className="sidebar-header">
             <h3 className="subheading">Playlists</h3>
           </div>
-          <button className="mybtn" onClick={refreshPlaylists}>
+          <button className="mybtn" onClick={getPlaylistsSpotify}>
             Refresh Playlists
           </button>
           <ul className="playlists" id="playlist-list"></ul>
