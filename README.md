@@ -11,7 +11,7 @@ based on music theory
 
 Naturally, the .env configuration file used in development is not tracked as it contains confidential credentials.
 Similarly, when running in a docker container it is unadvisable to store the .env on the container. For this reason, the real
-docker-compose.yaml is also not version tracked. An example docker-compose without any critical information is nonetheless provided.
+docker-compose.yaml is also not version tracked. An example docker-compose without any critical information is nevertheless provided.
 
 ## Production Steps
 
@@ -38,9 +38,27 @@ docker build -t sequence .
 docker compose up
 ```
 
+This also starts a redis-stack-server container, which is the redis container that the Sequence container communicates with.
+
+It may be necessary to run
+
+```
+redis-cli shutdown
+```
+
+to free up port 6379 since localhost:6379 is mapped to redis-stack-server:6379 (the docker container redis service)
+
 ## Development Steps
 
 In development, services like nodemon allow for changes and updates to be observed in realtime. To take advantage of this, the user interacts with a React server. Requests that cannot be satisfied by the React app are proxied to the Express/Node server, which acts as a middleware between the client and the Spotify API. In this setup, the React App is setup to run on port 3000 and the Express/Node App is on port 3001.
+
+### Start Local Redis Server
+
+```
+redis-server --loadmodule /path/to/librejson.so --daemonize yes
+```
+
+This starts the redis server as a background process with the JSON module loaded
 
 ### Start React App
 

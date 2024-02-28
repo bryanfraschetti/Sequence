@@ -1,5 +1,11 @@
 version: "3"
 services:
+  redis-stack-server:
+    image: redis/redis-stack-server:latest
+    container_name: redis-stack-server
+    ports:
+      - "6379:6379"
+    restart: always
   sequence:
     image: sequence
     environment:
@@ -9,8 +15,4 @@ services:
     ports:
       - 3001:3001
     depends_on:
-      - redis
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
+      - redis-stack-server

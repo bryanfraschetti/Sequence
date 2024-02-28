@@ -7,11 +7,12 @@ import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 export const refreshPlaylists = async () => {
   const access_token = localStorage.getItem("access_token");
   const tokensExpired = tokenTimeValidity();
-
+  console.log("in playlists function");
   if (tokensExpired) {
     await refreshTokens();
   }
 
+  removeAllChildren("playlist-list"); // Get rid of all playlists in the table
   fetch("https://api.spotify.com/v1/me/playlists?limit=50&offset=0", {
     method: "GET",
     headers: {
@@ -20,6 +21,7 @@ export const refreshPlaylists = async () => {
     },
   })
     .then((response) => {
+      console.log(response);
       if (response.ok) {
         return response.json();
       } else {
@@ -27,7 +29,7 @@ export const refreshPlaylists = async () => {
       }
     })
     .then((response) => {
-      removeAllChildren("playlist-list"); // Get rid of all playlists in the table
+      response.items.forEach((playlistItem) => addPlaylistToDom(playlistItem));
 
       const numPlaylists = response.total; // Total number of playlists
       // 50 can be fetched at a time

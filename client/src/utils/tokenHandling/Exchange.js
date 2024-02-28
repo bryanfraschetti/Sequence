@@ -51,7 +51,9 @@ export const Exchange = async () => {
     }
   }
 
-  getUserid();
+  await getUserid();
+  console.log("user is received");
   await refreshPlaylists();
+  console.log("playlists refreshed");
   ActivateAnimation();
 };

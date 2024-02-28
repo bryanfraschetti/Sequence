@@ -3,13 +3,16 @@ import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { tokenTimeValidity } from "../tokenHandling/tokenTimeValidity";
 
 export const getUserInfoSpotify = async () => {
-  const access_token = localStorage.getItem("access_token");
   const refresh_token = localStorage.getItem("refresh_token");
   const tokensExpired = tokenTimeValidity();
+  console.log("in spotify get user");
 
   if (refresh_token && tokensExpired) {
     await refreshTokens();
   }
+
+  const access_token = localStorage.getItem("access_token");
+
   fetch("https://api.spotify.com/v1/me", {
     // Spotify user end point
     method: "GET",

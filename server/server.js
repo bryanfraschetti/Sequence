@@ -1,26 +1,35 @@
-//confidential app credentials
-require("dotenv").config();
+// Confidential app credentials
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const cookieSigner = process.env.COOKIE_SIGNER;
 
-//frequent uris
+// Frequent uris
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 const entryPoint = "http://127.0.0.1:3001/";
 const authCallback = "http://127.0.0.1:3001/authorizationCallback";
 
-//modules
+// Modules
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 
-//instantiate
+// Create redis client
+const redis = require("redis");
+const client = redis.createClient({ url: "redis://redis-stack-server:6379" });
+client
+  .connect()
+  .then(() => {
+    console.log("Redis Client Connected");
+  })
+  .catch((err) => console.error("Redis Client Error:", err));
+
+// Instantiate
 const app = express();
 app.listen(3001);
 
-//define session parameters
+// Define session parameters
 app.use(
   session({
     resave: false,
@@ -29,7 +38,7 @@ app.use(
   })
 );
 
-//onClick generate redirect uri to spotify authorization endpoint
+// onClick generate redirect uri to spotify authorization endpoint
 app.get("/initiateAuth", (req, res) => {
   const state = generateRandomString(16); //state key for integrity
   let url = spotifyAuthUrl;
@@ -49,23 +58,23 @@ app.get("/initiateAuth", (req, res) => {
 });
 
 app.get("/authorizationCallback", (req, res) => {
-  //reach spotify endpoint, generate tokens, return tokens, redirect user
-  //spotify response
+  // Reach spotify endpoint, generate tokens, return tokens, redirect user
+  // Spotify response
   const code = req.query.code;
   const spotifyState = req.query.state;
 
-  //generated session state
+  // Generated session state
   const sessionState = req.session.state;
 
-  //check spotifyState against sessionState to ensure integrity
+  // Check spotifyState against sessionState to ensure integrity
   const authorizationComplete =
     code && spotifyState && spotifyState === sessionState ? true : false;
 
   if (!authorizationComplete) {
-    //not complete or integrity lost
+    // Not complete or integrity lost
     res.redirect(entryPoint);
   } else {
-    //begin token generation
+    // Begin token generation
     const authBody =
       "grant_type=authorization_code" +
       "&code=" +
@@ -84,7 +93,7 @@ app.get("/authorizationCallback", (req, res) => {
     })
       .then((response) => {
         if (response.ok) {
-          //successful token generation
+          // Successful token generation
           return response.json();
         } else {
           throw new Error("Response not OK");
@@ -100,23 +109,23 @@ app.get("/authorizationCallback", (req, res) => {
         };
       })
       .then((tokens) => {
-        //store tokens in session, redirect user to "/home"
+        // Store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
         res.redirect("http://127.0.0.1:3001/sequencer");
       })
       .catch((error) => {
-        //something went wrong, send user to index page
+        // Something went wrong, send user to index page
         // console.error(error)
         res.redirect(entryPoint);
       });
   }
 });
 
-//this endpoint is reached to ensure both client and server agree on tokens
+// This endpoint is reached to ensure both client and server agree on tokens
 app.use("/AccessToken", bodyParser.json());
 app.post("/AccessToken", (req, res) => {
   if (req.session.tokens) {
-    //new or continuing session -> overwrite client
+    // New or continuing session -> overwrite client
     res.json({
       access_token: req.session.tokens.access_token,
       expires: req.session.tokens.expires,
@@ -128,8 +137,8 @@ app.post("/AccessToken", (req, res) => {
     req.body.access_token &&
     req.body.expires
   ) {
-    //session ended but user had a previous session
-    //get the most recent credentials used by client
+    // Session ended but user had a previous session
+    // Get the most recent credentials used by client
     req.session.tokens = {
       access_token: req.body.access_token,
       expires: req.body.expires,
@@ -144,7 +153,7 @@ app.post("/AccessToken", (req, res) => {
   } else {
     res.json({
       redirect_uri: entryPoint,
-    }); //send redirect
+    }); // Send redirect
   }
 });
 
@@ -152,18 +161,23 @@ app.use("/RefreshToken", bodyParser.json());
 app.post("/RefreshToken", (req, res) => {
   const refresh_token = req.body.refresh_token;
   if (!refresh_token) {
-    //missing credentials
+    // Missing credentials
     res.json({
       redirect_uri: entryPoint,
-    }); //send redirect
+    }); // Send redirect
   } else {
-    fetch(spotifyTokenUrl + "?grant_type=refresh_token&refresh_token=" + refresh_token, {
-      headers: {
-        Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      method: "POST",
-    })
+    fetch(
+      spotifyTokenUrl +
+        "?grant_type=refresh_token&refresh_token=" +
+        refresh_token,
+      {
+        headers: {
+          Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        method: "POST",
+      }
+    )
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -181,7 +195,7 @@ app.post("/RefreshToken", (req, res) => {
         };
       })
       .then((tokens) => {
-        //store tokens in session and send to user
+        // Store tokens in session and send to user
         req.session.tokens = tokens;
         res.json({
           access_token: req.session.tokens.access_token,
@@ -193,12 +207,14 @@ app.post("/RefreshToken", (req, res) => {
         // console.error(error)
         res.json({
           redirect_uri: entryPoint,
-        }); //send redirect
+        }); // Send redirect
       });
   }
 });
 
-app.get("/Unauthorize", (req, res) => {
+app.use("/Unauthorize", bodyParser.json());
+app.post("/Unauthorize", async (req, res) => {
+  // Destroy session (if it exists)
   if (req.session) {
     req.session.destroy((error) => {
       if (error) {
@@ -216,18 +232,53 @@ app.get("/Unauthorize", (req, res) => {
       destroyed: true,
     });
   }
+  // Remove from cache
+  const userId = req.body.userId;
+  try {
+    await client.del(`user:${userId}`);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
+app.use("/createUserCache", bodyParser.json());
+app.post("/createUserCache", async (req, res) => {
+  const { userId, profilePicUrl } = req.body;
+  await client.json.set(`user:${userId}`, "$", {
+    userId: userId,
+    profilePicUrl: profilePicUrl,
+  });
+  console.log("CREATED USER");
+  await client.expire(`user:${userId}`, 3600); // Expire key in one hour
+  res.status(200).send("OK");
+});
+
+app.use("/getUserCache", bodyParser.json());
+app.post("/getUserCache", async (req, res) => {
+  console.log(req.body.userId);
+  const userId = req.body.userId;
+  const cachedUser = await client.json.get(`user:${userId}`);
+  console.log("Cached user", cachedUser);
+  if (cachedUser) {
+    await client.expire(`user:${userId}`, 3600); // Refresh key to last another one hour
+    res.json({ userCache: cachedUser });
+  } else {
+    console.log("No user");
+    // No user cached (e.g. returning user that has been dropped from memory)
+    res.status(404).json();
+  }
+});
 const generateRandomString = function (length) {
   let text = "";
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let possible =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   while (text.length < length) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
 };
 
-// serve built react
+// Serve built react
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
