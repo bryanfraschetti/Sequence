@@ -23,7 +23,7 @@ export const Unauthorize = () => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      //   console.error(error);
     });
 
   // Clear local storage credentials

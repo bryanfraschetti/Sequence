@@ -4,7 +4,7 @@ import Footer from "../Components/Footer";
 import LoadingAnimation from "../Components/LoadingAnimation";
 import { toggleSidebar } from "../utils/styling/toggleSidebar";
 import { Exchange } from "../utils/tokenHandling/Exchange";
-import { getPlaylistsSpotify } from "../utils/acessSpotify/getPlaylistsSpotify";
+import { getPlaylistsSpotify } from "../utils/accessSpotify/getPlaylistsSpotify";
 import { addScrollListener } from "../utils/styling/addScrollListener";
 import "./SequencerPage.css";
 import EmptyStateArt from "../Components/EmptyStateArt";

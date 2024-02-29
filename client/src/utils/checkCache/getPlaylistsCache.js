@@ -18,20 +18,18 @@ export const getPlaylistsCache = async () => {
     if (!response.ok) {
       throw new Error(response.statusText);
     } else {
-      // console.log("RESPONSE playlist:", response);
-      // console.log("RESPONSE.json() playlist:", response.json);
-
       // Read cached data
       const data = await response.json();
-      //   console.log(data);
+
+      // Update UI with cached data
       data.cachedPlaylists.forEach((playlist) => {
-        addPlaylistToDom(playlist); // Update UI with cached data
+        addPlaylistToDom(playlist);
       });
 
       return true;
     }
   } catch (err) {
-    // console.log(err);
+    // console.error(err);
     // Failure in reading cache
     return false;
   }

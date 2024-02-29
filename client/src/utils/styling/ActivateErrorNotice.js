@@ -3,5 +3,5 @@ export const ActivateErrorNotice = (ERR) => {
   FetchAnimation.style.display = "none"; // Disable loading animation
   const ErrorNotice = document.getElementById("error-notice");
   ErrorNotice.style.display = "block"; // Enable error status
-  console.error(ERR);
+  //   console.error(ERR);
 };

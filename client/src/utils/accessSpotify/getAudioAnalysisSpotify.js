@@ -3,15 +3,20 @@ import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { SumAxis } from "../math/SumAxis";
 import { SequenceNamespace } from "../SequenceNamespace";
 
-export const getAudioAnalysis = async (track_id, track_name) => {
+export const getAudioAnalysisSpotify = async (trackInfo) => {
   const access_token = localStorage.getItem("access_token");
   const tokensExpired = tokenTimeValidity();
-
+  console.log("Getting Audio Analysis Spotify");
   if (tokensExpired) {
     await refreshTokens();
   }
 
-  fetch("https://api.spotify.com/v1/audio-analysis/" + track_id, {
+  const trackId = trackInfo.trackId;
+  const trackName = trackInfo.name;
+  const albumArtSrc = trackInfo.albumArtSrc;
+  const artist = trackInfo.artist;
+
+  fetch(`https://api.spotify.com/v1/audio-analysis/${trackId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -66,8 +71,10 @@ export const getAudioAnalysis = async (track_id, track_name) => {
       }
 
       const songInfo = {
-        songtitle: track_name,
-        track_id: track_id,
+        name: trackName,
+        trackId: trackId,
+        albumArtSrc: albumArtSrc,
+        artist: artist,
 
         startkey: data.sections[0].key,
         startmode: data.sections[0].mode,
@@ -81,8 +88,8 @@ export const getAudioAnalysis = async (track_id, track_name) => {
         endmode: data.sections[data.sections.length - 1].mode,
         endtempo: data.sections[data.sections.length - 1].tempo,
 
-        beginningTimbres: beginningSegments,
-        endingTimbre: endingSegments,
+        // beginningTimbres: beginningSegments,
+        // endingTimbre: endingSegments,
 
         begTimbreCentroid: begTimbreCentroid,
         endTimbreCentroid: endTimbreCentroid,

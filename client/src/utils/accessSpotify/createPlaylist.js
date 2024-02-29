@@ -36,35 +36,41 @@ export const createPlaylist = async (SequencingModeString, NewSequence) => {
       //get string after the last "/" as this corresponds to the id of the created playlist
       const newPlaylistId = newPlaylistURISplit[newPlaylistURISplit.length - 1];
 
-      //for every element in the new sequencing, add an element in the uri list that is a string "spotify:track:"{{ track_id }}
+      //for every element in the new sequencing, add an element in the uri list that is a string "spotify:track:"{{ trackId }}
       //https://developer.spotify.com/documentation/web-api/reference/#/operations/add-tracks-to-playlist has info on how to do this
       //see the section on that page: Body application/json > uris array of strings
       const trackURIList = []; //array of uris
       NewSequence.forEach((song) => {
-        trackURIList.push("spotify:track:" + song.track_id);
+        trackURIList.push("spotify:track:" + song.trackId);
       });
 
       const uriJSONString = JSON.stringify({ uris: trackURIList }); //convert uri_list to json and pass this as body
 
-      fetch("https://api.spotify.com/v1/playlists/" + newPlaylistId + "/tracks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: " Bearer " + access_token,
-        },
-        body: uriJSONString,
-      }).then((response) => {
+      fetch(
+        "https://api.spotify.com/v1/playlists/" + newPlaylistId + "/tracks",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: " Bearer " + access_token,
+          },
+          body: uriJSONString,
+        }
+      ).then((response) => {
         ActivateAnimation();
       });
 
-      fetch("https://api.spotify.com/v1/playlists/" + newPlaylistId + "/images", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: " Bearer " + access_token,
-        },
-        body: base64ImageString,
-      });
+      fetch(
+        "https://api.spotify.com/v1/playlists/" + newPlaylistId + "/images",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: " Bearer " + access_token,
+          },
+          body: base64ImageString,
+        }
+      );
     })
     .catch((error) => {
       ActivateErrorNotice(error);

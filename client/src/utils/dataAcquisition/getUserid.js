@@ -1,4 +1,4 @@
-import { getUserInfoSpotify } from "../acessSpotify/getUserInfoSpotify";
+import { getUserInfoSpotify } from "../accessSpotify/getUserInfoSpotify";
 import { getUserInfoCache } from "../checkCache/getUserInfoCache";
 
 export const getUserid = async () => {
@@ -6,16 +6,12 @@ export const getUserid = async () => {
 
   if (!userId) {
     // Access user info from Spotify
-    // console.log("Reaching spotify");
     await getUserInfoSpotify();
   } else {
     // Check cache
-    // console.log("Checking cache");
     const cached = await getUserInfoCache(userId);
-    // console.log(cached);
     if (!cached) {
       // Failure in cache
-      //   console.log("nothing in cache");
       await getUserInfoSpotify();
     }
   }

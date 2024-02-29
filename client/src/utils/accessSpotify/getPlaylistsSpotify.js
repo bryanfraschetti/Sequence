@@ -8,7 +8,7 @@ import { SequenceNamespace } from "../SequenceNamespace";
 export const getPlaylistsSpotify = async () => {
   const access_token = localStorage.getItem("access_token");
   const tokensExpired = tokenTimeValidity();
-  console.log("in spotify playlists function");
+  console.log("Getting Playlists from Spotify");
   if (tokensExpired) {
     await refreshTokens();
   }
@@ -30,17 +30,17 @@ export const getPlaylistsSpotify = async () => {
         throw new Error(response);
       }
     })
-    .then((response) => {
+    .then(async (response) => {
       response.items.forEach((playlistItem) => {
-        playlistItem = {
-          // Reduce to necessary properties before function call
+        // Reduce to necessary properties before function call
+        const playlist = {
           id: playlistItem.id,
           images: playlistItem.images,
           name: playlistItem.name,
         };
-        addPlaylistToDom(playlistItem); // Add playlist to DOM
+        addPlaylistToDom(playlist); // Add playlist to DOM
         // Client side list of playlists to upload to cache on success
-        SequenceNamespace.appendArray("playlistList", playlistItem);
+        SequenceNamespace.appendArray("playlistList", playlist);
       });
 
       const numPlaylists = response.total; // Total number of playlists
@@ -52,7 +52,7 @@ export const getPlaylistsSpotify = async () => {
       const numFetches = Math.ceil(numPlaylists / 50) - 1;
       for (let i = 1; i <= numFetches; i++) {
         // Get maximum number of playlists as many times as needed to get all playlists
-        fetch(
+        await fetch(
           "https://api.spotify.com/v1/me/playlists?limit=50&offset=" + 50 * i,
           {
             method: "GET",

@@ -1,4 +1,5 @@
 import { ActivateAnimation } from "./styling/ActivateAnimation";
+import { updateAudioAnalysisCache } from "./updateCache/updateAudioAnalysisCache";
 
 // Closure and encapsulation for shared state
 export const SequenceNamespace = (function () {
@@ -8,6 +9,8 @@ export const SequenceNamespace = (function () {
     playlistId: null,
     playlistName: null,
     sequencingMode: null,
+    expectedNumSongs: null,
+    songListFromCache: null,
   }; // Variables that are shared across JS functions
 
   return {
@@ -20,17 +23,21 @@ export const SequenceNamespace = (function () {
     }, // Set closed value
 
     appendArray: function (arrayKey, valueToPush) {
-      // Append a value to an array
       if (Array.isArray(globalVars[arrayKey])) {
         globalVars[arrayKey].push(valueToPush);
+
         if (
           // If modifying songList, check to see if we have captured all songs
           arrayKey === "songList" &&
-          globalVars[arrayKey].length ===
-            parseInt(localStorage.getItem("expectedNumSongs"))
+          globalVars[arrayKey].length === globalVars.expectedNumSongs
         ) {
+          if (!globalVars.songListFromCache) {
+            // If not from cache, update cache
+            updateAudioAnalysisCache();
+          }
+
           // The expected number of songs have been successfully fetched
-          ActivateAnimation(); // Toggle animation state
+          ActivateAnimation();
         }
       }
     },

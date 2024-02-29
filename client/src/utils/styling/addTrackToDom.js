@@ -1,12 +1,12 @@
 import { renderToString } from "react-dom/server";
 import TrackElement from "../../Components/TrackElement";
 
-export const addTrackToDom = (trackInfo) => {
+export const addTrackToDom = async (trackInfo) => {
   // Track Information
-  const trackId = trackInfo.track.id;
-  const albumArtSrc = trackInfo.track.album.images[0].url;
-  const trackName = trackInfo.track.name;
-  const artist = trackInfo.track.artists[0].name;
+  const trackId = trackInfo.trackId;
+  const trackName = trackInfo.name;
+  const albumArtSrc = trackInfo.albumArtSrc;
+  const artist = trackInfo.artist;
 
   // Create React Element Server Side
   const trackElementString = renderToString(

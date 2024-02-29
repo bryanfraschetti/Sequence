@@ -6,7 +6,7 @@ import { updateUserCache } from "../updateCache/updateUserCache";
 export const getUserInfoSpotify = async () => {
   const refresh_token = localStorage.getItem("refresh_token");
   const tokensExpired = tokenTimeValidity();
-  // console.log("in spotify get user");
+  console.log("Getting User from Spotify");
 
   if (refresh_token && tokensExpired) {
     await refreshTokens();
@@ -44,7 +44,7 @@ export const getUserInfoSpotify = async () => {
       await updateUserCache(userId, profilePicUrl);
     })
     .catch((error) => {
-      console.error(error);
+      //   console.error(error);
       // window.location.href = "/";
     });
 };

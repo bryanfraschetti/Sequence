@@ -9,6 +9,9 @@ const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 const entryPoint = "http://127.0.0.1:3001/";
 const authCallback = "http://127.0.0.1:3001/authorizationCallback";
 
+// Auto expiry of cache (time to live)
+const TTL = 86400;
+
 // Modules
 const express = require("express");
 const path = require("path");
@@ -248,26 +251,81 @@ app.post("/createUserCache", async (req, res) => {
     userId: userId,
     profilePicUrl: profilePicUrl,
   });
-  console.log("CREATED USER");
-  await client.expire(`user:${userId}`, 3600); // Expire key in one hour
+  await client.expire(`user:${userId}`, TTL); // Expire key in TTL
   res.status(200).send("OK");
 });
 
 app.use("/getUserCache", bodyParser.json());
 app.post("/getUserCache", async (req, res) => {
-  console.log(req.body.userId);
   const userId = req.body.userId;
   const cachedUser = await client.json.get(`user:${userId}`);
-  console.log("Cached user", cachedUser);
   if (cachedUser) {
-    await client.expire(`user:${userId}`, 3600); // Refresh key to last another one hour
-    res.json({ userCache: cachedUser });
+    await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
+    res.status(200).json({ userCache: cachedUser });
   } else {
-    console.log("No user");
     // No user cached (e.g. returning user that has been dropped from memory)
     res.status(404).json();
   }
 });
+
+app.use("/updatePlaylistCache", bodyParser.json());
+app.post("/updatePlaylistCache", async (req, res) => {
+  const { userId, playlistList } = req.body;
+  // Update Redis JSON in place
+  await client.json.set(`user:${userId}`, "$.playlistList", playlistList);
+  await client.expire(`user:${userId}`, TTL); // Expire key in TTL
+  res.status(200).json();
+});
+
+app.use("/getPlaylistCache", bodyParser.json());
+app.post("/getPlaylistCache", async (req, res) => {
+  const userId = req.body.userId;
+  await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
+  const cachedUser = await client.json.get(`user:${userId}`);
+  const cachedPlaylists = cachedUser.playlistList;
+  if (cachedPlaylists) {
+    res.status(200).json({ cachedPlaylists: cachedPlaylists });
+  } else {
+    // No cached playlist
+    res.status(404).json();
+  }
+});
+
+app.use("/updateAudioAnalysisCache", bodyParser.json());
+app.post("/updateAudioAnalysisCache", async (req, res) => {
+  const { userId, playlistId, songList, expectedNumSongs } = req.body;
+  // Update Redis JSON in place
+  await client.json.set(`user:${userId}`, `$.${playlistId}`, {
+    expectedNumSongs: expectedNumSongs,
+    songList: songList,
+  });
+  await client.expire(`user:${userId}`, TTL); // Expire key in TTL
+  res.status(200).json();
+});
+
+app.use("/getAudioAnalysisCache", bodyParser.json());
+app.post("/getAudioAnalysisCache", async (req, res) => {
+  const { userId, playlistId } = req.body;
+  await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
+  const cachedUser = await client.json.get(`user:${userId}`);
+  try {
+    const cachedTracklist = cachedUser[playlistId].songList;
+    const expectedNumSongs = cachedUser[playlistId].expectedNumSongs;
+
+    if (cachedTracklist) {
+      res.status(200).json({
+        expectedNumSongs: expectedNumSongs,
+        cachedTrackList: cachedTracklist,
+      });
+    } else {
+      // No cached track list
+      res.status(404).json();
+    }
+  } catch (err) {
+    res.status(404).json();
+  }
+});
+
 const generateRandomString = function (length) {
   let text = "";
   let possible =

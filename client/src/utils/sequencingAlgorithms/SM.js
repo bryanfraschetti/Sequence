@@ -1,13 +1,13 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-import { createPlaylist } from "../dataAcquisition/createPlaylist";
+import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 // Semitone modal (change by semitone, keep modality)
 export const SM = (initSongId, semitoneDirection) => {
   let songList = SequenceNamespace.getVar("songList");
   const initSong = songList.find((song) => {
-    return song.track_id === initSongId;
+    return song.trackId === initSongId;
   });
 
   const NewSequence = [];

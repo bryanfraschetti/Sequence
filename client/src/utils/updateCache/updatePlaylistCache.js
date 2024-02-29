@@ -12,10 +12,9 @@ export const updatePlaylistCache = async (playlists) => {
     }),
   })
     .then((response) => {
-      //   console.log("updated playlist cache");
       //   console.log(response);
     })
     .catch((error) => {
-      console.error(error);
+      //   console.error(error);
     });
 };

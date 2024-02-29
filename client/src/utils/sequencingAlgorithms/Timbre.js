@@ -1,12 +1,12 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { SquaredEuclideanDistance } from "../math/SquaredEuclideanDistance";
-import { createPlaylist } from "../dataAcquisition/createPlaylist";
+import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 export const Timbre = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
 
   const initSong = songList.find((song) => {
-    return song.track_id === initSongId;
+    return song.trackId === initSongId;
   });
 
   const NewSequence = [];
