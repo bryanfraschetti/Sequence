@@ -15,7 +15,7 @@ export const sequencingModeListener = () => {
 
       const prevActiveBtnId = SequenceNamespace.getVar("sequencingMode");
 
-      if (prevActiveBtnId !== null && prevActiveBtnId !== e.currentTarget) {
+      if (prevActiveBtnId !== null && prevActiveBtnId !== e.currentTarget.id) {
         const prevActiveBtn = document.getElementById(prevActiveBtnId);
         prevActiveBtn.classList.add("inactive-sequencer"); // Make old stored button inactive
         prevActiveBtn.classList.remove("active-sequencer"); // Remove active
