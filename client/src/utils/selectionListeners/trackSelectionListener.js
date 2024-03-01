@@ -5,6 +5,8 @@ import { SM } from "../sequencingAlgorithms/SM";
 import { RSA } from "../sequencingAlgorithms/RSA";
 import { Fader } from "../sequencingAlgorithms/Fader";
 import { Timbre } from "../sequencingAlgorithms/Timbre";
+import { weightedTimbre } from "../sequencingAlgorithms/weightedTimbre";
+import { TimbreTempo } from "../sequencingAlgorithms/TimbreTempo";
 
 export const trackSelectionListener = async () => {
   const tracksTable = document.getElementById("tracks-table");
@@ -47,6 +49,12 @@ export const trackSelectionListener = async () => {
           break;
         case "timbre":
           Timbre(initSongId);
+          break;
+        case "wt":
+          weightedTimbre(initSongId);
+          break;
+        case "tt":
+          TimbreTempo(initSongId);
           break;
       }
     }

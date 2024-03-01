@@ -33,11 +33,11 @@
     transform: translateY(30%);
 }
 
-#Logo{
+#Logo-img{
     transition: all 0.5s ease-in-out;
 }
-#Logo:hover{
-    transform: rotate(50deg) translateY(4px) translateX(2px);
+#Logo-img:hover{
+    transform: rotate(50deg) translateY(8px) translateX(10px);
 }
 
 .ant-menu-submenu-title{

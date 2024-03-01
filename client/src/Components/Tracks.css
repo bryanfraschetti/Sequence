@@ -1,0 +1,151 @@
+.button-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto 2vw auto 2vw;
+    min-width: 500px;
+    align-items: center;
+    justify-content: center;
+}
+
+.sequencer-buttons{
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    width: auto;
+    padding: 0px 5px 0px 5px;
+    font-size: 1em;
+    font-weight: 500;
+    border: none;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, Ubuntu;
+    color: rgb(200, 200, 200);
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.sequencer-buttons:hover{
+    cursor: pointer;
+}
+
+.seq-wrapper-inactive, .seq-wrapper-active {
+    background-image: linear-gradient(rgba(20, 32, 40), rgba(20, 32, 40)), linear-gradient(rgb(200, 200, 200), rgb(200, 200, 200));
+    background-clip: content-box, padding-box;
+    margin: 2vh 1vw 3vh 1vw;
+    padding: 1px;
+    border-radius: 6px;
+    justify-items: center;
+    align-items: center;
+    display: grid;
+}
+
+.seq-wrapper-active{
+    background-image: linear-gradient(rgba(20, 32, 40), rgba(20, 32, 40)), linear-gradient(rgb(255, 68, 99), rgb(255, 145, 0));
+    margin: 1.5vh 1vw 3.5vh 1vw;
+}
+
+.seq-wrapper-active, .seq-wrapper-inactive, .active-sequencer, .inactive-sequencer{
+    height: 42px;
+    word-break: break-word;
+    overflow: hidden;
+}
+
+.active-sequencer{
+    background-image: linear-gradient(to right, rgb(255, 68, 99) 12%, rgb(255, 145, 0));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+#seq-track-sep{
+    border: none;
+    background-color: rgb(200, 200, 200);
+    height: 2px;
+    width: 85%;
+}
+
+#tracklist-heading{
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.tracks{
+    background-color: rgb(27,25,32);
+    text-align: center;
+    min-width: 500px;
+    height: calc(97vh - 70px);
+    transition: all 0.3s linear;
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    padding-bottom: 3vh;
+}
+
+.tracks::-webkit-scrollbar{
+    background-color: transparent;
+    border-radius: 15px;
+    width: 12px;
+}
+
+.tracks::-webkit-scrollbar-thumb{
+    border-radius: 15px;
+    background-color: rgb(50, 50, 80, 0.5);
+    visibility: hidden;
+}
+
+.tracks.scroll-active::-webkit-scrollbar-thumb{
+    visibility: visible;
+}
+
+#tracks.inactive{
+    width: 100vw;
+}
+
+.tracks-table{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    border-collapse: collapse;
+}
+
+.tracks-table-header{
+    font-size: 1.3em;
+}
+
+td:first-child{
+    border-top-left-radius: 17px;
+    border-bottom-left-radius: 17px;
+}
+
+td:last-child{
+    border-top-right-radius: 17px;
+    border-bottom-right-radius: 17px;
+}
+
+.tracks-row:hover{
+    background-color: rgb(40,36,52);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tracks-table td{
+    padding: 0.5%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.album-art{
+    margin-top: 4px;
+    max-height: 100px;
+    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 500px) {
+    .tracks{
+        min-width: 320px;
+    }
+    
+    .button-container{
+        min-width: 320px;
+    }
+}

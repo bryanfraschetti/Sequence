@@ -1,8 +1,8 @@
 import { SequenceNamespace } from "../SequenceNamespace";
-import { SquaredEuclideanDistance } from "../math/SquaredEuclideanDistance";
 import { createPlaylist } from "../accessSpotify/createPlaylist";
+import { tempoWeightedSquaredEuclideanDistance } from "../math/tempoWeightedSquaredEuclideanDistance";
 
-export const Timbre = (initSongId) => {
+export const TimbreTempo = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
 
   const initSong = songList.find((song) => {
@@ -36,9 +36,21 @@ export const Timbre = (initSongId) => {
     let { minDist, indexClosest } = { minDist: null, indexClosest: null };
 
     songList.forEach((song, index) => {
-      const currentDist = SquaredEuclideanDistance(
-        safeClosure.getCur().endTimbreCentroid,
-        song.begTimbreCentroid
+      // Squared Euclidean distance of cluster centroids
+      // excluding dimension representing loudness
+      const current = safeClosure.getCur();
+      const currentClone = JSON.parse(
+        JSON.stringify(current.endTimbreCentroid)
+      );
+      currentClone.push(current.endtempo);
+      const endVector = currentClone.slice(1, 13);
+
+      const candidateClone = JSON.parse(JSON.stringify(song.begTimbreCentroid));
+      candidateClone.push(song.starttempo);
+      const candidateStartVector = candidateClone.slice(1, 13);
+      const currentDist = tempoWeightedSquaredEuclideanDistance(
+        endVector,
+        candidateStartVector
       );
 
       // Cheeky destructuring assignment ternary operator
@@ -58,5 +70,5 @@ export const Timbre = (initSongId) => {
   }
 
   console.log(NewSequence);
-  //   createPlaylist("Timbre Sequenced ", NewSequence);
+  //   createPlaylist("WT Timbre Sequenced ", NewSequence);
 };

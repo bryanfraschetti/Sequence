@@ -37,6 +37,7 @@ export const SequenceNamespace = (function () {
           }
 
           // The expected number of songs have been successfully fetched
+          console.log(globalVars[arrayKey]);
           ActivateAnimation();
         }
       }

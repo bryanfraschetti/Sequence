@@ -1,5 +1,6 @@
 import React from "react";
 import "./LoadingAnimation.css";
+/* The following loading animation is a variation of the codepen: https://codepen.io/yomateo/pen/ypbNrJ */
 
 const LoadingAnimation = () => {
   return (

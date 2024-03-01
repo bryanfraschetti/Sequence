@@ -16,7 +16,7 @@ export const createPlaylist = async (SequencingModeString, NewSequence) => {
     await refreshTokens();
   }
 
-  fetch("https://api.spotify.com/v1/users/" + userId + "/playlists", {
+  fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -46,31 +46,25 @@ export const createPlaylist = async (SequencingModeString, NewSequence) => {
 
       const uriJSONString = JSON.stringify({ uris: trackURIList }); //convert uri_list to json and pass this as body
 
-      fetch(
-        "https://api.spotify.com/v1/playlists/" + newPlaylistId + "/tracks",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: " Bearer " + access_token,
-          },
-          body: uriJSONString,
-        }
-      ).then((response) => {
+      fetch(`https://api.spotify.com/v1/playlists/${newPlaylistId}/tracks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: " Bearer " + access_token,
+        },
+        body: uriJSONString,
+      }).then((response) => {
         ActivateAnimation();
       });
 
-      fetch(
-        "https://api.spotify.com/v1/playlists/" + newPlaylistId + "/images",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: " Bearer " + access_token,
-          },
-          body: base64ImageString,
-        }
-      );
+      fetch(`https://api.spotify.com/v1/playlists/${newPlaylistId}/images`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: " Bearer " + access_token,
+        },
+        body: base64ImageString,
+      });
     })
     .catch((error) => {
       ActivateErrorNotice(error);
