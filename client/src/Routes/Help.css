@@ -1,0 +1,40 @@
+.centerContent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.bText{
+    margin: 20px 15px;
+    font-size: 1.05rem;
+}
+
+.FAQ-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.FAQ-icon{
+    margin-top: 35px;
+}
+
+.FAQ-span{
+    display: flex;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.headerIcon{
+    margin-top: 16px;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 440px) {
+    .myTitle{
+        font-size: 1.8rem;
+    }
+}

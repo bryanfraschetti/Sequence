@@ -6,12 +6,6 @@
     text-align: center;
 }
 
-.centerContent{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 @media screen and (min-width: 520px) {
     .paragraphContainer{
         width: 60vw;

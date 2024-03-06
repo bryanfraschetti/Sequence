@@ -13,7 +13,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  word-break: break-word;
   }
 
 p{
@@ -37,6 +36,7 @@ p{
 .myTitle{
     font-size: 2.2rem;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 /* .bodyText{

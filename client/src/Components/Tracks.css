@@ -44,7 +44,6 @@
 
 .seq-wrapper-active, .seq-wrapper-inactive, .active-sequencer, .inactive-sequencer{
     height: 42px;
-    word-break: break-word;
     overflow: hidden;
 }
 

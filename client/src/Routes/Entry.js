@@ -11,6 +11,7 @@ import { requestAuthorization } from "../utils/tokenHandling/requestAuthorizatio
 import LogOut from "../Components/LogOut";
 import { getUserid } from "../utils/dataAcquisition/getUserid";
 import NotLoggedIn from "../Components/NotLoggedIn";
+import ErrorNotice from "../Components/ErrorNotice";
 
 const Entry = () => {
   useEffect(() => {
@@ -24,6 +25,7 @@ const Entry = () => {
     <div>
       <LogOut></LogOut>
       <NotLoggedIn></NotLoggedIn>
+      <ErrorNotice></ErrorNotice>
       <NavBar></NavBar>
       <div className="entry postNav">
         <div

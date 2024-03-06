@@ -1,0 +1,39 @@
+.FaqCard{
+    background-color: #2c2a30 !important;
+    color: white;
+    width: 340px;
+    margin: 20px 10px;
+    height: 50px;
+    transition: height 0.3s ease;
+    overflow: hidden;
+    font-size: 1rem;
+}
+
+.FaqCard:hover{
+    cursor: pointer;
+}
+
+.ant-card-head-title{
+    width: fit-content;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-image: var(--myGradient);
+    font-weight: 500;
+    font-size: 1.35rem;
+}
+
+:where(.css-dev-only-do-not-override-6j9yrn).ant-card .ant-card-body{
+    padding: 0px 24px 12px 24px;
+}
+
+.card-title-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdownIcon{
+    height: 32px;
+    width: 32px;
+}
