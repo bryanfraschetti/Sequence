@@ -1,7 +1,7 @@
 export const updatePlaylistCache = async (playlists) => {
   // Send fetched playlists to Sequence
   const userId = localStorage.getItem("userId");
-  fetch("/updatePlaylistCache", {
+  fetch("/api/updatePlaylistCache", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

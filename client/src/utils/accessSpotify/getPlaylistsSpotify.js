@@ -81,6 +81,6 @@ export const getPlaylistsSpotify = async () => {
       }
     })
     .catch((error) => {
-      ActivateErrorNotice(error);
+      //   ActivateErrorNotice(error);
     });
 };

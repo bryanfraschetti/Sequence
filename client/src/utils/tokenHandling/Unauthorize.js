@@ -1,6 +1,6 @@
 export const Unauthorize = () => {
   const userId = localStorage.getItem("userId"); // Post userId to Sequence endpoint
-  fetch("/Unauthorize", {
+  fetch("/api/Unauthorize", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -17,7 +17,7 @@ export const Exchange = async () => {
   } else {
     try {
       // Send tokens to Sequence
-      const response = await fetch("/AccessToken", {
+      const response = await fetch("/api/AccessToken", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

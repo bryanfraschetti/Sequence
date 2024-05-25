@@ -3,7 +3,7 @@ import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 export const requestAuthorization = async () => {
   try {
     // Initiate authorization flow
-    const response = await fetch("/initiateAuth", {
+    const response = await fetch("/api/initiateAuthAuth", {
       method: "GET",
     }); // Request initiateAuth endpoint from Sequence
     if (response.ok) {

@@ -123,7 +123,7 @@ const Help = () => {
           </span>
           <span className="FAQ-span">
             <FaTools className="FAQ-icon" size={25} />
-            <FaqItem title="How was Sequence Built" id="FaqCard4">
+            <FaqItem title="How is Sequence Built" id="FaqCard4">
               <p>
                 Sequence was built by coupling a ReactJS component oriented
                 front-end (streamlined using AntDesign) with a NodeJS/ExpressJS
@@ -148,7 +148,7 @@ const Help = () => {
           </span>
           <span className="FAQ-span">
             <TbRulerMeasure className="FAQ-icon" size={25} />
-            <FaqItem title="My Playlist was Shortened" id="FaqCard7">
+            <FaqItem title="New Playlist is Shorter" id="FaqCard7">
               <p>
                 Currently, Sequence only supports playlists of 50 songs to
                 minimize the computational burden on the Spotify API and reduce

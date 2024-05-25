@@ -7,7 +7,7 @@ const cookieSigner = process.env.COOKIE_SIGNER;
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 const entryPoint = "http://127.0.0.1:3001/";
-const authCallback = "http://127.0.0.1:3001/authorizationCallback";
+const authCallback = "http://127.0.0.1:3001/api/authorizationCallback";
 
 // Auto expiry of cache (time to live)
 const TTL = 86400;
@@ -42,7 +42,7 @@ app.use(
 );
 
 // onClick generate redirect uri to spotify authorization endpoint
-app.get("/initiateAuth", (req, res) => {
+app.get("/api/initiateAuthAuth", (req, res) => {
   const state = generateRandomString(16); //state key for integrity
   let url = spotifyAuthUrl;
   url += "?client_id=" + clientId;
@@ -60,7 +60,7 @@ app.get("/initiateAuth", (req, res) => {
   res.status(200).json({ next: url });
 });
 
-app.get("/authorizationCallback", (req, res) => {
+app.get("/api/authorizationCallback", (req, res) => {
   // Reach spotify endpoint, generate tokens, return tokens, redirect user
   // Spotify response
   const code = req.query.code;
@@ -125,8 +125,8 @@ app.get("/authorizationCallback", (req, res) => {
 });
 
 // This endpoint is reached to ensure both client and server agree on tokens
-app.use("/AccessToken", bodyParser.json());
-app.post("/AccessToken", (req, res) => {
+app.use("/api/AccessToken", bodyParser.json());
+app.post("/api/AccessToken", (req, res) => {
   if (req.session.tokens) {
     // New or continuing session -> overwrite client
     res.json({
@@ -160,8 +160,8 @@ app.post("/AccessToken", (req, res) => {
   }
 });
 
-app.use("/RefreshToken", bodyParser.json());
-app.post("/RefreshToken", (req, res) => {
+app.use("/api/RefreshToken", bodyParser.json());
+app.post("/api/RefreshToken", (req, res) => {
   const refresh_token = req.body.refresh_token;
   if (!refresh_token) {
     // Missing credentials
@@ -215,8 +215,8 @@ app.post("/RefreshToken", (req, res) => {
   }
 });
 
-app.use("/Unauthorize", bodyParser.json());
-app.post("/Unauthorize", async (req, res) => {
+app.use("/api/Unauthorize", bodyParser.json());
+app.post("/api/Unauthorize", async (req, res) => {
   // Destroy session (if it exists)
   if (req.session) {
     req.session.destroy((error) => {
@@ -244,8 +244,8 @@ app.post("/Unauthorize", async (req, res) => {
   }
 });
 
-app.use("/createUserCache", bodyParser.json());
-app.post("/createUserCache", async (req, res) => {
+app.use("/api/createUserCache", bodyParser.json());
+app.post("/api/createUserCache", async (req, res) => {
   const { userId, profilePicUrl } = req.body;
   await client.json.set(`user:${userId}`, "$", {
     userId: userId,
@@ -255,8 +255,8 @@ app.post("/createUserCache", async (req, res) => {
   res.status(200).send("OK");
 });
 
-app.use("/getUserCache", bodyParser.json());
-app.post("/getUserCache", async (req, res) => {
+app.use("/api/getUserCache", bodyParser.json());
+app.post("/api/getUserCache", async (req, res) => {
   const userId = req.body.userId;
   const cachedUser = await client.json.get(`user:${userId}`);
   if (cachedUser) {
@@ -268,8 +268,8 @@ app.post("/getUserCache", async (req, res) => {
   }
 });
 
-app.use("/updatePlaylistCache", bodyParser.json());
-app.post("/updatePlaylistCache", async (req, res) => {
+app.use("/api/updatePlaylistCache", bodyParser.json());
+app.post("/api/updatePlaylistCache", async (req, res) => {
   const { userId, playlistList } = req.body;
   // Update Redis JSON in place
   await client.json.set(`user:${userId}`, "$.playlistList", playlistList);
@@ -277,8 +277,8 @@ app.post("/updatePlaylistCache", async (req, res) => {
   res.status(200).json();
 });
 
-app.use("/getPlaylistCache", bodyParser.json());
-app.post("/getPlaylistCache", async (req, res) => {
+app.use("/api/getPlaylistCache", bodyParser.json());
+app.post("/api/getPlaylistCache", async (req, res) => {
   const userId = req.body.userId;
   await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
   const cachedUser = await client.json.get(`user:${userId}`);
@@ -291,8 +291,8 @@ app.post("/getPlaylistCache", async (req, res) => {
   }
 });
 
-app.use("/updateAudioAnalysisCache", bodyParser.json());
-app.post("/updateAudioAnalysisCache", async (req, res) => {
+app.use("/api/updateAudioAnalysisCache", bodyParser.json());
+app.post("/api/updateAudioAnalysisCache", async (req, res) => {
   const { userId, playlistId, songList, expectedNumSongs } = req.body;
   // Update Redis JSON in place
   await client.json.set(`user:${userId}`, `$.${playlistId}`, {
@@ -303,8 +303,8 @@ app.post("/updateAudioAnalysisCache", async (req, res) => {
   res.status(200).json();
 });
 
-app.use("/getAudioAnalysisCache", bodyParser.json());
-app.post("/getAudioAnalysisCache", async (req, res) => {
+app.use("/api/getAudioAnalysisCache", bodyParser.json());
+app.post("/api/getAudioAnalysisCache", async (req, res) => {
   const { userId, playlistId } = req.body;
   await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
   const cachedUser = await client.json.get(`user:${userId}`);

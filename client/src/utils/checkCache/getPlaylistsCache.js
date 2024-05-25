@@ -5,7 +5,7 @@ export const getPlaylistsCache = async () => {
 
   try {
     // Try reading playlist cache
-    const response = await fetch("/getPlaylistCache", {
+    const response = await fetch("/api/getPlaylistCache", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

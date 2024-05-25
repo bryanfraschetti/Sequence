@@ -3,7 +3,7 @@ import { setProfileImage } from "../styling/setProfileImage";
 export const getUserInfoCache = async (userID) => {
   try {
     // Try reading user cache
-    const response = await fetch("/getUserCache", {
+    const response = await fetch("/api/getUserCache", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
