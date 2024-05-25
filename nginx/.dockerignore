@@ -4,5 +4,4 @@
 **/node_modules
 **/README.md
 **/.env
-
-client/src
+node_modules

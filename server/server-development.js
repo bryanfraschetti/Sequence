@@ -43,7 +43,7 @@ app.use(
 );
 
 // onClick generate redirect uri to spotify authorization endpoint
-app.get("/api/initiateAuthAuth", (req, res) => {
+app.get("/api/initiateAuth", (req, res) => {
   const state = generateRandomString(16); //state key for integrity
   let url = spotifyAuthUrl;
   url += "?client_id=" + clientId;

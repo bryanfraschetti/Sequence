@@ -7,7 +7,7 @@ export const updateAudioAnalysisCache = async () => {
   const songs = SequenceNamespace.getVar("songList");
   const expectedNumSongs = SequenceNamespace.getVar("expectedNumSongs");
 
-  await fetch("/api/updateAudioAnalysisCache", {
+  await fetch("http://127.0.0.1/api/updateAudioAnalysisCache", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

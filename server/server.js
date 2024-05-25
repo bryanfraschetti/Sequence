@@ -6,15 +6,14 @@ const cookieSigner = process.env.COOKIE_SIGNER;
 // Frequent uris
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
-const entryPoint = "http://127.0.0.1:3001/";
-const authCallback = "http://127.0.0.1:3001/api/authorizationCallback";
+const entryPoint = "http://127.0.0.1/";
+const authCallback = "http://127.0.0.1/api/authorizationCallback";
 
 // Auto expiry of cache (time to live)
 const TTL = 86400;
 
 // Modules
 const express = require("express");
-const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 
@@ -42,7 +41,7 @@ app.use(
 );
 
 // onClick generate redirect uri to spotify authorization endpoint
-app.get("/api/initiateAuthAuth", (req, res) => {
+app.get("/api/initiateAuth", (req, res) => {
   const state = generateRandomString(16); //state key for integrity
   let url = spotifyAuthUrl;
   url += "?client_id=" + clientId;
@@ -114,7 +113,7 @@ app.get("/api/authorizationCallback", (req, res) => {
       .then((tokens) => {
         // Store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
-        res.redirect("http://127.0.0.1:3001/sequencer");
+        res.redirect("http://127.0.0.1/sequencer");
       })
       .catch((error) => {
         // Something went wrong, send user to index page
@@ -335,9 +334,3 @@ const generateRandomString = function (length) {
   }
   return text;
 };
-
-// Serve built react
-app.use(express.static(path.join(__dirname, "../client/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});

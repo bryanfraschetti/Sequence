@@ -25,28 +25,27 @@ npm install # If dependencies not yet installed
 npm run build
 ```
 
-### Building Docker Image
-
-```
-cd ..
-docker build -t sequence .
-```
-
 ### Start Docker Service
 
 ```
 docker compose up
 ```
 
-This also starts a redis-stack-server container, which is the redis container that the Sequence container communicates with.
+This builds and starts several containers. Firstly, a redis-stack-server container which is the redis container that the Sequence container communicates with in order to implement a caching system.
 
-It may be necessary to run
+Note that it may be necessary to first run
 
 ```
 redis-cli shutdown
 ```
 
-to free up port 6379 since localhost:6379 is mapped to redis-stack-server:6379 (the docker container redis service)
+and stop any locally running redis instance to free up port 6379 since the docker container is mapped to run on that port.
+
+Additionally, a container is created to host the build product of the react app. Since the react app is static Nginx is best suited for deployment and an Nginx container is chosen as the base.
+
+Then a Node container is created. This container serves the backend API which is the middleware between the client, cache, and the Spotify API.
+
+To resolve all requests using the same endpoint, we have a container through which all traffic is routed - a lightweight Nginx instance. Requests matching the /api prefixed path are reverse-proxied to the Node container, which is optimized for handling Rest API traffic. Other endpoints are proxied to the container that hosts the static React app.
 
 ## Development Steps
 

@@ -8,7 +8,7 @@ export const getAudioAnalysisCache = async () => {
   const playlistId = SequenceNamespace.getVar("playlistId");
   try {
     // Try reading playlist cache
-    const response = await fetch("/api/getAudioAnalysisCache", {
+    const response = await fetch("http://127.0.0.1/api/getAudioAnalysisCache", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

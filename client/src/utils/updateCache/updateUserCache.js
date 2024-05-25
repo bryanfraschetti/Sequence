@@ -1,5 +1,5 @@
 export const updateUserCache = async (userId, profilePicUrl) => {
-  await fetch("/api/createUserCache", {
+  await fetch("http://127.0.0.1/api/createUserCache", {
     // Cache Image (or the lack thereof)
     method: "POST",
     headers: {
