@@ -15,9 +15,7 @@ import ErrorNotice from "../Components/ErrorNotice";
 
 const Entry = () => {
   useEffect(() => {
-    if (localStorage.getItem("userId")) {
-      getUserid();
-    }
+    getUserid();
     ResizeAnimationStopper();
   }, []);
 

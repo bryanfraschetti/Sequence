@@ -14,6 +14,10 @@ export const getUserInfoSpotify = async () => {
 
   const access_token = localStorage.getItem("access_token");
 
+  if (!access_token) {
+    return;
+  }
+
   await fetch("https://api.spotify.com/v1/me", {
     // Spotify user end point
     method: "GET",

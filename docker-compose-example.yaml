@@ -1,18 +1,31 @@
 version: "3"
+
 services:
-  redis-stack-server:
+  sequence-redis:
     image: redis/redis-stack-server:latest
-    container_name: redis-stack-server
     ports:
       - "6379:6379"
-    restart: always
-  sequence:
-    image: sequence
+
+  react-app:
+    build: ./client
+    ports:
+      - "3000:80"
+
+  node-api:
+    build: ./server
     environment:
-      SPOTIFY_CLIENT_ID: MY CLIENT ID
-      SPOTIFY_CLIENT_SECRET: MY CLIENT SECRET
-      COOKIE_SIGNER: MY COOKIE SIGNER
+      SPOTIFY_CLIENT_ID: MY_CLIENT_ID
+      SPOTIFY_CLIENT_SECRET: MY_CLIENT_SECRET
+      COOKIE_SIGNER: MY_COOKIE_SIGNER
     ports:
       - 3001:3001
     depends_on:
-      - redis-stack-server
+      - sequence-redis
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - node-api
+      - react-app

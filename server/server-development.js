@@ -21,7 +21,7 @@ const bodyParser = require("body-parser");
 
 // Create redis client
 const redis = require("redis");
-const client = redis.createClient();
+const client = redis.createClient({ url: "redis://sequence-redis:6379" });
 client
   .connect()
   .then(() => {
@@ -144,15 +144,15 @@ app.post("/api/AccessToken", (req, res) => {
     // Session ended but user had a previous session
     // Get the most recent credentials used by client
     req.session.tokens = {
-      access_token: req.body.access_token,
-      expires: req.body.expires,
-      refresh_token: req.body.refresh_token,
+      access_token: sanitizeInput(req.body.access_token),
+      expires: sanitizeInput(req.body.expires),
+      refresh_token: sanitizeInput(req.body.refresh_token),
     };
 
     res.json({
-      access_token: req.session.tokens.access_token,
-      expires: req.session.tokens.expires,
-      refresh_token: req.session.tokens.refresh_token,
+      access_token: sanitizeInput(req.session.tokens.access_token),
+      expires: sanitizeInput(req.session.tokens.expires),
+      refresh_token: sanitizeInput(req.session.tokens.refresh_token),
     });
   } else {
     res.json({
@@ -173,7 +173,7 @@ app.post("/api/RefreshToken", (req, res) => {
     fetch(
       spotifyTokenUrl +
         "?grant_type=refresh_token&refresh_token=" +
-        refresh_token,
+        sanitizeInput(refresh_token),
       {
         headers: {
           Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
@@ -237,7 +237,7 @@ app.post("/api/Unauthorize", async (req, res) => {
     });
   }
   // Remove from cache
-  const userId = req.body.userId;
+  const userId = sanitizeInput(req.body.userId);
   try {
     await client.del(`user:${userId}`);
   } catch (error) {
@@ -248,20 +248,25 @@ app.post("/api/Unauthorize", async (req, res) => {
 app.use("/api/createUserCache", bodyParser.json());
 app.post("/api/createUserCache", async (req, res) => {
   const { userId, profilePicUrl } = req.body;
-  await client.json.set(`user:${userId}`, "$", {
+
+  const sanitizedUserId = sanitizeInput(userId);
+  const sanitizedProfilePicUrl = encodeURIComponent(profilePicUrl);
+
+  await client.json.set(`user:${sanitizedUserId}`, "$", {
     userId: userId,
-    profilePicUrl: profilePicUrl,
+    profilePicUrl: sanitizedProfilePicUrl,
   });
-  await client.expire(`user:${userId}`, TTL); // Expire key in TTL
+  await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
   res.status(200).send("OK");
 });
 
 app.use("/api/getUserCache", bodyParser.json());
 app.post("/api/getUserCache", async (req, res) => {
-  const userId = req.body.userId;
-  const cachedUser = await client.json.get(`user:${userId}`);
+  const sanitizedUserId = sanitizeInput(req.body.userId);
+  const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
   if (cachedUser) {
-    await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
+    await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
+    cachedUser.profilePicUrl = decodeURIComponent(cachedUser.profilePicUrl);
     res.status(200).json({ userCache: cachedUser });
   } else {
     // No user cached (e.g. returning user that has been dropped from memory)
@@ -272,20 +277,26 @@ app.post("/api/getUserCache", async (req, res) => {
 app.use("/api/updatePlaylistCache", bodyParser.json());
 app.post("/api/updatePlaylistCache", async (req, res) => {
   const { userId, playlistList } = req.body;
+
+  const sanitizedUserId = sanitizeInput(userId);
   // Update Redis JSON in place
-  await client.json.set(`user:${userId}`, "$.playlistList", playlistList);
-  await client.expire(`user:${userId}`, TTL); // Expire key in TTL
+  await client.json.set(
+    `user:${sanitizedUserId}`,
+    "$.playlistList",
+    JSON.stringify(playlistList)
+  );
+  await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
   res.status(200).json();
 });
 
 app.use("/api/getPlaylistCache", bodyParser.json());
 app.post("/api/getPlaylistCache", async (req, res) => {
-  const userId = req.body.userId;
-  await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
-  const cachedUser = await client.json.get(`user:${userId}`);
+  const sanitizedUserId = sanitizeInput(req.body.userId);
+  await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
+  const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
   const cachedPlaylists = cachedUser.playlistList;
   if (cachedPlaylists) {
-    res.status(200).json({ cachedPlaylists: cachedPlaylists });
+    res.status(200).json({ cachedPlaylists: JSON.parse(cachedPlaylists) });
   } else {
     // No cached playlist
     res.status(404).json();
@@ -295,24 +306,34 @@ app.post("/api/getPlaylistCache", async (req, res) => {
 app.use("/api/updateAudioAnalysisCache", bodyParser.json());
 app.post("/api/updateAudioAnalysisCache", async (req, res) => {
   const { userId, playlistId, songList, expectedNumSongs } = req.body;
+
+  const sanitizedUserId = sanitizeInput(userId);
+  const sanitizedPlaylistId = sanitizeInput(playlistId);
+  const sanitizedExpectedNumSongs = sanitizeInput(expectedNumSongs);
+
   // Update Redis JSON in place
-  await client.json.set(`user:${userId}`, `$.${playlistId}`, {
-    expectedNumSongs: expectedNumSongs,
-    songList: songList,
+  await client.json.set(`user:${sanitizedUserId}`, `$.${sanitizedPlaylistId}`, {
+    expectedNumSongs: sanitizedExpectedNumSongs,
+    songList: JSON.stringify(songList),
   });
-  await client.expire(`user:${userId}`, TTL); // Expire key in TTL
+  await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
   res.status(200).json();
 });
 
 app.use("/api/getAudioAnalysisCache", bodyParser.json());
 app.post("/api/getAudioAnalysisCache", async (req, res) => {
   const { userId, playlistId } = req.body;
-  await client.expire(`user:${userId}`, TTL); // Refresh key to last another TTL
-  const cachedUser = await client.json.get(`user:${userId}`);
-  try {
-    const cachedTracklist = cachedUser[playlistId].songList;
-    const expectedNumSongs = cachedUser[playlistId].expectedNumSongs;
 
+  const sanitizedUserId = sanitizeInput(userId);
+  const sanitizedPlaylistId = sanitizeInput(playlistId);
+
+  await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
+  const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
+  try {
+    const cachedTracklist = JSON.parse(
+      cachedUser[sanitizedPlaylistId].songList
+    );
+    const expectedNumSongs = cachedUser[sanitizedPlaylistId].expectedNumSongs;
     if (cachedTracklist) {
       res.status(200).json({
         expectedNumSongs: expectedNumSongs,
@@ -327,6 +348,11 @@ app.post("/api/getAudioAnalysisCache", async (req, res) => {
   }
 });
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
+
 const generateRandomString = function (length) {
   let text = "";
   let possible =
@@ -337,8 +363,10 @@ const generateRandomString = function (length) {
   return text;
 };
 
-// Serve built react
-app.use(express.static(path.join(__dirname, "../client/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
+function sanitizeInput(input) {
+  if (input === null || input === undefined || Number.isInteger(input)) {
+    return input;
+  } else if (typeof input === "string") {
+    return input.replace(/[()\[\]{}<>&^$@*#=%,;?!\\\|'"`]/g, "");
+  }
+}
