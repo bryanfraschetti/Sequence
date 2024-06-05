@@ -10,6 +10,8 @@ services:
     build: ./client
     ports:
       - "3000:80"
+    volumes:
+      - sequence-redis-data:/data
 
   node-api:
     build: ./server
