@@ -14,7 +14,7 @@ Similarly, when running in a docker container it is unadvisable to store the .en
 
 ## ⚙️ Production Steps
 
-First build the client locally. It will be copied to the container and only the final build product is needed. Building locally helps minimize the Docker build and runtime. Thesesteps are automated in build.sh
+First build the client locally. It will be copied to the container and only the final build product is needed. Building locally helps minimize the Docker build and runtime. These steps are automated in build.sh
 
 ### 🧰 Building Client
 

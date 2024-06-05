@@ -9,9 +9,21 @@
 .art-cell{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+}
+
+.trackinfo{
+    text-align: left;
+    width: 150px;
+}
+
+.trackname{
+    font-size: 1em;
+    padding-left: 10px;
+}
+
+.artistname{
+    font-size: 0.8em;
+    padding-left: 10px;
 }
 
 .spotify-btn-div{

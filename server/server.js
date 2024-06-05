@@ -308,12 +308,25 @@ app.post("/api/updateAudioAnalysisCache", async (req, res) => {
   const sanitizedUserId = sanitizeInput(userId);
   const sanitizedPlaylistId = sanitizeInput(playlistId);
   const sanitizedExpectedNumSongs = sanitizeInput(expectedNumSongs);
-
+  const trackIdReferenceList = [];
+  songList.forEach((song) => {
+    trackIdReferenceList.push(sanitizeInput(song.trackId));
+  });
   // Update Redis JSON in place
   await client.json.set(`user:${sanitizedUserId}`, `$.${sanitizedPlaylistId}`, {
     expectedNumSongs: sanitizedExpectedNumSongs,
-    songList: JSON.stringify(songList),
+    songList: JSON.stringify(trackIdReferenceList),
   });
+
+  trackIdReferenceList.forEach(async (trackId, index) => {
+    await client.json.set(
+      `track:${trackId}`,
+      `$`,
+      JSON.stringify(songList[index])
+    );
+    await client.expire(`track:${trackId}`, TTL);
+  });
+
   await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
   res.status(200).json();
 });
@@ -328,14 +341,23 @@ app.post("/api/getAudioAnalysisCache", async (req, res) => {
   await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
   const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
   try {
-    const cachedTracklist = JSON.parse(
+    const cachedTrackIdReferenceList = JSON.parse(
       cachedUser[sanitizedPlaylistId].songList
     );
+
+    const cachedTrackList = [];
+
+    for (const trackId of cachedTrackIdReferenceList) {
+      const cachedTrack = await client.json.get(`track:${trackId}`);
+      cachedTrackList.push(JSON.parse(cachedTrack));
+      await client.expire(`track:${trackId}`, TTL);
+    }
+
     const expectedNumSongs = cachedUser[sanitizedPlaylistId].expectedNumSongs;
-    if (cachedTracklist) {
+    if (cachedTrackList) {
       res.status(200).json({
         expectedNumSongs: expectedNumSongs,
-        cachedTrackList: cachedTracklist,
+        cachedTrackList: cachedTrackList,
       });
     } else {
       // No cached track list

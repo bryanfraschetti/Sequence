@@ -102,22 +102,14 @@
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: min(80%, 1600px);
     border-collapse: collapse;
 }
 
 .tracks-table-header{
-    font-size: 1.3em;
-}
-
-td:first-child{
-    border-top-left-radius: 17px;
-    border-bottom-left-radius: 17px;
-}
-
-td:last-child{
-    border-top-right-radius: 17px;
-    border-bottom-right-radius: 17px;
+    font-size: 0.7em;
+    color: rgba(255,255,255,0.8);
+    font-weight: 400;
 }
 
 .tracks-row:hover{
@@ -127,16 +119,15 @@ td:last-child{
 }
 
 .tracks-table td{
-    padding: 0.5%;
     margin-left: 5%;
     margin-right: 5%;
 }
 
 .album-art{
-    margin-top: 4px;
-    max-height: 100px;
-    max-width: 100px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    max-height: 60px;
+    max-width: 60px;
+    margin-bottom: 5px;
 }
 
 @media screen and (max-width: 500px) {
