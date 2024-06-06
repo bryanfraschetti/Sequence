@@ -4,6 +4,7 @@ import { tupleToKey } from "../math/tupleToKey";
 
 export const addTrackToDom = async (trackInfo) => {
   // Track Information
+  console.log("IN", trackInfo);
   const trackId = trackInfo.trackId;
   const trackName = trackInfo.name;
   const albumArtSrc = trackInfo.albumArtSrc;

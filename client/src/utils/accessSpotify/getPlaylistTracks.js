@@ -1,4 +1,3 @@
-import { addTrackToDom } from "../styling/addTrackToDom";
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 import { getAudioAnalysisSpotify } from "./getAudioAnalysisSpotify";
 import { SequenceNamespace } from "../SequenceNamespace";
@@ -46,8 +45,8 @@ export const getPlaylistTracks = () => {
             albumArtSrc: trackInfo.track.album.images[0].url,
             artist: trackInfo.track.artists[0].name,
           };
-          addTrackToDom(song);
           getAudioAnalysisSpotify(song);
+
           // await getAudioFeatures(trackInfo.track.id, trackInfo.track.name);
         });
       } else {

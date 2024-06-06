@@ -1,4 +1,5 @@
 import { ActivateAnimation } from "./styling/ActivateAnimation";
+import { addTrackToDom } from "./styling/addTrackToDom";
 import { updateAudioAnalysisCache } from "./updateCache/updateAudioAnalysisCache";
 
 // Closure and encapsulation for shared state
@@ -38,6 +39,10 @@ export const SequenceNamespace = (function () {
 
           // The expected number of songs have been successfully fetched
           console.log(globalVars[arrayKey]);
+          globalVars[arrayKey].forEach((song) => {
+            console.log("JOE", song);
+            addTrackToDom(song);
+          });
           ActivateAnimation();
         }
       }

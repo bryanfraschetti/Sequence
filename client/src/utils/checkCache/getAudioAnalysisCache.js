@@ -1,5 +1,4 @@
 import { SequenceNamespace } from "../SequenceNamespace";
-import { addTrackToDom } from "../styling/addTrackToDom";
 import { ActivateAnimation } from "../styling/ActivateAnimation";
 import { updateTracksTableContent } from "../styling/updateTracksTableContents";
 
@@ -38,7 +37,6 @@ export const getAudioAnalysisCache = async () => {
       if (expectedNumSongs !== 0) {
         cachedTrackList.forEach((song) => {
           SequenceNamespace.appendArray("songList", song);
-          addTrackToDom(song);
         });
       } else {
         // No songs so this event has to be fired manually
