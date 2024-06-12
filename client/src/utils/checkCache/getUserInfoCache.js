@@ -3,14 +3,11 @@ import { setProfileImage } from "../styling/setProfileImage";
 export const getUserInfoCache = async (userID) => {
   try {
     // Try reading user cache
-    const response = await fetch("http://127.0.0.1/api/getUserCache", {
-      method: "POST",
+    const response = await fetch(`http://127.0.0.1/api/users/cache/${userID}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userId: userID,
-      }),
     });
 
     if (!response.ok) {

@@ -11,7 +11,6 @@ export const SequenceNamespace = (function () {
     playlistName: null,
     sequencingMode: null,
     expectedNumSongs: null,
-    songListFromCache: null,
   }; // Variables that are shared across JS functions
 
   return {
@@ -32,15 +31,9 @@ export const SequenceNamespace = (function () {
           arrayKey === "songList" &&
           globalVars[arrayKey].length === globalVars.expectedNumSongs
         ) {
-          if (!globalVars.songListFromCache) {
-            // If not from cache, update cache
-            updateAudioAnalysisCache();
-          }
-
           // The expected number of songs have been successfully fetched
-          console.log(globalVars[arrayKey]);
+          //   console.log(globalVars[arrayKey]);
           globalVars[arrayKey].forEach((song) => {
-            console.log("JOE", song);
             addTrackToDom(song);
           });
           ActivateAnimation();

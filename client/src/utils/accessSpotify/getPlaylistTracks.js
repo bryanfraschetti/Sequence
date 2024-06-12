@@ -3,9 +3,10 @@ import { getAudioAnalysisSpotify } from "./getAudioAnalysisSpotify";
 import { SequenceNamespace } from "../SequenceNamespace";
 import { updateTracksTableContent } from "../styling/updateTracksTableContents";
 import { ActivateAnimation } from "../styling/ActivateAnimation";
-import { updateAudioAnalysisCache } from "../updateCache/updateAudioAnalysisCache";
+import { updatePlaylistTracklistCache } from "../updateCache/updatePlaylistTracklistCache";
+import { getAudioAnalysisCache } from "../checkCache/getAudioAnalysisCache";
 
-export const getPlaylistTracks = () => {
+export const getPlaylistTracks = async () => {
   const playlistId = SequenceNamespace.getVar("playlistId");
   const access_token = localStorage.getItem("access_token");
   console.log("Getting Playlist Tracks from Spotify");
@@ -24,7 +25,7 @@ export const getPlaylistTracks = () => {
         throw new Error(response);
       }
     })
-    .then((response) => {
+    .then(async (response) => {
       // Only retain tracks (remove podcasts)
       const filteredTracks = response.items.filter((trackInfo) => {
         return trackInfo.track.type === "track";
@@ -35,25 +36,25 @@ export const getPlaylistTracks = () => {
 
       // Update UI
       updateTracksTableContent(numSongs);
+      await updatePlaylistTracklistCache(filteredTracks);
 
-      if (numSongs !== 0) {
-        filteredTracks.forEach((trackInfo) => {
-          // Reduce JSON response to necessary fields
-          const song = {
+      if (numSongs === 0) {
+        ActivateAnimation();
+      }
+
+      filteredTracks.forEach(async (trackInfo) => {
+        const songInfo = await getAudioAnalysisCache(trackInfo.track.id);
+        if (songInfo) {
+          SequenceNamespace.appendArray("songList", songInfo);
+        } else {
+          getAudioAnalysisSpotify({
             trackId: trackInfo.track.id,
             name: trackInfo.track.name,
             albumArtSrc: trackInfo.track.album.images[0].url,
             artist: trackInfo.track.artists[0].name,
-          };
-          getAudioAnalysisSpotify(song);
-
-          // await getAudioFeatures(trackInfo.track.id, trackInfo.track.name);
-        });
-      } else {
-        // No songs so we have to manually fire this event
-        updateAudioAnalysisCache();
-        ActivateAnimation();
-      }
+          });
+        }
+      });
     })
     .catch((error) => {
       ActivateErrorNotice(error);

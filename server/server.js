@@ -243,8 +243,8 @@ app.post("/api/Unauthorize", async (req, res) => {
   }
 });
 
-app.use("/api/createUserCache", bodyParser.json());
-app.post("/api/createUserCache", async (req, res) => {
+app.use("/api/users/create", bodyParser.json());
+app.post("/api/users/create", async (req, res) => {
   const { userId, profilePicUrl } = req.body;
 
   const sanitizedUserId = sanitizeInput(userId);
@@ -255,12 +255,15 @@ app.post("/api/createUserCache", async (req, res) => {
     profilePicUrl: sanitizedProfilePicUrl,
   });
   await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
-  res.status(200).send("OK");
+  res.status(201).json({
+    userId: userId,
+    profilePicUrl: sanitizedProfilePicUrl,
+  });
 });
 
-app.use("/api/getUserCache", bodyParser.json());
-app.post("/api/getUserCache", async (req, res) => {
-  const sanitizedUserId = sanitizeInput(req.body.userId);
+app.get("/api/users/cache/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const sanitizedUserId = sanitizeInput(userId);
   const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
   if (cachedUser) {
     await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
@@ -272,11 +275,13 @@ app.post("/api/getUserCache", async (req, res) => {
   }
 });
 
-app.use("/api/updatePlaylistCache", bodyParser.json());
-app.post("/api/updatePlaylistCache", async (req, res) => {
-  const { userId, playlistList } = req.body;
+app.use("/api/playlists/update/:userId", bodyParser.json());
+app.post("/api/playlists/update/:userId", async (req, res) => {
+  const { playlistList } = req.body;
+  const userId = req.params.userId;
 
   const sanitizedUserId = sanitizeInput(userId);
+
   // Update Redis JSON in place
   await client.json.set(
     `user:${sanitizedUserId}`,
@@ -287,12 +292,14 @@ app.post("/api/updatePlaylistCache", async (req, res) => {
   res.status(200).json();
 });
 
-app.use("/api/getPlaylistCache", bodyParser.json());
-app.post("/api/getPlaylistCache", async (req, res) => {
-  const sanitizedUserId = sanitizeInput(req.body.userId);
+app.get("/api/playlists/cache/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const sanitizedUserId = sanitizeInput(userId);
+
   await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
   const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
   const cachedPlaylists = cachedUser.playlistList;
+
   if (cachedPlaylists) {
     res.status(200).json({ cachedPlaylists: JSON.parse(cachedPlaylists) });
   } else {
@@ -301,69 +308,98 @@ app.post("/api/getPlaylistCache", async (req, res) => {
   }
 });
 
-app.use("/api/updateAudioAnalysisCache", bodyParser.json());
-app.post("/api/updateAudioAnalysisCache", async (req, res) => {
-  const { userId, playlistId, songList, expectedNumSongs } = req.body;
+app.use("/api/tracklist/update/:playlistId/:userId", bodyParser.json());
+app.post("/api/tracklist/update/:playlistId/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const playlistId = req.params.playlistId;
+  //   console.log(req.body);
+  const { songList, expectedNumSongs } = req.body;
 
   const sanitizedUserId = sanitizeInput(userId);
   const sanitizedPlaylistId = sanitizeInput(playlistId);
   const sanitizedExpectedNumSongs = sanitizeInput(expectedNumSongs);
-  const trackIdReferenceList = [];
-  songList.forEach((song) => {
-    trackIdReferenceList.push(sanitizeInput(song.trackId));
-  });
+
+  //   const trackIdReferenceList = [];
+  //   songList.forEach((song) => {
+  //     trackIdReferenceList.push(sanitizeInput(song.trackId));
+  //   });
+
   // Update Redis JSON in place
   await client.json.set(`user:${sanitizedUserId}`, `$.${sanitizedPlaylistId}`, {
     expectedNumSongs: sanitizedExpectedNumSongs,
-    songList: JSON.stringify(trackIdReferenceList),
-  });
-
-  trackIdReferenceList.forEach(async (trackId, index) => {
-    await client.json.set(
-      `track:${trackId}`,
-      `$`,
-      JSON.stringify(songList[index])
-    );
-    await client.expire(`track:${trackId}`, TTL);
+    songList: JSON.stringify(songList),
+    // trackIdReferenceList: trackIdReferenceList,
   });
 
   await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
   res.status(200).json();
 });
 
-app.use("/api/getAudioAnalysisCache", bodyParser.json());
-app.post("/api/getAudioAnalysisCache", async (req, res) => {
-  const { userId, playlistId } = req.body;
+app.get("/api/tracklist/cache/:playlistId/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const playlistId = req.params.playlistId;
 
   const sanitizedUserId = sanitizeInput(userId);
   const sanitizedPlaylistId = sanitizeInput(playlistId);
 
   await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
+
   const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
-  try {
-    const cachedTrackIdReferenceList = JSON.parse(
-      cachedUser[sanitizedPlaylistId].songList
-    );
 
-    const cachedTrackList = [];
+  if (!cachedUser) {
+    res.status(404).json();
+  } else {
+    try {
+      const expectedNumSongs = cachedUser[sanitizedPlaylistId].expectedNumSongs;
+      const cachedTrackListString = cachedUser[sanitizedPlaylistId].songList;
+      if (!cachedTrackListString) {
+        // No cached track list
+        res.status(404).json();
+      } else {
+        try {
+          const cachedTrackList = JSON.parse(cachedTrackListString);
 
-    for (const trackId of cachedTrackIdReferenceList) {
-      const cachedTrack = await client.json.get(`track:${trackId}`);
-      cachedTrackList.push(JSON.parse(cachedTrack));
-      await client.expire(`track:${trackId}`, TTL);
-    }
-
-    const expectedNumSongs = cachedUser[sanitizedPlaylistId].expectedNumSongs;
-    if (cachedTrackList) {
-      res.status(200).json({
-        expectedNumSongs: expectedNumSongs,
-        cachedTrackList: cachedTrackList,
-      });
-    } else {
-      // No cached track list
+          res.status(200).json({
+            expectedNumSongs: expectedNumSongs,
+            cachedTrackList: cachedTrackList,
+          });
+        } catch (err) {
+          res.status(404).json();
+        }
+      }
+    } catch {
       res.status(404).json();
     }
-  } catch (err) {
+  }
+});
+
+app.use("/api/tracks/create/:trackId", bodyParser.json());
+app.post("/api/tracks/create/:trackId", async (req, res) => {
+  const trackId = req.params.trackId;
+  const sanitizedTrackId = sanitizeInput(trackId);
+
+  const trackInfo = req.body.trackInfo;
+
+  await client.json.set(
+    `track:${sanitizedTrackId}`,
+    `$`,
+    JSON.stringify(trackInfo)
+  );
+  await client.expire(`track:${sanitizedTrackId}`, TTL);
+
+  res.status(200).json();
+});
+
+app.get("/api/tracks/cache/:trackId", async (req, res) => {
+  const trackId = req.params.trackId;
+  //   console.log(trackId);
+  const sanitizedTrackId = sanitizeInput(trackId);
+
+  const trackInfo = await client.json.get(`track:${sanitizedTrackId}`);
+  //   console.log(trackInfo);
+  if (trackInfo) {
+    res.status(200).json(JSON.parse(trackInfo));
+  } else {
     res.status(404).json();
   }
 });

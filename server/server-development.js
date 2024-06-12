@@ -245,8 +245,8 @@ app.post("/api/Unauthorize", async (req, res) => {
   }
 });
 
-app.use("/api/createUserCache", bodyParser.json());
-app.post("/api/createUserCache", async (req, res) => {
+app.use("/api/users/create", bodyParser.json());
+app.post("/api/users/create", async (req, res) => {
   const { userId, profilePicUrl } = req.body;
 
   const sanitizedUserId = sanitizeInput(userId);
@@ -260,9 +260,9 @@ app.post("/api/createUserCache", async (req, res) => {
   res.status(200).send("OK");
 });
 
-app.use("/api/getUserCache", bodyParser.json());
-app.post("/api/getUserCache", async (req, res) => {
-  const sanitizedUserId = sanitizeInput(req.body.userId);
+app.get("/api/users/cache/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const sanitizedUserId = sanitizeInput(userId);
   const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
   if (cachedUser) {
     await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
@@ -274,11 +274,13 @@ app.post("/api/getUserCache", async (req, res) => {
   }
 });
 
-app.use("/api/updatePlaylistCache", bodyParser.json());
-app.post("/api/updatePlaylistCache", async (req, res) => {
-  const { userId, playlistList } = req.body;
+app.use("/api/playlists/create/:userId", bodyParser.json());
+app.post("/api/playlists/create/:userId", async (req, res) => {
+  const { playlistList } = req.body;
+  const userId = req.params.userId;
 
   const sanitizedUserId = sanitizeInput(userId);
+
   // Update Redis JSON in place
   await client.json.set(
     `user:${sanitizedUserId}`,
@@ -289,12 +291,14 @@ app.post("/api/updatePlaylistCache", async (req, res) => {
   res.status(200).json();
 });
 
-app.use("/api/getPlaylistCache", bodyParser.json());
-app.post("/api/getPlaylistCache", async (req, res) => {
-  const sanitizedUserId = sanitizeInput(req.body.userId);
+app.get("/api/playlists/cache/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const sanitizedUserId = sanitizeInput(userId);
+
   await client.expire(`user:${sanitizedUserId}`, TTL); // Refresh key to last another TTL
   const cachedUser = await client.json.get(`user:${sanitizedUserId}`);
   const cachedPlaylists = cachedUser.playlistList;
+
   if (cachedPlaylists) {
     res.status(200).json({ cachedPlaylists: JSON.parse(cachedPlaylists) });
   } else {
@@ -320,9 +324,9 @@ app.post("/api/updateAudioAnalysisCache", async (req, res) => {
   res.status(200).json();
 });
 
-app.use("/api/getAudioAnalysisCache", bodyParser.json());
-app.post("/api/getAudioAnalysisCache", async (req, res) => {
-  const { userId, playlistId } = req.body;
+app.get("/api/tracks/:playlistId/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const playlistId = req.params.playlistId;
 
   const sanitizedUserId = sanitizeInput(userId);
   const sanitizedPlaylistId = sanitizeInput(playlistId);

@@ -2,6 +2,7 @@ import { tokenTimeValidity } from "../tokenHandling/tokenTimeValidity";
 import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { SumAxis } from "../math/SumAxis";
 import { SequenceNamespace } from "../SequenceNamespace";
+import { updateAudioAnalysisCache } from "../updateCache/updateAudioAnalysisCache";
 
 export const getAudioAnalysisSpotify = async (trackInfo) => {
   const access_token = localStorage.getItem("access_token");
@@ -30,7 +31,7 @@ export const getAudioAnalysisSpotify = async (trackInfo) => {
         throw new Error(response);
       }
     })
-    .then((data) => {
+    .then(async (data) => {
       const trackDuration = data.track.duration;
       const trackEnding = trackDuration - 12;
 
@@ -95,6 +96,7 @@ export const getAudioAnalysisSpotify = async (trackInfo) => {
         endTimbreCentroid: endTimbreCentroid,
       };
 
+      await updateAudioAnalysisCache(songInfo);
       SequenceNamespace.appendArray("songList", songInfo);
     })
     .catch((error) => {
