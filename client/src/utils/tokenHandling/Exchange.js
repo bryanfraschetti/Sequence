@@ -2,7 +2,7 @@ import { ActivateAnimation } from "../styling/ActivateAnimation";
 import { tokenTimeValidity } from "./tokenTimeValidity";
 import { refreshTokens } from "./refreshTokens";
 import { getPlaylists } from "../dataAcquisition/getPlaylists";
-import { getUserid } from "../dataAcquisition/getUserid";
+import { getUserInfo } from "../dataAcquisition/getUserInfo";
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 
 export const Exchange = async () => {
@@ -55,7 +55,7 @@ export const Exchange = async () => {
     }
   }
 
-  await getUserid();
+  await getUserInfo();
   await getPlaylists();
   ActivateAnimation();
 };

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import NavBar from "../Components/NavBar";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import LogOut from "../Components/LogOut";
-import { getUserid } from "../utils/dataAcquisition/getUserid";
+import { getUserInfo } from "../utils/dataAcquisition/getUserInfo";
 import NotLoggedIn from "../Components/NotLoggedIn";
 import Footer from "../Components/Footer";
 import "./Help.css";
@@ -17,7 +17,10 @@ import { TbRulerMeasure } from "react-icons/tb";
 
 const Help = () => {
   useEffect(() => {
-    getUserid();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      getUserInfo();
+    }
     ResizeAnimationStopper();
   }, []);
 

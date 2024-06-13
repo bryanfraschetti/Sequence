@@ -9,13 +9,16 @@ import SoundWave from "../Components/SoundWave";
 import { ResizeAnimationStopper } from "../utils/styling/ResizeAnimationStopper";
 import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
 import LogOut from "../Components/LogOut";
-import { getUserid } from "../utils/dataAcquisition/getUserid";
+import { getUserInfo } from "../utils/dataAcquisition/getUserInfo";
 import NotLoggedIn from "../Components/NotLoggedIn";
 import ErrorNotice from "../Components/ErrorNotice";
 
 const Entry = () => {
   useEffect(() => {
-    getUserid();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      getUserInfo();
+    }
     ResizeAnimationStopper();
   }, []);
 

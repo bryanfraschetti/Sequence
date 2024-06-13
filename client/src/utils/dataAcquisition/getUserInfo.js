@@ -1,7 +1,7 @@
 import { getUserInfoSpotify } from "../accessSpotify/getUserInfoSpotify";
 import { getUserInfoCache } from "../checkCache/getUserInfoCache";
 
-export const getUserid = async () => {
+export const getUserInfo = async () => {
   const userId = localStorage.getItem("userId");
 
   if (!userId) {
