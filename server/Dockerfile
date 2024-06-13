@@ -1,19 +1,24 @@
 FROM node:20
 
-# Copy and install server dependencies in container
-WORKDIR /app/server
+# Create and set the working directory for the app
+WORKDIR /app
+
+# Copy the package files and install dependencies
 COPY ./package*.json ./
 RUN npm install
 
-# Copy server file
+# Copy the rest of the application code
+COPY ./utils ./utils
+COPY ./routes ./routes
+COPY ./redisClient.js ./
 COPY ./server.js ./
 
-# Copy wait-for-it
+# Make wait-for-it.sh executable
 COPY ./wait-for-it.sh ./
 RUN chmod +x wait-for-it.sh
 
-# Execute wait for it to ensure redis is accepting TCP connections before starting NodeJS service
+# Use wait-for-it.sh to ensure Redis is accepting TCP connections before starting NodeJS service
 CMD ["./wait-for-it.sh", "sequence-redis:6379", "--", "npm", "start"]
 
-# Server runs on port 3001
+# Expose port 3001 for the server
 EXPOSE 3001

@@ -15,10 +15,10 @@ export const getAudioAnalysisCache = async (trackId) => {
       }
     })
     .then((data) => {
-      console.log(data);
+      //   console.log(data);
       return data;
     })
     .catch((err) => {
-      console.error(err);
+      //   console.error(err);
     });
 };

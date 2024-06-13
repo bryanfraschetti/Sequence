@@ -46,7 +46,7 @@ Then a Node container is created. This container serves the backend API which is
 
 To resolve all requests using the same endpoint, we have a container through which all traffic is routed - a lightweight Nginx instance. Requests matching the /api prefixed path are reverse-proxied to the Node container, which is optimized for handling Rest API traffic. Other endpoints are proxied to the container that hosts the static React app. This is dependent on both the Node and Nginx/React containers
 
-## 🏗️ Development Steps
+## 🏗️ Development Steps (Deprecated)
 
 In development, services like nodemon allow for changes and updates to be observed in realtime. To take advantage of this, the user interacts with a React server. Requests that cannot be satisfied by the React app are proxied to the Express/Node server, which acts as a middleware between the client and the Spotify API. In this setup, the React App is setup to run on port 3000 and the Express/Node App is on port 3001.
 

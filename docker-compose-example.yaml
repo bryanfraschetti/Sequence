@@ -1,17 +1,15 @@
-version: "3"
-
 services:
   sequence-redis:
     image: redis/redis-stack-server:latest
     ports:
       - "6379:6379"
+    volumes:
+      - sequence-redis-data:/data
 
   react-app:
     build: ./client
     ports:
       - "3000:80"
-    volumes:
-      - sequence-redis-data:/data
 
   node-api:
     build: ./server
@@ -19,6 +17,7 @@ services:
       SPOTIFY_CLIENT_ID: MY_CLIENT_ID
       SPOTIFY_CLIENT_SECRET: MY_CLIENT_SECRET
       COOKIE_SIGNER: MY_COOKIE_SIGNER
+      TTL: 86400
     ports:
       - 3001:3001
     depends_on:
