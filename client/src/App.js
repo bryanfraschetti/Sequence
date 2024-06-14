@@ -4,6 +4,7 @@ import Entry from "./Routes/Entry";
 import SequencerPage from "./Routes/SequencerPage";
 import Help from "./Routes/Help";
 import About from "./Routes/About";
+import NotFound from "./Routes/Exceptions/NotFound";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/sequencer" element={<SequencerPage />} />
         <Route path="/help" element={<Help />} />
         <Route path="/about" element={<About />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

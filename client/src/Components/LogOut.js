@@ -23,18 +23,26 @@ const LogOut = () => {
       }}
     >
       <div className="container" style={{ width: "250px" }}>
-        <p style={{ fontSize: "18px", margin: "0" }}>Are you sure you want to log out?</p>
+        <p style={{ fontSize: "18px", margin: "0" }}>
+          Are you sure you want to log out?
+        </p>
         <p style={{ textAlign: "left" }}>You can log back in at any time</p>
         <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="btnEmptyWrapper" style={{ margin: "0px 10px 0px 0px" }}>
+          <div
+            className="btnEmptyWrapper"
+            style={{ margin: "0px 10px 0px 0px" }}
+          >
             <button
               className="myBtnEmpty"
               id="learnMore"
               onClick={Unauthorize}
               style={{ width: "100px", backgroundColor: "#1c1d25" }}
             >
-              <p className="gradientText" style={{ margin: "0px", padding: "0px" }}>
-                Yes{" "}
+              <p
+                className="gradientText"
+                style={{ margin: "0px", padding: "0px" }}
+              >
+                Yes
               </p>
             </button>
           </div>
