@@ -4,7 +4,6 @@ import React from "react";
 import CanvasLightning from "./CanvasLightning";
 import "./NotFound.css";
 import "../../index.css";
-import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (

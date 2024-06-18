@@ -1,6 +1,5 @@
 import { ActivateAnimation } from "./styling/ActivateAnimation";
 import { addTrackToDom } from "./styling/addTrackToDom";
-import { updateAudioAnalysisCache } from "./updateCache/updateAudioAnalysisCache";
 
 // Closure and encapsulation for shared state
 export const SequenceNamespace = (function () {

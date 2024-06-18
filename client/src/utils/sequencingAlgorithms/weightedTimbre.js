@@ -60,5 +60,5 @@ export const weightedTimbre = (initSongId) => {
   }
 
   console.log(NewSequence);
-  //   createPlaylist("WT Timbre Sequenced ", NewSequence);
+  createPlaylist("WT Timbre Sequenced ", NewSequence);
 };

@@ -63,19 +63,19 @@ const CanvasLightning = () => {
 
           ctx.strokeStyle = `rgba(255, 165, 0, ${rand(10, 100) / 100})`;
           ctx.lineWidth = 2;
-          if (rand(0, 30) == 0) {
+          if (rand(0, 30) === 0) {
             ctx.lineWidth = 3;
           }
-          if (rand(0, 60) == 0) {
+          if (rand(0, 60) === 0) {
             ctx.lineWidth = 4;
           }
-          if (rand(0, 90) == 0) {
+          if (rand(0, 90) === 0) {
             ctx.lineWidth = 5;
           }
-          if (rand(0, 120) == 0) {
+          if (rand(0, 120) === 0) {
             ctx.lineWidth = 6;
           }
-          if (rand(0, 150) == 0) {
+          if (rand(0, 150) === 0) {
             ctx.lineWidth = 7;
           }
 
@@ -86,7 +86,7 @@ const CanvasLightning = () => {
           for (let pc = 0; pc < pathCount; pc++) {
             ctx.lineTo(light.path[pc].x, light.path[pc].y);
 
-            if (light.canSpawn && rand(0, 100) == 0) {
+            if (light.canSpawn && rand(0, 100) === 0) {
               light.canSpawn = false;
               createL(light.path[pc].x, light.path[pc].y, false);
             }
@@ -97,7 +97,7 @@ const CanvasLightning = () => {
             ctx.fillRect(0, 0, cw, ch);
           }
 
-          if (rand(0, 30) == 0) {
+          if (rand(0, 30) === 0) {
             ctx.fillStyle = `rgba(255, 145, 0, ${rand(1, 3) / 100})`;
             ctx.fillRect(0, 0, cw, ch);
           }

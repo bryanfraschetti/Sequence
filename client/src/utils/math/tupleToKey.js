@@ -43,6 +43,7 @@ export const tupleToKey = (key, mode) => {
           keyNotation = "C";
           break;
       }
+      break;
     case 1: // Define major keys
       switch (key) {
         case 0:
@@ -85,6 +86,7 @@ export const tupleToKey = (key, mode) => {
           keyNotation = "C";
           break;
       }
+      break;
     default:
       mode = 0;
       break;
