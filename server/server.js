@@ -50,3 +50,6 @@ app.use("/api/tracklist/update", updateTracklistCacheRoute); // Modifies cached 
 app.use("/api/tracklist/cache", retrieveTracklistCacheRoute); // Retrieves cached tracklist of userId's playlistId
 app.use("/api/tracks/create", createTrackCacheRoute); // Caches audio analysis for trackId
 app.use("/api/tracks/cache", retrieveTrackCacheRoute); // Retrieves audio analysis cache for trackId
+app.use("*", (req, res) => {
+  res.redirect("/404");
+});
