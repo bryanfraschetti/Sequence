@@ -1,11 +1,11 @@
 #!/bin/bash
 
-react_container=$(docker container list | grep "react" | awk '{print $1}' | xargs)
+react_container=$(docker container list -a | grep "react" | awk '{print $1}' | xargs)
 if [ -n "$react_container" ]; then
     docker stop $react_container
 fi
 
-api_container=$(docker container list | grep "api" | awk '{print $1}' | xargs)
+api_container=$(docker container list -a | grep "api" | awk '{print $1}' | xargs)
 if [ -n "$api_container" ]; then
     docker stop $api_container
 fi
