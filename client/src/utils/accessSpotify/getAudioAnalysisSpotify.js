@@ -71,23 +71,48 @@ export const getAudioAnalysisSpotify = async (trackInfo) => {
         endTimbreCentroid.push(axisAvg);
       }
 
+      const startKey = data.sections[0].key === -1 ? 0 : data.sections[0].key;
+
+      const startMode =
+        data.sections[0].mode === -1 ? 1 : data.sections[0].mode;
+
+      const startTempo =
+        data.sections[0].tempo === 0
+          ? data.track.tempo
+          : data.sections[0].tempo;
+
+      const endKey =
+        data.sections[data.sections.length - 1].key === -1
+          ? 0
+          : data.sections[data.sections.length - 1].key;
+
+      const endMode =
+        data.sections[data.sections.length - 1].mode === -1
+          ? 1
+          : data.sections[data.sections.length - 1].mode;
+
+      const endTempo =
+        data.sections[data.sections.length - 1].tempo === 0
+          ? data.track.tempo
+          : data.sections[data.sections.length - 1].tempo;
+
       const songInfo = {
         name: trackName,
         trackId: trackId,
         albumArtSrc: albumArtSrc,
         artist: artist,
 
-        startkey: data.sections[0].key,
-        startmode: data.sections[0].mode,
-        starttempo: data.sections[0].tempo,
+        startkey: startKey,
+        startmode: startMode,
+        starttempo: startTempo,
 
         key: data.track.key,
         mode: data.track.mode,
         tempo: data.track.tempo,
 
-        endkey: data.sections[data.sections.length - 1].key,
-        endmode: data.sections[data.sections.length - 1].mode,
-        endtempo: data.sections[data.sections.length - 1].tempo,
+        endkey: endKey,
+        endmode: endMode,
+        endtempo: endTempo,
 
         // beginningTimbres: beginningSegments,
         // endingTimbre: endingSegments,
