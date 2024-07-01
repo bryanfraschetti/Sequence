@@ -32,48 +32,97 @@ const Help = () => {
       <div className="postNav centerContent">
         <span className="FAQ-span" style={{ alignItems: "center" }}>
           <FaGears className="headerIcon" size={32} />
-          <h2 className="myTitle">
+          <h2 className="myTitle" style={{ margin: "32px" }}>
             How to Use <span className="gradientText">Sequence</span>
           </h2>
         </span>
-        <div style={{ width: "min(100%, 800px)" }}>
-          <p className="bText">
-            After clicking the{" "}
-            <span className="gradientText" style={{ fontWeight: "400" }}>
-              "Get Started"
-            </span>{" "}
-            button on the homepage, you will be prompted by Spotify to grant
-            Sequence access to certain permissions. The details of each
-            permission are outlined by Spotify before you accept/deny the
-            conditions. The extent of the permissions are:
-          </p>
-          <ul className="bText">
-            <li>View your Spotify account data</li>
-            <li>View your Spotify playlists</li>
-            <li>Create new resources (playlists) in Spotify</li>
-          </ul>
-          <p className="bText">
-            After{" "}
-            <span className="gradientText" style={{ fontWeight: "400" }}>
-              accepting
-            </span>{" "}
-            the terms you will be redirected to our Sequencing page that
-            automatically displays your playlists. From here you can select a
-            playlist by clicking on it, choose a sequencing mode from the
-            options, then pick the song that you want to be the first in the new
-            playlist. When you click on a song the playlist will automatically
-            generate in Spotify, but may take a few seconds to appear within the
-            app depending on when your app refreshes.
-          </p>
-          <p className="bText">
-            At any time you can{" "}
-            <span className="gradientText" style={{ fontWeight: "400" }}>
-              revoke
-            </span>{" "}
-            the permissions from within Spotify using their "Manage Apps Page,"
-            or by clicking on your avatar within Sequence and selecting "Log
-            out"
-          </p>
+
+        <div
+          style={{
+            width: "100%",
+          }}
+        >
+          <div className="banner" style={{ width: "100%", background: "" }}>
+            <div className="instructionText">
+              <h1>
+                <span className="gradientText" style={{ fontWeight: "400" }}>
+                  Get Started
+                </span>
+              </h1>
+              <p className="bText">
+                On the home page, click the get started button.
+              </p>
+            </div>
+          </div>
+
+          <div className="banner" style={{ width: "100%", background: "" }}>
+            <div className="instructionText">
+              <h1>
+                <span className="gradientText" style={{ fontWeight: "400" }}>
+                  Read and Accept the Terms of Service
+                </span>
+              </h1>
+              <p className="bText">
+                You will be prompted by Spotify to grant Sequence access to
+                certain permissions. The details of each permission are outlined
+                by Spotify before you accept/deny the conditions.
+              </p>
+
+              {/* <ul className="bText" style={{ listStyle: "none" }}>
+                <li>View your Spotify account data</li>
+                <li>View your Spotify playlists</li>
+                <li>Create new resources (playlists) in Spotify</li>
+            </ul> */}
+            </div>
+          </div>
+
+          <div className="banner" style={{ width: "100%", background: "" }}>
+            <div className="instructionText">
+              <h1>
+                <span className="gradientText" style={{ fontWeight: "400" }}>
+                  Select a Playlist
+                </span>
+              </h1>
+              <p className="bText">
+                Select a playlist by clicking on it and choose a sequencing mode
+                from the options. Select the song that you want to be the first
+                in the new playlist. When you click on a song the playlist will
+                automatically generate in Spotify, but may take a few seconds to
+                appear within the app depending on when your app refreshes.
+              </p>
+            </div>
+          </div>
+
+          <div className="banner" style={{ width: "100%", background: "" }}>
+            <div className="instructionText">
+              <h1>
+                <span className="gradientText" style={{ fontWeight: "400" }}>
+                  Select a Song
+                </span>
+              </h1>
+              <p className="bText">
+                Select the song that you want to be the first in the new
+                playlist. When you click on a song the playlist will
+                automatically generate in Spotify, but may take a few seconds to
+                appear within the app depending on when your app refreshes.
+              </p>
+            </div>
+          </div>
+
+          <div className="banner" style={{ width: "100%", background: "" }}>
+            <div className="instructionText">
+              <h1>
+                <span className="gradientText" style={{ fontWeight: "400" }}>
+                  Revoke Permissions
+                </span>
+              </h1>
+              <p className="bText">
+                At any time you can revoke Sequence's access permissions by
+                clicking on your avatar and selecting "Log out", or from within
+                Spotify using their "Manage Apps Page."
+              </p>
+            </div>
+          </div>
         </div>
         <h2 className="myTitle">FAQs</h2>
         <div className="FAQ-container">

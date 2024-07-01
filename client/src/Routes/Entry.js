@@ -69,7 +69,7 @@ const Entry = () => {
                   className="myBtnEmpty"
                   id="learnMore"
                   onClick={() => {
-                    window.location.href = "/about";
+                    window.location.href = "/help";
                   }}
                 >
                   <p className="gradientText" style={{ margin: "0px" }}>
