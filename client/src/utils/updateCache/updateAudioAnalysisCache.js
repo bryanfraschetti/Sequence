@@ -1,5 +1,5 @@
 export const updateAudioAnalysisCache = async (trackInfo) => {
-  await fetch(`http://127.0.0.1/api/tracks/create/${trackInfo.trackId}`, {
+  await fetch(`/api/tracks/create/${trackInfo.trackId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

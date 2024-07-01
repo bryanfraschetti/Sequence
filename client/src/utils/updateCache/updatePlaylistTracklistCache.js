@@ -15,19 +15,16 @@ export const updatePlaylistTracklistCache = async (filteredTracks) => {
       artist: trackInfo.track.artists[0].name,
     });
   });
-  await fetch(
-    `http://127.0.0.1/api/tracklist/update/${selectedPlaylist}/${userId}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        songList: trackIdList,
-        expectedNumSongs: expectedNumSongs,
-      }),
-    }
-  )
+  await fetch(`/api/tracklist/update/${selectedPlaylist}/${userId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      songList: trackIdList,
+      expectedNumSongs: expectedNumSongs,
+    }),
+  })
     .then((response) => {
       //   return response;
       //   console.log(response);

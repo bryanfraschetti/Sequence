@@ -10,7 +10,7 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 // Important URLs
-const entryPoint = "http://127.0.0.1/";
+const entryPoint = "/";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
 router.post("/", (req, res) => {

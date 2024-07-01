@@ -5,15 +5,12 @@ export const getPlaylistsCache = async () => {
 
   try {
     // Try reading playlist cache
-    const response = await fetch(
-      `http://127.0.0.1/api/playlists/cache/${userId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`/api/playlists/cache/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error(response.statusText);

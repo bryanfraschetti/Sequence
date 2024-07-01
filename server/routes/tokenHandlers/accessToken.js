@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 // Important URLs
-const entryPoint = "http://127.0.0.1/";
+const entryPoint = "/";
 
 router.post("/", (req, res) => {
   if (req.session.tokens) {

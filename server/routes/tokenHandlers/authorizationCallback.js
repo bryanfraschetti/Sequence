@@ -8,8 +8,8 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 // Important URLs
-const entryPoint = "http://127.0.0.1/";
-const authCallback = "http://127.0.0.1/api/authorizationCallback";
+const entryPoint = "/";
+const authCallback = "http://192.168.20.126/api/authorizationCallback";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
 router.get("/", (req, res) => {
@@ -66,7 +66,7 @@ router.get("/", (req, res) => {
       .then((tokens) => {
         // Store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
-        res.redirect("http://127.0.0.1/sequencer");
+        res.redirect("/sequencer");
       })
       .catch((error) => {
         // Something went wrong, send user to index page

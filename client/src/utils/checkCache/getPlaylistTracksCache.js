@@ -6,7 +6,7 @@ export const getPlaylistTracksCache = async () => {
   try {
     // Try reading playlist cache
     const response = await fetch(
-      `http://127.0.0.1/api/tracklist/cache/${playlistId}/${userId}`,
+      `/api/tracklist/cache/${playlistId}/${userId}`,
       {
         method: "GET",
         headers: {

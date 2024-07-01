@@ -5,7 +5,7 @@ export const refreshTokens = async () => {
     const access_token = localStorage.getItem("access_token");
     const refresh_token = localStorage.getItem("refresh_token");
     const expires = localStorage.getItem("expires"); // Get current client state
-    const response = await fetch("http://127.0.0.1/api/RefreshToken", {
+    const response = await fetch("/api/RefreshToken", {
       // Send current state to Sequence
       method: "POST",
       headers: {

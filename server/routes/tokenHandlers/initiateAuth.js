@@ -8,7 +8,7 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 
 // Important URLs
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
-const authCallback = "http://127.0.0.1/api/authorizationCallback";
+const authCallback = "http://192.168.20.126/api/authorizationCallback";
 
 router.get("/", (req, res) => {
   const state = generateRandomString(16); //state key for integrity

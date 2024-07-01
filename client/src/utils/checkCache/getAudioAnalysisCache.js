@@ -1,6 +1,6 @@
 export const getAudioAnalysisCache = async (trackId) => {
   // getAudio cache
-  return fetch(`http://127.0.0.1/api/tracks/cache/${trackId}`, {
+  return fetch(`/api/tracks/cache/${trackId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
