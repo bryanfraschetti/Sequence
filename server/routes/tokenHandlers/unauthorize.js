@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import client from "../../redisClient.js";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
 
 const router = express.Router();
