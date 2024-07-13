@@ -1,9 +1,6 @@
-body {
-    background: linear-gradient(rgb(18,15,23), rgb(23,20,28));
-}
-  
 canvas {
-    display: block;  
+    background: linear-gradient(rgb(18,15,23), rgb(23,20,28));
+    display: block;
 }
   
 #http-error-text{

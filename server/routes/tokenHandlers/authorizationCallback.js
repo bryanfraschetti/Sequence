@@ -1,5 +1,6 @@
 import express from "express";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 // Important URLs
 const entryPoint = "/";
-const authCallback = "http://192.168.20.126/api/authorizationCallback";
+const authCallback = "http://127.0.0.1/api/authorizationCallback";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
 router.get("/", (req, res) => {
@@ -38,6 +39,7 @@ router.get("/", (req, res) => {
       encodeURI(authCallback) +
       "&client_id=" +
       clientId;
+
     fetch(spotifyTokenUrl, {
       body: authBody,
       headers: {

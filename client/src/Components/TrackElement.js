@@ -15,9 +15,10 @@ const TrackElement = ({
 }) => {
   //   const spotifyUrl = `https://open.spotify.com/track/${id}`;
   return (
-    <tr className="tracks-row">
-      <td className="art-cell">
+    <tr className="tracks-row" id={id}>
+      <td className="art-cell" id={id}>
         <div
+          id={id}
           style={{
             flexDirection: "row",
             display: "flex",
@@ -37,8 +38,12 @@ const TrackElement = ({
           </div>
         </a> */}
           <div id={id} className="trackinfo">
-            <p className="trackname">{trackName}</p>
-            <p className="artistname">{artist}</p>
+            <p className="trackname" id={id}>
+              {trackName}
+            </p>
+            <p className="artistname" id={id}>
+              {artist}
+            </p>
           </div>
         </div>
       </td>
