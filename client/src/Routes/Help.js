@@ -8,12 +8,23 @@ import Footer from "../Components/Footer";
 import "./Help.css";
 import FaqItem from "../Components/FaqItem";
 import { FaGears } from "react-icons/fa6";
-import { IoPeople } from "react-icons/io5";
+import {
+  IoPeople,
+  IoDocumentTextOutline,
+  IoPersonRemoveOutline,
+} from "react-icons/io5";
 import { FaExchangeAlt, FaTools } from "react-icons/fa";
 import { TfiThought } from "react-icons/tfi";
 import { BiNotepad } from "react-icons/bi";
-import { MdNewReleases, MdOutlineSecurityUpdateGood } from "react-icons/md";
+import {
+  MdNewReleases,
+  MdOutlineSecurityUpdateGood,
+  MdOutlineNotStarted,
+} from "react-icons/md";
 import { TbRulerMeasure } from "react-icons/tb";
+import { HiCursorClick } from "react-icons/hi";
+import { GiCardPick } from "react-icons/gi";
+import RevealComponent from "../Components/revealComponent";
 
 const Help = () => {
   useEffect(() => {
@@ -32,7 +43,7 @@ const Help = () => {
       <div className="postNav centerContent">
         <span className="FAQ-span" style={{ alignItems: "center" }}>
           <FaGears className="headerIcon" size={32} />
-          <h2 className="myTitle" style={{ margin: "32px" }}>
+          <h2 className="myTitle" style={{ margin: "20px" }}>
             How to Use <span className="gradientText">Sequence</span>
           </h2>
         </span>
@@ -42,87 +53,97 @@ const Help = () => {
             width: "100%",
           }}
         >
-          <div className="banner" style={{ width: "100%", background: "" }}>
-            <div className="instructionText">
-              <h1>
-                <span className="gradientText" style={{ fontWeight: "400" }}>
-                  Get Started
-                </span>
-              </h1>
-              <p className="bText">
-                On the home page, click the get started button.
-              </p>
+          <RevealComponent>
+            <div className="banner" style={{ width: "100%", background: "" }}>
+              <div className="instructionText">
+                <h1>
+                  <span className="gradientText" style={{ fontWeight: "400" }}>
+                    <MdOutlineNotStarted className="instruction-icon"></MdOutlineNotStarted>
+                    Get Started
+                  </span>
+                </h1>
+                <p className="bText">
+                  On the home page, click the get started button.
+                </p>
+              </div>
             </div>
-          </div>
+          </RevealComponent>
 
-          <div className="banner" style={{ width: "100%", background: "" }}>
-            <div className="instructionText">
-              <h1>
-                <span className="gradientText" style={{ fontWeight: "400" }}>
-                  Read and Accept the Terms of Service
-                </span>
-              </h1>
-              <p className="bText">
-                You will be prompted by Spotify to grant Sequence access to
-                certain permissions. The details of each permission are outlined
-                by Spotify before you accept/deny the conditions.
-              </p>
-
-              {/* <ul className="bText" style={{ listStyle: "none" }}>
-                <li>View your Spotify account data</li>
-                <li>View your Spotify playlists</li>
-                <li>Create new resources (playlists) in Spotify</li>
-            </ul> */}
+          <RevealComponent>
+            <div className="banner" style={{ width: "100%", background: "" }}>
+              <div className="instructionText">
+                <h1>
+                  <span className="gradientText" style={{ fontWeight: "400" }}>
+                    <IoDocumentTextOutline className="instruction-icon"></IoDocumentTextOutline>
+                    Read and Accept the Terms of Service
+                  </span>
+                </h1>
+                <p className="bText">
+                  You will be prompted by Spotify to grant Sequence access to
+                  certain permissions. The details of each permission are
+                  outlined by Spotify before you accept/deny the conditions.
+                </p>
+              </div>
             </div>
-          </div>
+          </RevealComponent>
 
-          <div className="banner" style={{ width: "100%", background: "" }}>
-            <div className="instructionText">
-              <h1>
-                <span className="gradientText" style={{ fontWeight: "400" }}>
-                  Select a Playlist
-                </span>
-              </h1>
-              <p className="bText">
-                Select a playlist by clicking on it and choose a sequencing mode
-                from the options. Select the song that you want to be the first
-                in the new playlist. When you click on a song the playlist will
-                automatically generate in Spotify, but may take a few seconds to
-                appear within the app depending on when your app refreshes.
-              </p>
+          <RevealComponent>
+            <div className="banner" style={{ width: "100%", background: "" }}>
+              <div className="instructionText">
+                <h1>
+                  <span className="gradientText" style={{ fontWeight: "400" }}>
+                    <HiCursorClick className="instruction-icon"></HiCursorClick>
+                    Select a Playlist
+                  </span>
+                </h1>
+                <p className="bText">
+                  Select a playlist by clicking on it and choose a sequencing
+                  mode from the options. Select the song that you want to be the
+                  first in the new playlist. When you click on a song the
+                  playlist will automatically generate in Spotify, but may take
+                  a few seconds to appear within the app depending on when your
+                  app refreshes.
+                </p>
+              </div>
             </div>
-          </div>
+          </RevealComponent>
 
-          <div className="banner" style={{ width: "100%", background: "" }}>
-            <div className="instructionText">
-              <h1>
-                <span className="gradientText" style={{ fontWeight: "400" }}>
-                  Select a Song
-                </span>
-              </h1>
-              <p className="bText">
-                Select the song that you want to be the first in the new
-                playlist. When you click on a song the playlist will
-                automatically generate in Spotify, but may take a few seconds to
-                appear within the app depending on when your app refreshes.
-              </p>
+          <RevealComponent>
+            <div className="banner" style={{ width: "100%", background: "" }}>
+              <div className="instructionText">
+                <h1>
+                  <span className="gradientText" style={{ fontWeight: "400" }}>
+                    <GiCardPick className="instruction-icon"></GiCardPick>
+                    Select a Song
+                  </span>
+                </h1>
+                <p className="bText">
+                  Select the song that you want to be the first in the new
+                  playlist. When you click on a song the playlist will
+                  automatically generate in Spotify, but may take a few seconds
+                  to appear within the app depending on when your app refreshes.
+                </p>
+              </div>
             </div>
-          </div>
+          </RevealComponent>
 
-          <div className="banner" style={{ width: "100%", background: "" }}>
-            <div className="instructionText">
-              <h1>
-                <span className="gradientText" style={{ fontWeight: "400" }}>
-                  Revoke Permissions
-                </span>
-              </h1>
-              <p className="bText">
-                At any time you can revoke Sequence's access permissions by
-                clicking on your avatar and selecting "Log out", or from within
-                Spotify using their "Manage Apps Page."
-              </p>
+          <RevealComponent>
+            <div className="banner" style={{ width: "100%", background: "" }}>
+              <div className="instructionText">
+                <h1>
+                  <span className="gradientText" style={{ fontWeight: "400" }}>
+                    <IoPersonRemoveOutline className="instruction-icon"></IoPersonRemoveOutline>
+                    Revoke Permissions
+                  </span>
+                </h1>
+                <p className="bText">
+                  At any time you can revoke Sequence's access permissions by
+                  clicking on your avatar and selecting "Log out", or from
+                  within Spotify using their "Manage Apps Page."
+                </p>
+              </div>
             </div>
-          </div>
+          </RevealComponent>
         </div>
         <h2 className="myTitle">FAQs</h2>
         <div className="FAQ-container">

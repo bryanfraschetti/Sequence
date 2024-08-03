@@ -9,6 +9,14 @@
     width: min(100%, 800px);
 }
 
+.instruction-icon {
+    color: white;
+    height: 28px;
+    width: 28px;
+    margin-right: 10px;
+    transform: translateY(2px)
+}
+
 .banner{
     text-align: center;
     display: flex;
@@ -45,10 +53,10 @@
     padding-top: 0px;
 }
 
-.headerIcon{
+/* .headerIcon{
     margin-top: 16px;
     margin-right: 10px;
-}
+} */
 
 @media screen and (max-width: 440px) {
     .myTitle{
