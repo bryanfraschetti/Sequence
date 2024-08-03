@@ -65,12 +65,13 @@ input#hamburger {
     }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 440px) {
     #hamburger-container{
         padding-left: 10px;
     }
 
     #hamburger-container.active{
-        transform: translateX(320px);
+        transform: translateX(calc(100vw - 60px));
     }
+
 }

@@ -14,15 +14,19 @@
     align-items: center;
     justify-content: center;
     height: calc(100vh - 70px);
-    width: min(384px, 100vw);
+    width: 384px;
     background: rgb(23,20,28);
     transition: all 0.3s linear;
     z-index: 1;
     margin-left: 0;
 }
 
+.sidebar-header{
+    width: inherit;
+}
+
 #sidebar.inactive{/*hides sidebar*/
-    margin-left: max(-100vw, -384px);
+    margin-left: -384px;
 }
 
 .playlists{
@@ -85,4 +89,14 @@
     background-color: rgb(40,36,52);
     border-radius: 7px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 440px) {
+    #sidebar{
+        width: 100vw;
+    }
+
+    #sidebar.inactive{/*hides sidebar*/
+        margin-left: -100vw;
+    }
 }

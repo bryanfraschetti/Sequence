@@ -1,0 +1,26 @@
+.spotify-btn{
+    border-radius: 5px;
+    width: 130px;
+    height: 45px;
+    position: relative;
+    text-decoration: none;
+    color: white;
+}
+
+.spotify-btn-div{
+    background: rgb(67 67 103);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 160px;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.spotify-logo{
+    width: 21px;
+}

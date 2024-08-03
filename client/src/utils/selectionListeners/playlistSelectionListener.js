@@ -8,6 +8,7 @@ import { getPlaylistTracksCache } from "../checkCache/getPlaylistTracksCache";
 import { getAudioAnalysisCache } from "../checkCache/getAudioAnalysisCache";
 import { updateTracksTableContent } from "../styling/updateTracksTableContents";
 import { getAudioAnalysisSpotify } from "../accessSpotify/getAudioAnalysisSpotify";
+import { removeAllChildren } from "../styling/removeAllChildren";
 
 export const playlistSelectionListener = () => {
   const playlistList = document.getElementById("playlist-list");
@@ -26,6 +27,7 @@ export const playlistSelectionListener = () => {
 
       // Update UI
       updateTracksTableTitle(playlistName);
+      removeAllChildren("spotify-ext");
 
       const { cached, expectedNumSongs, cachedTrackList } =
         await getPlaylistTracksCache();

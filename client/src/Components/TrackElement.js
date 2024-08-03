@@ -47,10 +47,18 @@ const TrackElement = ({
           </div>
         </div>
       </td>
-      <td id={id}>{startSignature}</td>
-      <td id={id}>{startTempo}</td>
-      <td id={id}>{endSignature}</td>
-      <td id={id}>{endTempo}</td>
+      <td id={id} className="music-data">
+        {startSignature}
+      </td>
+      <td id={id} className="music-data">
+        {startTempo}
+      </td>
+      <td id={id} className="music-data">
+        {endSignature}
+      </td>
+      <td id={id} className="music-data">
+        {endTempo}
+      </td>
     </tr>
   );
 };

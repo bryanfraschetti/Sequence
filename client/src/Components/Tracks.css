@@ -70,6 +70,7 @@
     background-color: rgb(27,25,32);
     text-align: center;
     min-width: 500px;
+    width: inherit;
     height: calc(97vh - 70px);
     transition: all 0.3s linear;
     overflow-y: scroll;
@@ -102,8 +103,9 @@
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    width: min(80%, 1600px);
+    width: min(80%, 1000px);
     border-collapse: collapse;
+    margin-top: 60px;
 }
 
 .tracks-table-header{
@@ -123,12 +125,6 @@
     margin-right: 5%;
 }
 
-.album-art{
-    margin-top: 5px;
-    max-height: 60px;
-    max-width: 60px;
-    margin-bottom: 5px;
-}
 
 @media screen and (max-width: 500px) {
     .tracks{

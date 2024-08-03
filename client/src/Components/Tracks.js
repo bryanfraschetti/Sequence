@@ -40,6 +40,7 @@ const Tracks = () => {
       <h3 className="subheading" id="tracklist-heading">
         Playlist Tracks
       </h3>
+      <div id="spotify-ext"></div>
       <EmptyStateArt
         innerHTML={
           "This area will populate with songs once you select a playlist."

@@ -1,8 +1,24 @@
 import TableHeader from "../../Components/TableHeader";
 import { renderToString } from "react-dom/server";
+import { SequenceNamespace } from "../SequenceNamespace";
+import OpenSpotifyBtn from "../../Components/OpenSpotifyBtn";
 
 export const InitializeTrackTable = () => {
-  // Render initialized element server side
+  const playlistId = SequenceNamespace.getVar("playlistId");
+  const spotifyUrl = `https://open.spotify.com/playlist/${playlistId}`;
+
+  const OpenSpotifyBtnStr = renderToString(
+    <OpenSpotifyBtn spotifyUrl={spotifyUrl} />
+  );
+  const tempBtnContainer = document.createElement("div");
+  tempBtnContainer.innerHTML = OpenSpotifyBtnStr;
+
+  const spotifyContainer = document.getElementById("spotify-ext");
+  while (tempBtnContainer.firstChild) {
+    spotifyContainer.appendChild(tempBtnContainer.firstChild);
+  }
+
+  // Render initialized element
   const initTable = renderToString(<TableHeader />);
   const tempContainer = document.createElement("table");
   tempContainer.innerHTML = initTable;
