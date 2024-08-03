@@ -20,6 +20,17 @@ if [ -n "$api_image" ]; then
     docker rmi -f $api_image
 fi
 
+redis_image=$(docker image list | grep "redis" | awk '{print $3}' | xargs)
+if [ -n "$redis_image" ]; then
+    docker rmi -f $redis_image
+fi
+
+nginx_image=$(docker image list | grep "nginx" | awk '{print $3}' | xargs)
+if [ -n "$nginx_image" ]; then
+    docker rmi -f $nginx_image
+fi
+
+
 cd ./client
 # npm install # If dependencies not yet installed
 npm run build
@@ -28,4 +39,4 @@ redis-cli shutdown
 
 # Go back to the root directory and start Docker Compose
 cd ..
-docker compose up
+docker compose up --detach

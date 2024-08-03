@@ -1,6 +1,6 @@
 import redis from "redis";
 
-const REDIS_URL = "redis://sequence-redis:6379";
+const REDIS_URL = "redis://redis-cache:6379";
 
 // Create redis client
 const client = redis.createClient({ url: REDIS_URL });

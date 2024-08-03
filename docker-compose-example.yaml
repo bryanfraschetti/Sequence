@@ -1,10 +1,10 @@
 services:
-  sequence-redis:
-    image: redis/redis-stack-server:latest
+  redis-cache:
+    build: ./redis
     ports:
       - "6379:6379"
     volumes:
-      - sequence-redis-data:/data
+      - redis-data:/data
 
   react-app:
     build: ./client
@@ -17,11 +17,12 @@ services:
       SPOTIFY_CLIENT_ID: MY_CLIENT_ID
       SPOTIFY_CLIENT_SECRET: MY_CLIENT_SECRET
       COOKIE_SIGNER: MY_COOKIE_SIGNER
+      JWT_SECRET: MY_JWT_SECRET
       TTL: 86400
     ports:
       - 3001:3001
     depends_on:
-      - sequence-redis
+      - redis-cache
 
   nginx:
     build: ./nginx
@@ -30,3 +31,13 @@ services:
     depends_on:
       - node-api
       - react-app
+
+  post-start:
+    image: redis/redis-stack-server:latest
+    depends_on:
+      - redis-cache
+    command: ["sh", "-c", "redis-cli -h redis-cache CONFIG SET save '60 1'"]
+
+volumes:
+  redis-data:
+    driver: local
