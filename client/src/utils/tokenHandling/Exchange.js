@@ -10,6 +10,7 @@ export const Exchange = async () => {
   const access_token = localStorage.getItem("access_token");
   const refresh_token = localStorage.getItem("refresh_token");
   const expires = localStorage.getItem("expires"); // Get current client state
+  const JWT = localStorage.getItem("JWT");
   const tokensExpired = tokenTimeValidity();
 
   if (refresh_token && tokensExpired) {
@@ -25,16 +26,23 @@ export const Exchange = async () => {
         body: JSON.stringify({
           access_token: access_token,
           refresh_token: refresh_token,
-          expires: expires, // Post current state to Sequence endpoint
+          expires: expires,
+          JWT: JWT, // Post current state to Sequence endpoint
         }),
       });
       if (response.ok) {
         const data = await response.json();
-        if (data.access_token && data.refresh_token && data.expires) {
+        if (
+          data.access_token &&
+          data.refresh_token &&
+          data.expires &&
+          data.JWT
+        ) {
           // All are successfully defined
           localStorage.setItem("access_token", data.access_token);
           localStorage.setItem("refresh_token", data.refresh_token);
           localStorage.setItem("expires", data.expires);
+          localStorage.setItem("JWT", data.JWT);
         } else if (data.redirect_uri) {
           // Not logged in
           const NotLoggedIn = document.getElementById("not-logged-in");

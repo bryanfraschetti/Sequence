@@ -1,6 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import jwt from "jsonwebtoken";
+const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -15,12 +17,15 @@ router.post("/", (req, res) => {
       access_token: req.session.tokens.access_token,
       expires: req.session.tokens.expires,
       refresh_token: req.session.tokens.refresh_token,
+      JWT: req.session.JWT,
     });
   } else if (
     !req.session.tokens &&
     req.body.refresh_token &&
     req.body.access_token &&
-    req.body.expires
+    req.body.expires &&
+    req.body.JWT &&
+    jwt.verify(req.body.JWT, jwtSecret)
   ) {
     // Session ended but user had a previous session
     // Generate fresh tokens

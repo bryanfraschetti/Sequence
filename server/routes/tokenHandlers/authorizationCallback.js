@@ -1,6 +1,7 @@
 import express from "express";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
 import jwt from "jsonwebtoken";
+const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
 
@@ -68,7 +69,36 @@ router.get("/", (req, res) => {
       .then((tokens) => {
         // Store tokens in session, redirect user to "/home"
         req.session.tokens = tokens;
-        res.redirect("/sequencer");
+
+        const access_token = tokens.access_token;
+
+        fetch("https://api.spotify.com/v1/me", {
+          // Spotify user end point
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: " Bearer " + access_token,
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error(response);
+            }
+          })
+          .then((response) => {
+            const payload = {
+              refreshToken: tokens.refresh_token,
+              userId: response.id,
+            };
+            const JWT = jwt.sign(payload, jwtSecret);
+            req.session.JWT = JWT;
+            res.redirect("/sequencer");
+          })
+          .catch((error) => {
+            res.redirect(entryPoint);
+          });
       })
       .catch((error) => {
         // Something went wrong, send user to index page
