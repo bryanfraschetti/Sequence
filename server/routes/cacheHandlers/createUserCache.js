@@ -34,10 +34,10 @@ router.post("/", async (req, res) => {
         profilePicUrl: sanitizedProfilePicUrl,
       });
     } else {
-      res.redirect("/401");
+      res.status(401).json();
     }
   } catch {
-    res.redirect("/401");
+    res.status(401).json();
   }
 });
 

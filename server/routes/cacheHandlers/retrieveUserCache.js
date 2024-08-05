@@ -28,7 +28,7 @@ router.get("/:userId", async (req, res) => {
       res.status(404).json();
     }
   } catch {
-    res.status(401);
+    res.status(401).json();
   }
 });
 
