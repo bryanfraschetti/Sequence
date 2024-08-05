@@ -2,6 +2,8 @@ import express from "express";
 import client from "../../redisClient.js";
 import bodyParser from "body-parser";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import jwt from "jsonwebtoken";
+const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -10,21 +12,29 @@ router.use(bodyParser.json());
 const TTL = process.env.TTL;
 
 router.post("/:userId", async (req, res) => {
-  const { playlistList } = req.body;
-  const userId = req.params.userId;
+  try {
+    const authHeader = req.headers["authorization"];
+    const JWT = authHeader && authHeader.split(" ")[1];
+    const decodedJWT = jwt.verify(JWT, jwtSecret);
 
-  const sanitizedUserId = sanitizeInput(userId);
+    const userId = decodedJWT.userId;
+    const { playlistList } = req.body;
 
-  // Update Redis JSON in place
-  await client.json.set(
-    `user:${sanitizedUserId}`,
-    "$.playlistList",
-    JSON.stringify(playlistList)
-  );
+    const sanitizedUserId = sanitizeInput(userId);
 
-  await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
+    // Update Redis JSON in place
+    await client.json.set(
+      `user:${sanitizedUserId}`,
+      "$.playlistList",
+      JSON.stringify(playlistList)
+    );
 
-  res.status(200).json();
+    await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
+
+    res.status(200).json();
+  } catch {
+    res.status(401).json();
+  }
 });
 
 export default router;

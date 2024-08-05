@@ -2,6 +2,7 @@ import { addPlaylistToDom } from "../styling/addPlaylistToDom";
 
 export const getPlaylistsCache = async () => {
   const userId = localStorage.getItem("userId");
+  const JWT = localStorage.getItem("JWT");
 
   try {
     // Try reading playlist cache
@@ -9,6 +10,7 @@ export const getPlaylistsCache = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
       },
     });
 
