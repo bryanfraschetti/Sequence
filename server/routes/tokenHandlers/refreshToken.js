@@ -1,6 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import jwt from "jsonwebtoken";
+const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -15,10 +17,11 @@ const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
 router.post("/", (req, res) => {
   const refresh_token = req.body.refresh_token;
-  if (!refresh_token) {
+  const JWT = req.body.JWT;
+  if (!refresh_token || !jwt.verify(JWT, jwtSecret)) {
     // Missing credentials
     res.json({
-      redirect_uri: entryPoint,
+      redirect_uri: "/401",
     }); // Send redirect
   } else {
     fetch(
@@ -52,10 +55,24 @@ router.post("/", (req, res) => {
       .then((tokens) => {
         // Store tokens in session and send to user
         req.session.tokens = tokens;
+
+        const verifiedJwt = jwt.verify(JWT, jwtSecret);
+        const userId = verifiedJwt.userId;
+
+        const payload = {
+          refreshToken: tokens.refresh_token,
+          userId: userId,
+        };
+
+        const JWTNew = jwt.sign(payload, jwtSecret);
+
+        req.session.JWT = JWTNew;
+
         res.json({
           access_token: req.session.tokens.access_token,
           expires: req.session.tokens.expires,
           refresh_token: req.session.tokens.refresh_token,
+          JWT: JWTNew,
         });
       })
       .catch((error) => {

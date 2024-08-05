@@ -18,6 +18,7 @@ router.post("/", (req, res) => {
       expires: req.session.tokens.expires,
       refresh_token: req.session.tokens.refresh_token,
       JWT: req.session.JWT,
+      userId: req.session.userId,
     });
   } else if (
     !req.session.tokens &&
@@ -34,6 +35,7 @@ router.post("/", (req, res) => {
       access_token: sanitizeInput(req.body.access_token),
       expires: sanitizeInput(req.body.expires),
       refresh_token: sanitizeInput(req.body.refresh_token),
+      JWT: req.body.JWT,
     };
 
     fetch("http://nginx/api/RefreshToken", {
@@ -46,6 +48,7 @@ router.post("/", (req, res) => {
         access_token: clientTokens.access_token,
         refresh_token: clientTokens.refresh_token,
         expires: clientTokens.expires,
+        JWT: clientTokens.JWT,
       }),
     })
       .then((response) => {

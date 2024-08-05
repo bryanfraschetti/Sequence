@@ -5,6 +5,8 @@ export const refreshTokens = async () => {
     const access_token = localStorage.getItem("access_token");
     const refresh_token = localStorage.getItem("refresh_token");
     const expires = localStorage.getItem("expires"); // Get current client state
+    const JWT = localStorage.getItem("JWT");
+
     const response = await fetch("/api/RefreshToken", {
       // Send current state to Sequence
       method: "POST",
@@ -15,6 +17,7 @@ export const refreshTokens = async () => {
         access_token: access_token,
         refresh_token: refresh_token,
         expires: expires,
+        JWT: JWT,
       }),
     });
     if (response.ok) {
@@ -24,6 +27,7 @@ export const refreshTokens = async () => {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refresh_token", data.refresh_token);
         localStorage.setItem("expires", data.expires);
+        localStorage.setItem("JWT", data.JWT);
       } else if (data.redirect_uri) {
         // Something went wrong, controlled redirect
         ActivateErrorNotice("redirect_uri");
