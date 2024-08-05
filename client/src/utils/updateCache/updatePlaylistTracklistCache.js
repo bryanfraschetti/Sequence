@@ -3,6 +3,7 @@ import { SequenceNamespace } from "../SequenceNamespace";
 export const updatePlaylistTracklistCache = async (filteredTracks) => {
   // Send fetched song information to Sequence
   const userId = localStorage.getItem("userId");
+  const JWT = localStorage.getItem("JWT");
   const selectedPlaylist = SequenceNamespace.getVar("playlistId");
   const expectedNumSongs = SequenceNamespace.getVar("expectedNumSongs");
   const trackIdList = [];
@@ -19,6 +20,7 @@ export const updatePlaylistTracklistCache = async (filteredTracks) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JWT}`,
     },
     body: JSON.stringify({
       songList: trackIdList,

@@ -3,6 +3,8 @@ import { SequenceNamespace } from "../SequenceNamespace";
 export const getPlaylistTracksCache = async () => {
   const userId = localStorage.getItem("userId");
   const playlistId = SequenceNamespace.getVar("playlistId");
+  const JWT = localStorage.getItem("JWT");
+
   try {
     // Try reading playlist cache
     const response = await fetch(
@@ -11,6 +13,7 @@ export const getPlaylistTracksCache = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
         },
       }
     );
