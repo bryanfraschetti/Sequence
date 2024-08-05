@@ -10,6 +10,13 @@ router.use(bodyParser.json());
 const TTL = process.env.TTL;
 
 router.post("/:trackId", async (req, res) => {
+  // Check if cached track resource already exists
+  const cacheRead = await client.json.get(`track:${sanitizedTrackId}`);
+  if (cacheRead) {
+    // If it already exists, don't overwrite it
+    res.status(418).json();
+  }
+
   const trackId = req.params.trackId;
   const sanitizedTrackId = sanitizeInput(trackId);
 
