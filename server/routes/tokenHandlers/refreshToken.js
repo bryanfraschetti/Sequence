@@ -73,6 +73,7 @@ router.post("/", (req, res) => {
             access_token: req.session.tokens.access_token,
             expires: req.session.tokens.expires,
             refresh_token: req.session.tokens.refresh_token,
+            userId: userId,
             JWT: JWTNew,
           });
         })
