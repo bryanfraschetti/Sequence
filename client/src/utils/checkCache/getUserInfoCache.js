@@ -3,12 +3,16 @@ import { setProfileImage } from "../styling/setProfileImage";
 export const getUserInfoCache = async (userID) => {
   try {
     // Try reading user cache
+    const JWT = localStorage.getItem("JWT");
     const response = await fetch(`/api/users/cache/${userID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
       },
     });
+
+    console.log(response);
 
     if (!response.ok) {
       throw new Error(response.statusText);
