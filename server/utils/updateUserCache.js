@@ -1,5 +1,5 @@
 export const updateUserCache = async (userId, profilePicUrl, JWT) => {
-  fetch("/api/users/create", {
+  const success = await fetch("http://nginx/api/users/create", {
     // Cache Image (or the lack thereof)
     method: "POST",
     headers: {
@@ -10,11 +10,7 @@ export const updateUserCache = async (userId, profilePicUrl, JWT) => {
       userId: userId,
       profilePicUrl: profilePicUrl,
     }),
-  })
-    .then((response) => {
-      //   console.log(response);
-    })
-    .catch((err) => {
-      //   console.error(err);
-    });
+  });
+
+  return success;
 };

@@ -34,6 +34,8 @@ export const getUserInfoSpotify = async () => {
       }
     })
     .then(async (response) => {
+      const JWT = localStorage.getItem("JWT");
+
       // Get User Id and their profile image
       const userId = response.id;
       localStorage.setItem("userId", userId);
@@ -45,7 +47,7 @@ export const getUserInfoSpotify = async () => {
         setProfileImage(profilePicUrl);
       }
 
-      await updateUserCache(userId, profilePicUrl);
+      await updateUserCache(userId, profilePicUrl, JWT);
     })
     .catch((error) => {
       //   console.error(error);

@@ -1,6 +1,7 @@
 import express from "express";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
 import jwt from "jsonwebtoken";
+import { updateUserCache } from "../../utils/updateUserCache.js";
 const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
@@ -87,13 +88,23 @@ router.get("/", (req, res) => {
               throw new Error(response);
             }
           })
-          .then((response) => {
+          .then(async (response) => {
+            const userId = response.id;
+            const images = response.images;
+            const profilePicUrl = images.length > 0 ? images[0].url : null;
+
             const payload = {
               refreshToken: tokens.refresh_token,
-              userId: response.id,
+              userId: userId,
             };
+
             const JWT = jwt.sign(payload, jwtSecret);
+
             req.session.JWT = JWT;
+            req.session.userId = userId;
+
+            await updateUserCache(userId, profilePicUrl, JWT);
+
             res.redirect("/sequencer");
           })
           .catch((error) => {

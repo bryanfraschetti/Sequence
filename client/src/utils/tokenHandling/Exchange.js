@@ -36,13 +36,15 @@ export const Exchange = async () => {
           data.access_token &&
           data.refresh_token &&
           data.expires &&
-          data.JWT
+          data.JWT &&
+          data.userId
         ) {
           // All are successfully defined
           localStorage.setItem("access_token", data.access_token);
           localStorage.setItem("refresh_token", data.refresh_token);
           localStorage.setItem("expires", data.expires);
           localStorage.setItem("JWT", data.JWT);
+          localStorage.setItem("userId", data.userId);
         } else if (data.redirect_uri) {
           // Not logged in
           const NotLoggedIn = document.getElementById("not-logged-in");
