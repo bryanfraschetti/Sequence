@@ -7,6 +7,8 @@ import { Fader } from "../sequencingAlgorithms/Fader";
 import { Timbre } from "../sequencingAlgorithms/Timbre";
 import { weightedTimbre } from "../sequencingAlgorithms/weightedTimbre";
 import { TimbreTempo } from "../sequencingAlgorithms/TimbreTempo";
+import { removeAllChildren } from "../styling/removeAllChildren";
+import { addTrackToDom } from "../styling/addTrackToDom";
 
 export const trackSelectionListener = async () => {
   const tracksTable = document.getElementById("tracks-table");
@@ -19,36 +21,55 @@ export const trackSelectionListener = async () => {
 
       const sequencingMode = SequenceNamespace.getVar("sequencingMode");
       const initSongId = e.target.id;
-
+      let NewSequence = null;
       switch (sequencingMode) {
         default:
-          CoF(initSongId);
+          NewSequence = CoF(initSongId);
+          SequenceNamespace.setVar("playlistPrefix", "CoF Sequenced");
           break;
         case "cof":
-          CoF(initSongId);
+          NewSequence = CoF(initSongId);
+          SequenceNamespace.setVar("playlistPrefix", "CoF Sequenced");
           break;
         case "rsm":
-          SM(initSongId, 1); // +1 for rising
+          NewSequence = SM(initSongId, 1); // +1 for rising
+          SequenceNamespace.setVar("playlistPrefix", "RSM Sequenced");
           break;
         case "dsm":
-          SM(initSongId, -1); // -1 for descending
+          NewSequence = SM(initSongId, -1); // -1 for descending
+          SequenceNamespace.setVar("playlistPrefix", "DSM Sequenced");
           break;
         case "rsa":
-          RSA(initSongId);
+          NewSequence = RSA(initSongId);
+          SequenceNamespace.setVar("playlistPrefix", "RSA Sequenced");
           break;
         case "fader":
-          Fader(initSongId);
+          NewSequence = Fader(initSongId);
+          SequenceNamespace.setVar("playlistPrefix", "Fader Sequenced");
           break;
         case "timbre":
-          Timbre(initSongId);
+          NewSequence = Timbre(initSongId);
+          SequenceNamespace.setVar("playlistPrefix", "Timbre Sequenced");
           break;
         case "wt":
-          weightedTimbre(initSongId);
+          NewSequence = weightedTimbre(initSongId);
+          SequenceNamespace.setVar(
+            "playlistPrefix",
+            "Weighted Timbre Sequenced"
+          );
           break;
         case "tt":
-          TimbreTempo(initSongId);
+          NewSequence = TimbreTempo(initSongId);
+          SequenceNamespace.setVar("playlistPrefix", "Timbre Tempo Sequenced");
           break;
       }
+
+      removeAllChildren("tracks-body");
+      NewSequence.forEach((song) => {
+        addTrackToDom(song);
+      });
+
+      ActivateAnimation();
     }
   });
 };

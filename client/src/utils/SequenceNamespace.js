@@ -10,6 +10,8 @@ export const SequenceNamespace = (function () {
     playlistName: null,
     sequencingMode: null,
     expectedNumSongs: null,
+    NewSequence: null,
+    playlistPrefix: "",
   }; // Variables that are shared across JS functions
 
   return {

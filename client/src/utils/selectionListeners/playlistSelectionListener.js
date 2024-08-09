@@ -20,6 +20,8 @@ export const playlistSelectionListener = () => {
 
       // Update Namespace regarding selections
       SequenceNamespace.setVar("songList", []);
+      SequenceNamespace.setVar("NewSequence", null);
+      SequenceNamespace.setVar("playlistPrefix", "");
       const playlistId = e.target.id;
       const playlistName = e.target.innerHTML;
       SequenceNamespace.setVar("playlistId", playlistId);
@@ -28,6 +30,7 @@ export const playlistSelectionListener = () => {
       // Update UI
       updateTracksTableTitle(playlistName);
       removeAllChildren("spotify-ext");
+      removeAllChildren("export-ext");
 
       const { cached, expectedNumSongs, cachedTrackList } =
         await getPlaylistTracksCache();

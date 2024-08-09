@@ -22,7 +22,7 @@ export const createPlaylist = async (SequencingModeString, NewSequence) => {
       "Content-Type": "application/json",
       Authorization: " Bearer " + access_token,
     },
-    body: JSON.stringify({ name: SequencingModeString + playlistName }),
+    body: JSON.stringify({ name: `${SequencingModeString} ${playlistName}` }),
   })
     .then((response) => {
       if (response.ok) {

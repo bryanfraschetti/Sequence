@@ -2,7 +2,7 @@ import { SequenceNamespace } from "../SequenceNamespace";
 import { relativeKey } from "../math/relativeKey";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-import { createPlaylist } from "../accessSpotify/createPlaylist";
+// import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 export const Fader = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
@@ -106,6 +106,6 @@ export const Fader = (initSongId) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  // console.log(NewSequence);
-  createPlaylist("Fader Sequenced ", NewSequence);
+  SequenceNamespace.setVar("NewSequence", NewSequence);
+  return NewSequence;
 };

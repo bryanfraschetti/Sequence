@@ -2,7 +2,10 @@ import { SequenceNamespace } from "../SequenceNamespace";
 import { relativeKey } from "../math/relativeKey";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-import { createPlaylist } from "../accessSpotify/createPlaylist";
+// import { createPlaylist } from "../accessSpotify/createPlaylist";
+// import { removeAllChildren } from "../styling/removeAllChildren";
+// import { addTrackToDom } from "../styling/addTrackToDom";
+// import { ActivateAnimation } from "../styling/ActivateAnimation";
 
 export const CoF = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList"); // Mutable list of candidate songs
@@ -100,6 +103,6 @@ export const CoF = (initSongId) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  // console.log(NewSequence);
-  createPlaylist("CoF Sequenced ", NewSequence);
+  SequenceNamespace.setVar("NewSequence", NewSequence);
+  return NewSequence;
 };

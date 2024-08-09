@@ -61,6 +61,6 @@ export const TimbreNoLoudness = (initSongId) => {
     NewSequence.push(safeClosure.getCur());
   }
 
-  console.log(NewSequence);
-  //   createPlaylist("NL Timbre Sequenced ", NewSequence);
+  SequenceNamespace.setVar("NewSequence", NewSequence);
+  return NewSequence;
 };

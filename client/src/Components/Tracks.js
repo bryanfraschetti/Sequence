@@ -40,7 +40,18 @@ const Tracks = () => {
       <h3 className="subheading" id="tracklist-heading">
         Playlist Tracks
       </h3>
-      <div id="spotify-ext"></div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "30px",
+        }}
+      >
+        <div id="spotify-ext" style={{ width: "160px" }}></div>
+        <div id="export-ext"></div>
+      </div>
       <EmptyStateArt
         innerHTML={
           "This area will populate with songs once you select a playlist."

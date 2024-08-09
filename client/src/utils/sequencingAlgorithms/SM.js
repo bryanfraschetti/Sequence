@@ -1,7 +1,7 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-import { createPlaylist } from "../accessSpotify/createPlaylist";
+// import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 // Semitone modal (change by semitone, keep modality)
 export const SM = (initSongId, semitoneDirection) => {
@@ -86,10 +86,6 @@ export const SM = (initSongId, semitoneDirection) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  // console.log(NewSequence);
-  if (semitoneDirection === 1) {
-    createPlaylist("R.S. Sequenced ", NewSequence);
-  } else if (semitoneDirection === -1) {
-    createPlaylist("D.S. Sequenced ", NewSequence);
-  }
+  SequenceNamespace.setVar("NewSequence", NewSequence);
+  return NewSequence;
 };

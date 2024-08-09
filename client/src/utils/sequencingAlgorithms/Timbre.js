@@ -1,6 +1,6 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { SquaredEuclideanDistance } from "../math/SquaredEuclideanDistance";
-import { createPlaylist } from "../accessSpotify/createPlaylist";
+// import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 export const Timbre = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
@@ -57,6 +57,6 @@ export const Timbre = (initSongId) => {
     NewSequence.push(safeClosure.getCur());
   }
 
-  console.log(NewSequence);
-  createPlaylist("Timbre Sequenced ", NewSequence);
+  SequenceNamespace.setVar("NewSequence", NewSequence);
+  return NewSequence;
 };

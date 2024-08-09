@@ -1,7 +1,7 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-import { createPlaylist } from "../accessSpotify/createPlaylist";
+// import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 export const RSA = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
@@ -86,6 +86,6 @@ export const RSA = (initSongId) => {
     safeClosure.setVar("targetTempo", nextSong.endtempo);
   }
 
-  // console.log(NewSequence);
-  createPlaylist("R.S.A Sequenced ", NewSequence);
+  SequenceNamespace.setVar("NewSequence", NewSequence);
+  return NewSequence;
 };

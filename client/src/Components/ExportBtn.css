@@ -1,0 +1,15 @@
+.export-btn{
+    color: white;
+    background: rgb(67 67 103);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 7px 10px;
+    font-size: 1rem;
+    border-style: none;
+    border-radius: 6px;
+}
+
+.export-btn:hover{
+    cursor: pointer;
+}

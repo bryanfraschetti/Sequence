@@ -2,6 +2,7 @@ import TableHeader from "../../Components/TableHeader";
 import { renderToString } from "react-dom/server";
 import { SequenceNamespace } from "../SequenceNamespace";
 import OpenSpotifyBtn from "../../Components/OpenSpotifyBtn";
+import ExportBtn from "../../Components/ExportBtn";
 
 export const InitializeTrackTable = () => {
   const playlistId = SequenceNamespace.getVar("playlistId");
@@ -16,6 +17,15 @@ export const InitializeTrackTable = () => {
   const spotifyContainer = document.getElementById("spotify-ext");
   while (tempBtnContainer.firstChild) {
     spotifyContainer.appendChild(tempBtnContainer.firstChild);
+  }
+
+  const ExportBtnStr = renderToString(<ExportBtn />);
+  const tempExportBtnContainer = document.createElement("button");
+  tempExportBtnContainer.innerHTML = ExportBtnStr;
+
+  const ExportBtnContainer = document.getElementById("export-ext");
+  while (tempExportBtnContainer.firstChild) {
+    ExportBtnContainer.appendChild(tempExportBtnContainer.firstChild);
   }
 
   // Render initialized element

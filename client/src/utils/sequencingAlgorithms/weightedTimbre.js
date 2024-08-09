@@ -1,5 +1,5 @@
 import { SequenceNamespace } from "../SequenceNamespace";
-import { createPlaylist } from "../accessSpotify/createPlaylist";
+// import { createPlaylist } from "../accessSpotify/createPlaylist";
 import { weightedSquaredEuclideanDistance } from "../math/weightedSquaredEuclideanDistance";
 
 export const weightedTimbre = (initSongId) => {
@@ -59,6 +59,6 @@ export const weightedTimbre = (initSongId) => {
     NewSequence.push(safeClosure.getCur());
   }
 
-  console.log(NewSequence);
-  createPlaylist("WT Timbre Sequenced ", NewSequence);
+  SequenceNamespace.setVar("NewSequence", NewSequence);
+  return NewSequence;
 };
