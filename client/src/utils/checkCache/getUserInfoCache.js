@@ -12,7 +12,7 @@ export const getUserInfoCache = async (userID) => {
       },
     });
 
-    console.log(response);
+    // console.log(response);
 
     if (!response.ok) {
       throw new Error(response.statusText);
