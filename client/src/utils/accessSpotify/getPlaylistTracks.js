@@ -9,7 +9,7 @@ import { getAudioAnalysisCache } from "../checkCache/getAudioAnalysisCache";
 export const getPlaylistTracks = async () => {
   const playlistId = SequenceNamespace.getVar("playlistId");
   const access_token = localStorage.getItem("access_token");
-  console.log("Getting Playlist Tracks from Spotify");
+  //   console.log("Getting Playlist Tracks from Spotify");
 
   fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=50`, {
     method: "GET",

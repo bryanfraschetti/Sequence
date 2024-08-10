@@ -7,7 +7,7 @@ import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 export const createPlaylist = async () => {
   const playlistPrefix = SequenceNamespace.getVar("playlistPrefix");
   const NewSequence = SequenceNamespace.getVar("NewSequence");
-  console.log(playlistPrefix, NewSequence);
+  //   console.log(playlistPrefix, NewSequence);
   if (playlistPrefix === "" || NewSequence === null) {
     return;
   }

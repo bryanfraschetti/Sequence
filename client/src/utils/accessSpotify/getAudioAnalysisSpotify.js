@@ -7,7 +7,7 @@ import { updateAudioAnalysisCache } from "../updateCache/updateAudioAnalysisCach
 export const getAudioAnalysisSpotify = async (trackInfo) => {
   const access_token = localStorage.getItem("access_token");
   const tokensExpired = tokenTimeValidity();
-  console.log("Getting Audio Analysis Spotify");
+  //   console.log("Getting Audio Analysis Spotify");
   if (tokensExpired) {
     await refreshTokens();
   }

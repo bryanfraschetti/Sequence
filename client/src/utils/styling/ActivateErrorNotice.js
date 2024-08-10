@@ -1,5 +1,5 @@
 export const ActivateErrorNotice = (ERR) => {
-  console.log(ERR);
+  // console.log(ERR);
   const FetchAnimation = document.getElementById("loading-container");
   if (FetchAnimation) {
     FetchAnimation.style.display = "none"; // Disable loading animation

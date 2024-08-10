@@ -8,7 +8,7 @@ import { SequenceNamespace } from "../SequenceNamespace";
 export const getPlaylistsSpotify = async () => {
   const access_token = localStorage.getItem("access_token");
   const tokensExpired = tokenTimeValidity();
-  console.log("Getting Playlists from Spotify");
+  //   console.log("Getting Playlists from Spotify");
   if (tokensExpired) {
     await refreshTokens();
   }
