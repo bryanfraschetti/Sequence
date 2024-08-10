@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "cbc6e45e-46fc-49a9-9c0e-c34a20f0e7a4",
+		"name": "Sequence",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "37603252"
+	},
+	"item": [
+		{
+			"name": "GetCachedUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is within an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"",
+							"pm.test(\"User cache object is present\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.userCache).to.exist.and.to.be.an('object');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Ensure userId, profilePicUrl, and playlistList are present in the response\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.userCache.userId).to.exist;",
+							"    pm.expect(responseData.userCache.profilePicUrl).to.exist;",
+							"    pm.expect(responseData.userCache.playlistList).to.exist;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUF5bE5seGZkeGJoa1NBZkxtZnNPOWpBcXZZX0NmYUdabjhuYWVSdGhxb0x6Qy14S2F4aXBvcllSSXYzRUJwQmhDbXF2YVNGVkNLOG81OF9NLXJ3UEptRXE1cjNzVmxfUUR3V0pXQ2xHVmMwX1FHQm1VczdHY2pGakFQZlNfcHduSSIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMDIyOTR9.v49Jqzu-SmtUHLEgv92Vsk0_Y3uvYHaDbbHv3_R9Tsg",
+						"type": "text"
+					}
+				],
+				"url": "127.0.0.1/api/users/cache/sd36gtnq8u1jw54gali7w7bcp"
+			},
+			"response": []
+		},
+		{
+			"name": "GetCachedUserUnauthorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"// pm.test(\"Check JSON Response body is empty\", function() {",
+							"//     const responseData = pm.response.json();",
+							"//     pm.expect(responseData).to.be.empty;",
+							"// });",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
+						"type": "text"
+					}
+				],
+				"url": "127.0.0.1/api/users/cache/sd36gtnq8u1jw54gali7w7bcp"
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUserCacheUnauthorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {",
+							"  pm.response.to.have.status(401);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"// pm.test(\"Response schema for the newly created user\", function () {",
+							"//   const responseData = pm.response.json();",
+							"//   pm.expect(responseData).to.eql({})",
+							"// });",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
+						"type": "text"
+					}
+				],
+				"url": "127.0.0.1/api/users/create"
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUserCache",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - userId and profilePicUrl\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.userId).to.exist;",
+							"    pm.expect(responseData.profilePicUrl).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"UserId is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.userId).to.be.a('string').and.to.have.lengthOf.at.least(1, \"UserId should be a non-empty string\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUF5bE5seGZkeGJoa1NBZkxtZnNPOWpBcXZZX0NmYUdabjhuYWVSdGhxb0x6Qy14S2F4aXBvcllSSXYzRUJwQmhDbXF2YVNGVkNLOG81OF9NLXJ3UEptRXE1cjNzVmxfUUR3V0pXQ2xHVmMwX1FHQm1VczdHY2pGakFQZlNfcHduSSIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMDIyOTR9.v49Jqzu-SmtUHLEgv92Vsk0_Y3uvYHaDbbHv3_R9Tsg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"profilePicUrl\": \"https%3A%2F%2Fi.scdn.co%2Fimage%2Fab67757000003b823810d5026f999453ee210bd7\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "127.0.0.1/api/users/create"
+			},
+			"response": []
+		}
+	]
+}
