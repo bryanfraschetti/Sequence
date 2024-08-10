@@ -92,7 +92,7 @@ export const tupleToKey = (key, mode) => {
       break;
   }
 
-  const modes = ["maj", "min"];
+  const modes = ["min", "maj"];
 
   return `${keyNotation} ${modes[mode]}`;
 };
