@@ -7,202 +7,419 @@
 	},
 	"item": [
 		{
-			"name": "GetCachedUser",
-			"event": [
+			"name": "UserCache",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response status code is 200\", function () {",
-							"    pm.expect(pm.response.code).to.equal(200);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Content-Type header is application/json\", function () {",
-							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
-							"});",
-							"",
-							"",
-							"pm.test(\"Response time is within an acceptable range\", function () {",
-							"  pm.expect(pm.response.responseTime).to.be.below(300);",
-							"});",
-							"",
-							"",
-							"pm.test(\"User cache object is present\", function () {",
-							"  const responseData = pm.response.json();",
-							"  ",
-							"  pm.expect(responseData.userCache).to.exist.and.to.be.an('object');",
-							"});",
-							"",
-							"",
-							"pm.test(\"Ensure userId, profilePicUrl, and playlistList are present in the response\", function () {",
-							"    const responseData = pm.response.json();",
-							"",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    pm.expect(responseData.userCache.userId).to.exist;",
-							"    pm.expect(responseData.userCache.profilePicUrl).to.exist;",
-							"    pm.expect(responseData.userCache.playlistList).to.exist;",
-							"});",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUF5bE5seGZkeGJoa1NBZkxtZnNPOWpBcXZZX0NmYUdabjhuYWVSdGhxb0x6Qy14S2F4aXBvcllSSXYzRUJwQmhDbXF2YVNGVkNLOG81OF9NLXJ3UEptRXE1cjNzVmxfUUR3V0pXQ2xHVmMwX1FHQm1VczdHY2pGakFQZlNfcHduSSIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMDIyOTR9.v49Jqzu-SmtUHLEgv92Vsk0_Y3uvYHaDbbHv3_R9Tsg",
-						"type": "text"
-					}
-				],
-				"url": "127.0.0.1/api/users/cache/sd36gtnq8u1jw54gali7w7bcp"
-			},
-			"response": []
-		},
-		{
-			"name": "GetCachedUserUnauthorized",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response status code is 401\", function () {",
-							"    pm.response.to.have.status(401);",
-							"});",
-							"",
-							"pm.test(\"Response time is less than 500ms\", function () {",
-							"    pm.expect(pm.response.responseTime).to.be.below(500);",
-							"});",
-							"",
-							"// pm.test(\"Check JSON Response body is empty\", function() {",
-							"//     const responseData = pm.response.json();",
-							"//     pm.expect(responseData).to.be.empty;",
-							"// });",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
-						"type": "text"
-					}
-				],
-				"url": "127.0.0.1/api/users/cache/sd36gtnq8u1jw54gali7w7bcp"
-			},
-			"response": []
-		},
-		{
-			"name": "CreateUserCacheUnauthorized",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response status code is 401\", function () {",
-							"  pm.response.to.have.status(401);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Response time is less than 200ms\", function () {",
-							"  pm.expect(pm.response.responseTime).to.be.below(200);",
-							"});",
-							"",
-							"",
-							"// pm.test(\"Response schema for the newly created user\", function () {",
-							"//   const responseData = pm.response.json();",
-							"//   pm.expect(responseData).to.eql({})",
-							"// });",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
-						"type": "text"
-					}
-				],
-				"url": "127.0.0.1/api/users/create"
-			},
-			"response": []
-		},
-		{
-			"name": "CreateUserCache",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response status code is 201\", function () {",
-							"    pm.expect(pm.response.code).to.equal(201);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Response has the required fields - userId and profilePicUrl\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    pm.expect(responseData.userId).to.exist;",
-							"    pm.expect(responseData.profilePicUrl).to.exist;",
-							"});",
-							"",
-							"",
-							"pm.test(\"UserId is a non-empty string\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    pm.expect(responseData.userId).to.be.a('string').and.to.have.lengthOf.at.least(1, \"UserId should be a non-empty string\");",
-							"});",
-							"",
-							"",
-							"pm.test(\"Response time is less than 200ms\", function () {",
-							"  pm.expect(pm.response.responseTime).to.be.below(200);",
-							"});",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUF5bE5seGZkeGJoa1NBZkxtZnNPOWpBcXZZX0NmYUdabjhuYWVSdGhxb0x6Qy14S2F4aXBvcllSSXYzRUJwQmhDbXF2YVNGVkNLOG81OF9NLXJ3UEptRXE1cjNzVmxfUUR3V0pXQ2xHVmMwX1FHQm1VczdHY2pGakFQZlNfcHduSSIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMDIyOTR9.v49Jqzu-SmtUHLEgv92Vsk0_Y3uvYHaDbbHv3_R9Tsg",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"profilePicUrl\": \"https%3A%2F%2Fi.scdn.co%2Fimage%2Fab67757000003b823810d5026f999453ee210bd7\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "GetCachedUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"",
+									"pm.test(\"User cache object is present\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.userCache).to.exist.and.to.be.an('object');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Ensure userId, profilePicUrl, and playlistList are present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.userCache.userId).to.exist;",
+									"    pm.expect(responseData.userCache.profilePicUrl).to.exist;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUF5bE5seGZkeGJoa1NBZkxtZnNPOWpBcXZZX0NmYUdabjhuYWVSdGhxb0x6Qy14S2F4aXBvcllSSXYzRUJwQmhDbXF2YVNGVkNLOG81OF9NLXJ3UEptRXE1cjNzVmxfUUR3V0pXQ2xHVmMwX1FHQm1VczdHY2pGakFQZlNfcHduSSIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMDIyOTR9.v49Jqzu-SmtUHLEgv92Vsk0_Y3uvYHaDbbHv3_R9Tsg",
+								"type": "text"
+							}
+						],
+						"url": "127.0.0.1/api/users/cache/sd36gtnq8u1jw54gali7w7bcp"
+					},
+					"response": []
 				},
-				"url": "127.0.0.1/api/users/create"
-			},
-			"response": []
+				{
+					"name": "GetCachedUserUnauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"// pm.test(\"Check JSON Response body is empty\", function() {",
+									"//     const responseData = pm.response.json();",
+									"//     pm.expect(responseData).to.be.empty;",
+									"// });",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
+								"type": "text"
+							}
+						],
+						"url": "127.0.0.1/api/users/cache/sd36gtnq8u1jw54gali7w7bcp"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUserCacheUnauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 401\", function () {",
+									"  pm.response.to.have.status(401);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"// pm.test(\"Response schema for the newly created user\", function () {",
+									"//   const responseData = pm.response.json();",
+									"//   pm.expect(responseData).to.eql({})",
+									"// });",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"profilePicUrl\": \"https%3A%2F%2Fi.scdn.co%2Fimage%2Fab67757000003b823810d5026f999453ee210bd7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1/api/users/create"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUserCache",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.expect(pm.response.code).to.equal(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields - userId and profilePicUrl\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.userId).to.exist;",
+									"    pm.expect(responseData.profilePicUrl).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"UserId is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.userId).to.be.a('string').and.to.have.lengthOf.at.least(1, \"UserId should be a non-empty string\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUF5bE5seGZkeGJoa1NBZkxtZnNPOWpBcXZZX0NmYUdabjhuYWVSdGhxb0x6Qy14S2F4aXBvcllSSXYzRUJwQmhDbXF2YVNGVkNLOG81OF9NLXJ3UEptRXE1cjNzVmxfUUR3V0pXQ2xHVmMwX1FHQm1VczdHY2pGakFQZlNfcHduSSIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMDIyOTR9.v49Jqzu-SmtUHLEgv92Vsk0_Y3uvYHaDbbHv3_R9Tsg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"profilePicUrl\": \"https%3A%2F%2Fi.scdn.co%2Fimage%2Fab67757000003b823810d5026f999453ee210bd7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1/api/users/create"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PlaylistCache",
+			"item": [
+				{
+					"name": "GetCachedPlaylists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields - id, images, and name\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.cachedPlaylists).to.be.an('array');",
+									"    responseData.cachedPlaylists.forEach(function(playlist) {",
+									"        pm.expect(playlist.images).to.be.an('array');",
+									"        pm.expect(playlist.id).to.be.an('string')",
+									"        pm.expect(playlist.name).to.be.an('string')",
+									"        playlist.images.forEach(function(image) {",
+									"            pm.expect(image).to.be.an('object');",
+									"            pm.expect(image.url).to.exist.and.to.have.lengthOf.at.least(1, \"URL should not be empty\");",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"ID is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.cachedPlaylists).to.be.an('array').that.is.not.empty;",
+									"  responseData.cachedPlaylists.forEach(function(playlist) {",
+									"    pm.expect(playlist.id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"ID should be a non-empty string\");",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUF5bE5seGZkeGJoa1NBZkxtZnNPOWpBcXZZX0NmYUdabjhuYWVSdGhxb0x6Qy14S2F4aXBvcllSSXYzRUJwQmhDbXF2YVNGVkNLOG81OF9NLXJ3UEptRXE1cjNzVmxfUUR3V0pXQ2xHVmMwX1FHQm1VczdHY2pGakFQZlNfcHduSSIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMDIyOTR9.v49Jqzu-SmtUHLEgv92Vsk0_Y3uvYHaDbbHv3_R9Tsg",
+								"type": "text"
+							}
+						],
+						"url": "127.0.0.1/api/playlists/cache/sd36gtnq8u1jw54gali7w7bcp"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUserCacheUnauthorized Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 401\", function () {",
+									"  pm.response.to.have.status(401);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"// pm.test(\"Response schema for the newly created user\", function () {",
+									"//   const responseData = pm.response.json();",
+									"//   pm.expect(responseData).to.eql({})",
+									"// });",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playlistList\": [\n    {\n        \"id\": \"7ypQwG106RmYXH2t4tiDpl\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da848ad29a6783ee52e3d1da08d8\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Fader Sequenced Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"5rhGn9MQImeHwOLTQszExy\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da846796ce522d0b78cec155519a\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Fader Sequenced My Playlist #19\"\n    },\n    {\n        \"id\": \"7KT54vJcOx7HLoQ7eGB6d0\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84dc06666f4b00a36a3b2b30b1\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced My Playlist #19\"\n    },\n    {\n        \"id\": \"4e8TD88p75oI6PeNF7BXHg\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02a69f71a8794e2d867a52f98f\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02a69f71a8794e2d867a52f98f\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02a69f71a8794e2d867a52f98f\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"WT Timbre Sequenced Rock Classics\"\n    },\n    {\n        \"id\": \"6WutyLCw6Z6Liph7ySCxMn\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84095a48b7f1a53974dc6a2bce\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced House\"\n    },\n    {\n        \"id\": \"3MHUiTJyR5LFMkyPaMwJcW\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8427eac8f70674745f980fcdf1\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"0KliwwBrCqAIr6wPdTBr3G\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84e5c93e95d924bdfe00473a98\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Timbre Sequenced Rap\"\n    },\n    {\n        \"id\": \"6inZkjGkfkA69wRYqQOMpj\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e026f39d99be062dae789d3e72aab67616d00001e02999565cd8bea3f8f0985bb31ab67616d00001e02bd6f8ac82dc5fe1028c14f7dab67616d00001e02c09e463184d5164052cc5191\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e026f39d99be062dae789d3e72aab67616d00001e02999565cd8bea3f8f0985bb31ab67616d00001e02bd6f8ac82dc5fe1028c14f7dab67616d00001e02c09e463184d5164052cc5191\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e026f39d99be062dae789d3e72aab67616d00001e02999565cd8bea3f8f0985bb31ab67616d00001e02bd6f8ac82dc5fe1028c14f7dab67616d00001e02c09e463184d5164052cc5191\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"House\"\n    },\n    {\n        \"id\": \"2lFBeooZdxBRv9GbhuGQg2\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e024637341b9f507521afa9a778ab67616d00001e0263fa4751355b66f236943275ab67616d00001e02bad7062c3fd2f2d037989694ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e024637341b9f507521afa9a778ab67616d00001e0263fa4751355b66f236943275ab67616d00001e02bad7062c3fd2f2d037989694ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e024637341b9f507521afa9a778ab67616d00001e0263fa4751355b66f236943275ab67616d00001e02bad7062c3fd2f2d037989694ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Rock Classics\"\n    },\n    {\n        \"id\": \"0OSkWmDFt1zuebshyOEcEK\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0252f194d02c39909d1b284799ab67616d00001e02c6e0948bbb0681ff29cdbae8ab67616d00001e02cdb645498cd3d8a2db4d05e1ab67616d00001e02d28d2ebdedb220e479743797\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0252f194d02c39909d1b284799ab67616d00001e02c6e0948bbb0681ff29cdbae8ab67616d00001e02cdb645498cd3d8a2db4d05e1ab67616d00001e02d28d2ebdedb220e479743797\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0252f194d02c39909d1b284799ab67616d00001e02c6e0948bbb0681ff29cdbae8ab67616d00001e02cdb645498cd3d8a2db4d05e1ab67616d00001e02d28d2ebdedb220e479743797\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Rap\"\n    },\n    {\n        \"id\": \"1YYjdkxbW5z6maBax2MCqG\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84a8d92150ca05f9cc60b9b64d\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced R&B\"\n    },\n    {\n        \"id\": \"2ScaJFsUSIAIcaaEruMEoM\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84268a1b25322a0c3c28f3e478\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"D.S. Sequenced Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"4NHNe2fC1InV5xMo3FtyJy\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84a156d54621f51584d98c3e57\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"5UUqA556ZzDbUZTE6BMJ6m\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8452f0c028f18546768cdd8d11\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"My Playlist #19\"\n    },\n    {\n        \"id\": \"5YMY82Ikanir4QlaGRMUbj\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8489958fe85be479aac954a8b9\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"R.S. Sequenced 80s\"\n    },\n    {\n        \"id\": \"20LhUeJ0hufMzIdwsPk9SQ\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da848010c3c9a9ab3c4f425878a0\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Timbre Sequenced 2000s\"\n    },\n    {\n        \"id\": \"3lazQJGxpvPdOHmu1mYg2D\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e02222cb38afc3b3b47d9df26aaab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02bc9b44e950d5440ff65ea926\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e02222cb38afc3b3b47d9df26aaab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02bc9b44e950d5440ff65ea926\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e02222cb38afc3b3b47d9df26aaab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02bc9b44e950d5440ff65ea926\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Fader Sequenced Rock Classics\"\n    },\n    {\n        \"id\": \"5gYMNotQ5hHdd60TbgxDTH\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e02072ee11a51e23f861c54cef9ab67616d00001e02b49d49cc95564aede7998bb8ab67616d00001e02be0e5ebab8c61469b1ff9f62ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e02072ee11a51e23f861c54cef9ab67616d00001e02b49d49cc95564aede7998bb8ab67616d00001e02be0e5ebab8c61469b1ff9f62ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e02072ee11a51e23f861c54cef9ab67616d00001e02b49d49cc95564aede7998bb8ab67616d00001e02be0e5ebab8c61469b1ff9f62ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Timbre Sequenced Rock Classics\"\n    },\n    {\n        \"id\": \"37i9dQZF1DWXRqgorJj26U\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://i.scdn.co/image/ab67706f000000020ccca5d2654a61373d688cab\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Rock Classics\"\n    },\n    {\n        \"id\": \"2PZYRatdnYS7E6tiYjspy0\",\n        \"images\": [\n            {\n                \"url\": \"null\"\n            }\n        ],\n        \"name\": \"My Playlist #34\"\n    },\n    {\n        \"id\": \"0QbywqZdcF85B5F26mXSI3\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84dbfd5cb48ca2a23e81b26e07\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Fader Sequenced Pop Electronic\"\n    },\n    {\n        \"id\": \"1tGKxW78IV50XndrOmBK3z\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0269df217578b894639504e7a0ab67616d00001e027582716b3666a5235d5af4eaab67616d00001e028863bc11d2aa12b54f5aeb36ab67616d00001e02b30910fc05d69799e6d063c2\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0269df217578b894639504e7a0ab67616d00001e027582716b3666a5235d5af4eaab67616d00001e028863bc11d2aa12b54f5aeb36ab67616d00001e02b30910fc05d69799e6d063c2\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0269df217578b894639504e7a0ab67616d00001e027582716b3666a5235d5af4eaab67616d00001e028863bc11d2aa12b54f5aeb36ab67616d00001e02b30910fc05d69799e6d063c2\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"R&B\"\n    },\n    {\n        \"id\": \"7mOLBcOWILLJ6TWIdIaXWF\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0222463d6939fec9e17b2a6235ab67616d00001e029565c4df27be4aee5edc8009ab67616d00001e02b44a04404923d0361d8f8299ab67616d00001e02e8dd4db47e7177c63b0b7d53\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0222463d6939fec9e17b2a6235ab67616d00001e029565c4df27be4aee5edc8009ab67616d00001e02b44a04404923d0361d8f8299ab67616d00001e02e8dd4db47e7177c63b0b7d53\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0222463d6939fec9e17b2a6235ab67616d00001e029565c4df27be4aee5edc8009ab67616d00001e02b44a04404923d0361d8f8299ab67616d00001e02e8dd4db47e7177c63b0b7d53\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"80s\"\n    },\n    {\n        \"id\": \"6NaW2UvZxStvzXW11nFKsp\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e021e439ac0ed08d612808f7122ab67616d00001e028fba5806a323efd272677c4dab67616d00001e02d9aa52355e062f5de060adbfab67616d00001e02dcef905cb144d4867119850b\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e021e439ac0ed08d612808f7122ab67616d00001e028fba5806a323efd272677c4dab67616d00001e02d9aa52355e062f5de060adbfab67616d00001e02dcef905cb144d4867119850b\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e021e439ac0ed08d612808f7122ab67616d00001e028fba5806a323efd272677c4dab67616d00001e02d9aa52355e062f5de060adbfab67616d00001e02dcef905cb144d4867119850b\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Pop Electronic\"\n    },\n    {\n        \"id\": \"5DxzZ1iLg1xDdqYiD09gMs\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0200b39b4a73d28536690b355cab67616d00001e021e0dc5baaabda304b0ad1815ab67616d00001e02241c6f0d19ffcda38f58c7f8ab67616d00001e02926034731cc1c6402644d143\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0200b39b4a73d28536690b355cab67616d00001e021e0dc5baaabda304b0ad1815ab67616d00001e02241c6f0d19ffcda38f58c7f8ab67616d00001e02926034731cc1c6402644d143\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0200b39b4a73d28536690b355cab67616d00001e021e0dc5baaabda304b0ad1815ab67616d00001e02241c6f0d19ffcda38f58c7f8ab67616d00001e02926034731cc1c6402644d143\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Alternative\"\n    },\n    {\n        \"id\": \"3v2fOfw71Ibb2CvAJW1wD3\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e02c0e8a17e2bdf1e1108d85612ab67616d00001e02de4c56829c88f6e4822f10f7ab67616d00001e02e80e7dbce3996a1ae5967751ab67616d00001e02f7ec724fbf97a30869d06240\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e02c0e8a17e2bdf1e1108d85612ab67616d00001e02de4c56829c88f6e4822f10f7ab67616d00001e02e80e7dbce3996a1ae5967751ab67616d00001e02f7ec724fbf97a30869d06240\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e02c0e8a17e2bdf1e1108d85612ab67616d00001e02de4c56829c88f6e4822f10f7ab67616d00001e02e80e7dbce3996a1ae5967751ab67616d00001e02f7ec724fbf97a30869d06240\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"2000s Pop\"\n    },\n    {\n        \"id\": \"4ZXKO2vAnp6qlLLNuxri61\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84dc865f428d8231c194b4044c\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Hasoyi Playlist: alternative songs to take a break from whatever you're listening to\"\n    },\n    {\n        \"id\": \"2mOaKLpJgmIaei6OPfFWdx\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e021a9d6526214b86c612a75b40ab67616d00001e02638788c6653daca3b047dd60ab67616d00001e0270b036e773c672f000f12626ab67616d00001e0275e5a82383e776f9a8d0daf7\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e021a9d6526214b86c612a75b40ab67616d00001e02638788c6653daca3b047dd60ab67616d00001e0270b036e773c672f000f12626ab67616d00001e0275e5a82383e776f9a8d0daf7\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e021a9d6526214b86c612a75b40ab67616d00001e02638788c6653daca3b047dd60ab67616d00001e0270b036e773c672f000f12626ab67616d00001e0275e5a82383e776f9a8d0daf7\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"FIRST SUCESSFUL REARRANGE :)\"\n    },\n    {\n        \"id\": \"46XN4bExaYrstQq2cjIU68\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0275e5a82383e776f9a8d0daf7ab67616d00001e028af82e1a1a66c0a4e731428dab67616d00001e029d89fea8baf12123ab11b931ab67616d00001e02a97494ac2136d2ee6800e797\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0275e5a82383e776f9a8d0daf7ab67616d00001e028af82e1a1a66c0a4e731428dab67616d00001e029d89fea8baf12123ab11b931ab67616d00001e02a97494ac2136d2ee6800e797\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0275e5a82383e776f9a8d0daf7ab67616d00001e028af82e1a1a66c0a4e731428dab67616d00001e029d89fea8baf12123ab11b931ab67616d00001e02a97494ac2136d2ee6800e797\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Chill Music\"\n    }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1/api/playlists/update/sd36gtnq8u1jw54gali7w7bcp"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePlaylistCache",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiJBUUJQcF9meTMtNUJ5V1RwaE42eVAwYXJVcHRVNkM3MEwwaUdxemRqUVJiQkV6a0RsRk96QlVGLVVUdUdrNFlWVlNoQjFYNlNZcjJ3TERqbHdtNGtGM1V0MGJxSGFobng1UXduVXlZZWRZTzIwUjYxMzVsOTd2YjlPazJiUU9VT1ZLdyIsInVzZXJJZCI6InNkMzZndG5xOHUxanc1NGdhbGk3dzdiY3AiLCJpYXQiOjE3MjMzMTMzOTh9.Xh5Hr20k-FCFb_WNq3d2SZbTUBi-f3_2oEdUEggIHug",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"playlistList\": [\n    {\n        \"id\": \"7ypQwG106RmYXH2t4tiDpl\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da848ad29a6783ee52e3d1da08d8\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Fader Sequenced Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"5rhGn9MQImeHwOLTQszExy\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da846796ce522d0b78cec155519a\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Fader Sequenced My Playlist #19\"\n    },\n    {\n        \"id\": \"7KT54vJcOx7HLoQ7eGB6d0\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84dc06666f4b00a36a3b2b30b1\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced My Playlist #19\"\n    },\n    {\n        \"id\": \"4e8TD88p75oI6PeNF7BXHg\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02a69f71a8794e2d867a52f98f\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02a69f71a8794e2d867a52f98f\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e020b51f8d91f3a21e8426361aeab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02a69f71a8794e2d867a52f98f\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"WT Timbre Sequenced Rock Classics\"\n    },\n    {\n        \"id\": \"6WutyLCw6Z6Liph7ySCxMn\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84095a48b7f1a53974dc6a2bce\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced House\"\n    },\n    {\n        \"id\": \"3MHUiTJyR5LFMkyPaMwJcW\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8427eac8f70674745f980fcdf1\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"0KliwwBrCqAIr6wPdTBr3G\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84e5c93e95d924bdfe00473a98\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Timbre Sequenced Rap\"\n    },\n    {\n        \"id\": \"6inZkjGkfkA69wRYqQOMpj\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e026f39d99be062dae789d3e72aab67616d00001e02999565cd8bea3f8f0985bb31ab67616d00001e02bd6f8ac82dc5fe1028c14f7dab67616d00001e02c09e463184d5164052cc5191\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e026f39d99be062dae789d3e72aab67616d00001e02999565cd8bea3f8f0985bb31ab67616d00001e02bd6f8ac82dc5fe1028c14f7dab67616d00001e02c09e463184d5164052cc5191\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e026f39d99be062dae789d3e72aab67616d00001e02999565cd8bea3f8f0985bb31ab67616d00001e02bd6f8ac82dc5fe1028c14f7dab67616d00001e02c09e463184d5164052cc5191\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"House\"\n    },\n    {\n        \"id\": \"2lFBeooZdxBRv9GbhuGQg2\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e024637341b9f507521afa9a778ab67616d00001e0263fa4751355b66f236943275ab67616d00001e02bad7062c3fd2f2d037989694ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e024637341b9f507521afa9a778ab67616d00001e0263fa4751355b66f236943275ab67616d00001e02bad7062c3fd2f2d037989694ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e024637341b9f507521afa9a778ab67616d00001e0263fa4751355b66f236943275ab67616d00001e02bad7062c3fd2f2d037989694ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Rock Classics\"\n    },\n    {\n        \"id\": \"0OSkWmDFt1zuebshyOEcEK\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0252f194d02c39909d1b284799ab67616d00001e02c6e0948bbb0681ff29cdbae8ab67616d00001e02cdb645498cd3d8a2db4d05e1ab67616d00001e02d28d2ebdedb220e479743797\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0252f194d02c39909d1b284799ab67616d00001e02c6e0948bbb0681ff29cdbae8ab67616d00001e02cdb645498cd3d8a2db4d05e1ab67616d00001e02d28d2ebdedb220e479743797\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0252f194d02c39909d1b284799ab67616d00001e02c6e0948bbb0681ff29cdbae8ab67616d00001e02cdb645498cd3d8a2db4d05e1ab67616d00001e02d28d2ebdedb220e479743797\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Rap\"\n    },\n    {\n        \"id\": \"1YYjdkxbW5z6maBax2MCqG\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84a8d92150ca05f9cc60b9b64d\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"CoF Sequenced R&B\"\n    },\n    {\n        \"id\": \"2ScaJFsUSIAIcaaEruMEoM\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84268a1b25322a0c3c28f3e478\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"D.S. Sequenced Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"4NHNe2fC1InV5xMo3FtyJy\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84a156d54621f51584d98c3e57\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Lofi Hip Hop\"\n    },\n    {\n        \"id\": \"5UUqA556ZzDbUZTE6BMJ6m\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8452f0c028f18546768cdd8d11\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"My Playlist #19\"\n    },\n    {\n        \"id\": \"5YMY82Ikanir4QlaGRMUbj\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8489958fe85be479aac954a8b9\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"R.S. Sequenced 80s\"\n    },\n    {\n        \"id\": \"20LhUeJ0hufMzIdwsPk9SQ\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da848010c3c9a9ab3c4f425878a0\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Timbre Sequenced 2000s\"\n    },\n    {\n        \"id\": \"3lazQJGxpvPdOHmu1mYg2D\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e02222cb38afc3b3b47d9df26aaab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02bc9b44e950d5440ff65ea926\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e02222cb38afc3b3b47d9df26aaab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02bc9b44e950d5440ff65ea926\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e02222cb38afc3b3b47d9df26aaab67616d00001e023c73b2e0a6aa490736f19751ab67616d00001e024509204d0860cc0cc67e83dcab67616d00001e02bc9b44e950d5440ff65ea926\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Fader Sequenced Rock Classics\"\n    },\n    {\n        \"id\": \"5gYMNotQ5hHdd60TbgxDTH\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e02072ee11a51e23f861c54cef9ab67616d00001e02b49d49cc95564aede7998bb8ab67616d00001e02be0e5ebab8c61469b1ff9f62ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e02072ee11a51e23f861c54cef9ab67616d00001e02b49d49cc95564aede7998bb8ab67616d00001e02be0e5ebab8c61469b1ff9f62ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e02072ee11a51e23f861c54cef9ab67616d00001e02b49d49cc95564aede7998bb8ab67616d00001e02be0e5ebab8c61469b1ff9f62ab67616d00001e02e52a59a28efa4773dd2bfe1b\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Timbre Sequenced Rock Classics\"\n    },\n    {\n        \"id\": \"37i9dQZF1DWXRqgorJj26U\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://i.scdn.co/image/ab67706f000000020ccca5d2654a61373d688cab\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Rock Classics\"\n    },\n    {\n        \"id\": \"2PZYRatdnYS7E6tiYjspy0\",\n        \"images\": [\n            {\n                \"url\": \"null\"\n            }\n        ],\n        \"name\": \"My Playlist #34\"\n    },\n    {\n        \"id\": \"0QbywqZdcF85B5F26mXSI3\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84dbfd5cb48ca2a23e81b26e07\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Fader Sequenced Pop Electronic\"\n    },\n    {\n        \"id\": \"1tGKxW78IV50XndrOmBK3z\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0269df217578b894639504e7a0ab67616d00001e027582716b3666a5235d5af4eaab67616d00001e028863bc11d2aa12b54f5aeb36ab67616d00001e02b30910fc05d69799e6d063c2\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0269df217578b894639504e7a0ab67616d00001e027582716b3666a5235d5af4eaab67616d00001e028863bc11d2aa12b54f5aeb36ab67616d00001e02b30910fc05d69799e6d063c2\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0269df217578b894639504e7a0ab67616d00001e027582716b3666a5235d5af4eaab67616d00001e028863bc11d2aa12b54f5aeb36ab67616d00001e02b30910fc05d69799e6d063c2\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"R&B\"\n    },\n    {\n        \"id\": \"7mOLBcOWILLJ6TWIdIaXWF\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0222463d6939fec9e17b2a6235ab67616d00001e029565c4df27be4aee5edc8009ab67616d00001e02b44a04404923d0361d8f8299ab67616d00001e02e8dd4db47e7177c63b0b7d53\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0222463d6939fec9e17b2a6235ab67616d00001e029565c4df27be4aee5edc8009ab67616d00001e02b44a04404923d0361d8f8299ab67616d00001e02e8dd4db47e7177c63b0b7d53\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0222463d6939fec9e17b2a6235ab67616d00001e029565c4df27be4aee5edc8009ab67616d00001e02b44a04404923d0361d8f8299ab67616d00001e02e8dd4db47e7177c63b0b7d53\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"80s\"\n    },\n    {\n        \"id\": \"6NaW2UvZxStvzXW11nFKsp\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e021e439ac0ed08d612808f7122ab67616d00001e028fba5806a323efd272677c4dab67616d00001e02d9aa52355e062f5de060adbfab67616d00001e02dcef905cb144d4867119850b\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e021e439ac0ed08d612808f7122ab67616d00001e028fba5806a323efd272677c4dab67616d00001e02d9aa52355e062f5de060adbfab67616d00001e02dcef905cb144d4867119850b\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e021e439ac0ed08d612808f7122ab67616d00001e028fba5806a323efd272677c4dab67616d00001e02d9aa52355e062f5de060adbfab67616d00001e02dcef905cb144d4867119850b\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Pop Electronic\"\n    },\n    {\n        \"id\": \"5DxzZ1iLg1xDdqYiD09gMs\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0200b39b4a73d28536690b355cab67616d00001e021e0dc5baaabda304b0ad1815ab67616d00001e02241c6f0d19ffcda38f58c7f8ab67616d00001e02926034731cc1c6402644d143\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0200b39b4a73d28536690b355cab67616d00001e021e0dc5baaabda304b0ad1815ab67616d00001e02241c6f0d19ffcda38f58c7f8ab67616d00001e02926034731cc1c6402644d143\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0200b39b4a73d28536690b355cab67616d00001e021e0dc5baaabda304b0ad1815ab67616d00001e02241c6f0d19ffcda38f58c7f8ab67616d00001e02926034731cc1c6402644d143\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Alternative\"\n    },\n    {\n        \"id\": \"3v2fOfw71Ibb2CvAJW1wD3\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e02c0e8a17e2bdf1e1108d85612ab67616d00001e02de4c56829c88f6e4822f10f7ab67616d00001e02e80e7dbce3996a1ae5967751ab67616d00001e02f7ec724fbf97a30869d06240\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e02c0e8a17e2bdf1e1108d85612ab67616d00001e02de4c56829c88f6e4822f10f7ab67616d00001e02e80e7dbce3996a1ae5967751ab67616d00001e02f7ec724fbf97a30869d06240\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e02c0e8a17e2bdf1e1108d85612ab67616d00001e02de4c56829c88f6e4822f10f7ab67616d00001e02e80e7dbce3996a1ae5967751ab67616d00001e02f7ec724fbf97a30869d06240\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"2000s Pop\"\n    },\n    {\n        \"id\": \"4ZXKO2vAnp6qlLLNuxri61\",\n        \"images\": [\n            {\n                \"height\": null,\n                \"url\": \"https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84dc865f428d8231c194b4044c\",\n                \"width\": null\n            }\n        ],\n        \"name\": \"Hasoyi Playlist: alternative songs to take a break from whatever you're listening to\"\n    },\n    {\n        \"id\": \"2mOaKLpJgmIaei6OPfFWdx\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e021a9d6526214b86c612a75b40ab67616d00001e02638788c6653daca3b047dd60ab67616d00001e0270b036e773c672f000f12626ab67616d00001e0275e5a82383e776f9a8d0daf7\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e021a9d6526214b86c612a75b40ab67616d00001e02638788c6653daca3b047dd60ab67616d00001e0270b036e773c672f000f12626ab67616d00001e0275e5a82383e776f9a8d0daf7\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e021a9d6526214b86c612a75b40ab67616d00001e02638788c6653daca3b047dd60ab67616d00001e0270b036e773c672f000f12626ab67616d00001e0275e5a82383e776f9a8d0daf7\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"FIRST SUCESSFUL REARRANGE :)\"\n    },\n    {\n        \"id\": \"46XN4bExaYrstQq2cjIU68\",\n        \"images\": [\n            {\n                \"height\": 640,\n                \"url\": \"https://mosaic.scdn.co/640/ab67616d00001e0275e5a82383e776f9a8d0daf7ab67616d00001e028af82e1a1a66c0a4e731428dab67616d00001e029d89fea8baf12123ab11b931ab67616d00001e02a97494ac2136d2ee6800e797\",\n                \"width\": 640\n            },\n            {\n                \"height\": 300,\n                \"url\": \"https://mosaic.scdn.co/300/ab67616d00001e0275e5a82383e776f9a8d0daf7ab67616d00001e028af82e1a1a66c0a4e731428dab67616d00001e029d89fea8baf12123ab11b931ab67616d00001e02a97494ac2136d2ee6800e797\",\n                \"width\": 300\n            },\n            {\n                \"height\": 60,\n                \"url\": \"https://mosaic.scdn.co/60/ab67616d00001e0275e5a82383e776f9a8d0daf7ab67616d00001e028af82e1a1a66c0a4e731428dab67616d00001e029d89fea8baf12123ab11b931ab67616d00001e02a97494ac2136d2ee6800e797\",\n                \"width\": 60\n            }\n        ],\n        \"name\": \"Chill Music\"\n    }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1/api/playlists/update/sd36gtnq8u1jw54gali7w7bcp"
+					},
+					"response": []
+				},
+				{
+					"name": "GetCachedPlaylistsUnauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 401\", function () {",
+									"  pm.expect(pm.response.code).to.equal(401);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzZHNhM2gzOTgyaGYzMjA5NGZoZXd1IiwicmVmcmVzaFRva2VuIjoxNTE2MjM5MDIyfQ.tbO3mMBtHGgQ81ov8B7G1-Cy8TXJ_qKGMVABrPJu9M4",
+								"type": "text"
+							}
+						],
+						"url": "127.0.0.1/api/playlists/cache/sd36gtnq8u1jw54gali7w7bcp"
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
