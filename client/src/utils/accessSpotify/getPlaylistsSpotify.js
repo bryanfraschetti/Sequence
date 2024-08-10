@@ -31,11 +31,13 @@ export const getPlaylistsSpotify = async () => {
       }
     })
     .then(async (response) => {
+      //   console.log(response);
       response.items.forEach((playlistItem) => {
+        // console.log(playlistItem);
         // Reduce to necessary properties before function call
         const playlist = {
           id: playlistItem.id,
-          images: playlistItem.images,
+          images: playlistItem.images ? playlistItem.images : [{ url: "null" }],
           name: playlistItem.name,
         };
         addPlaylistToDom(playlist); // Add playlist to DOM
@@ -70,9 +72,20 @@ export const getPlaylistsSpotify = async () => {
             }
           })
           .then((response) => {
+            // console.log(response);
             response.items.forEach((playlistItem) => {
-              addPlaylistToDom(playlistItem);
-              SequenceNamespace.appendArray("playlistList", playlistItem);
+              //   console.log(playlistItem);
+              // Reduce to necessary properties before function call
+              const playlist = {
+                id: playlistItem.id,
+                images: playlistItem.images
+                  ? playlistItem.images
+                  : [{ url: "null" }],
+                name: playlistItem.name,
+              };
+              addPlaylistToDom(playlist); // Add playlist to DOM
+              // Client side list of playlists to upload to cache on success
+              SequenceNamespace.appendArray("playlistList", playlist);
             });
           })
           .catch((error) => {

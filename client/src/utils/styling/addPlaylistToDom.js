@@ -1,15 +1,17 @@
-import phonogram from "../../Assets/EmptyStateArt/phonogram.png";
+import sequenceLogo from "../../Assets/sequence.png";
 import PlaylistRow from "../../Components/PlaylistRow";
 import { renderToString } from "react-dom/server";
 
 export const addPlaylistToDom = (playlistInfo) => {
   // Playlist Info
+  //   console.log(playlistInfo);
   const playlistId = playlistInfo.id;
   const coverArtSrc =
-    playlistInfo.images.length !== 0
+    playlistInfo.images.slice(-1)[0].url !== "null"
       ? playlistInfo.images.slice(-1)[0].url
-      : phonogram;
+      : sequenceLogo;
   const titleText = playlistInfo.name;
+  //   console.log(typeof coverArtSrc);
 
   // Create React Element Server Side
   const playlistElementString = renderToString(
