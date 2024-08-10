@@ -2,10 +2,6 @@ import { SequenceNamespace } from "../SequenceNamespace";
 import { relativeKey } from "../math/relativeKey";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-// import { createPlaylist } from "../accessSpotify/createPlaylist";
-// import { removeAllChildren } from "../styling/removeAllChildren";
-// import { addTrackToDom } from "../styling/addTrackToDom";
-// import { ActivateAnimation } from "../styling/ActivateAnimation";
 
 export const CoF = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList"); // Mutable list of candidate songs

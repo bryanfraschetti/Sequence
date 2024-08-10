@@ -1,10 +1,16 @@
-import React from "react";
 import SequenceModeButton from "../Components/SequenceModeButton";
 import EmptyStateArt from "../Components/EmptyStateArt";
 import Hamburger from "../Components/Hamburger";
 import "./Tracks.css";
+import React, { useEffect } from "react";
+import { createPlaylist } from "../utils/accessSpotify/createPlaylist";
 
 const Tracks = () => {
+  useEffect(() => {
+    const exportExt = document.getElementById("export-ext");
+    exportExt.addEventListener("click", createPlaylist);
+  }, []);
+
   return (
     <div className="tracks" id="tracks">
       <Hamburger></Hamburger>

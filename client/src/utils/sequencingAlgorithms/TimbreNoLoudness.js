@@ -1,6 +1,5 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { SquaredEuclideanDistance } from "../math/SquaredEuclideanDistance";
-// import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 // This sorting algorithm proved to not be
 // Substantially unique from the normal Timbre sorting

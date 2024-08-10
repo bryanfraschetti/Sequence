@@ -1,5 +1,4 @@
 import { SequenceNamespace } from "../SequenceNamespace";
-// import { createPlaylist } from "../accessSpotify/createPlaylist";
 import { tempoWeightedSquaredEuclideanDistance } from "../math/tempoWeightedSquaredEuclideanDistance";
 
 export const TimbreTempo = (initSongId) => {

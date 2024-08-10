@@ -1,7 +1,6 @@
 import { SequenceNamespace } from "../SequenceNamespace";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-// import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 export const RSA = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");

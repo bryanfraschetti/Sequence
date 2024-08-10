@@ -4,7 +4,16 @@ import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { SequenceNamespace } from "../SequenceNamespace";
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 
-export const createPlaylist = async (SequencingModeString, NewSequence) => {
+export const createPlaylist = async () => {
+  const playlistPrefix = SequenceNamespace.getVar("playlistPrefix");
+  const NewSequence = SequenceNamespace.getVar("NewSequence");
+  console.log(playlistPrefix, NewSequence);
+  if (playlistPrefix === "" || NewSequence === null) {
+    return;
+  }
+
+  ActivateAnimation();
+
   const tokensExpired = tokenTimeValidity();
   const access_token = localStorage.getItem("access_token");
   const userId = localStorage.getItem("userId");
@@ -22,7 +31,7 @@ export const createPlaylist = async (SequencingModeString, NewSequence) => {
       "Content-Type": "application/json",
       Authorization: " Bearer " + access_token,
     },
-    body: JSON.stringify({ name: `${SequencingModeString} ${playlistName}` }),
+    body: JSON.stringify({ name: `${playlistPrefix} ${playlistName}` }),
   })
     .then((response) => {
       if (response.ok) {

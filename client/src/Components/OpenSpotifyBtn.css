@@ -21,6 +21,10 @@
     border-radius: 5px;
 }
 
+.spotify-btn-div:hover{
+    background: #3e3e5c;
+}
+
 .spotify-logo{
     width: 21px;
 }

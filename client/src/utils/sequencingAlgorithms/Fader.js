@@ -2,7 +2,6 @@ import { SequenceNamespace } from "../SequenceNamespace";
 import { relativeKey } from "../math/relativeKey";
 import { modulo_12 } from "../math/modulo_12";
 import { minDelta } from "../math/minDelta";
-// import { createPlaylist } from "../accessSpotify/createPlaylist";
 
 export const Fader = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
