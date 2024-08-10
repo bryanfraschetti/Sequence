@@ -13,6 +13,7 @@ import {
   IoDocumentTextOutline,
   IoPersonRemoveOutline,
 } from "react-icons/io5";
+import { IoMdCloudUpload } from "react-icons/io";
 import { FaExchangeAlt, FaTools } from "react-icons/fa";
 import { TfiThought } from "react-icons/tfi";
 import { BiNotepad } from "react-icons/bi";
@@ -97,12 +98,8 @@ const Help = () => {
                   </span>
                 </h1>
                 <p className="bText">
-                  Select a playlist by clicking on it and choose a sequencing
-                  mode from the options. Select the song that you want to be the
-                  first in the new playlist. When you click on a song the
-                  playlist will automatically generate in Spotify, but may take
-                  a few seconds to appear within the app depending on when your
-                  app refreshes.
+                  Choose the playlist that you plan to reSequence and watch as
+                  the tracks load in.
                 </p>
               </div>
             </div>
@@ -118,10 +115,28 @@ const Help = () => {
                   </span>
                 </h1>
                 <p className="bText">
-                  Select the song that you want to be the first in the new
-                  playlist. When you click on a song the playlist will
-                  automatically generate in Spotify, but may take a few seconds
-                  to appear within the app depending on when your app refreshes.
+                  First choose a sequencing mode by clicking one of the buttons
+                  at the top of the Sequencer page. Then select the song that
+                  you want to be the first in the new playlist. The playlist
+                  will then sort rapidly in the browser.
+                </p>
+              </div>
+            </div>
+          </RevealComponent>
+
+          <RevealComponent>
+            <div className="banner" style={{ width: "100%", background: "" }}>
+              <div className="instructionText">
+                <h1>
+                  <span className="gradientText" style={{ fontWeight: "400" }}>
+                    <IoMdCloudUpload className="instruction-icon"></IoMdCloudUpload>
+                    Upload Playlist to Spotify
+                  </span>
+                </h1>
+                <p className="bText">
+                  Click on the "Export Playlist" button and your playlist will
+                  be ready in Spotify - though it may take a few seconds to
+                  appear in the app depending on when your app refreshes.
                 </p>
               </div>
             </div>
