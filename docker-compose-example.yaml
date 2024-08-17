@@ -51,6 +51,14 @@ services:
       - "--path.sysfs=/host/sys"
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"'
 
+  nginx-react-exporter:
+    image: nginx/nginx-prometheus-exporter
+    ports:
+      - "9113:9113"
+    command: -nginx.scrape-uri=http://react-app:8080/stub_status
+    depends_on:
+      - react-app
+
   prometheus:
     image: prom/prometheus:latest
     ports:
