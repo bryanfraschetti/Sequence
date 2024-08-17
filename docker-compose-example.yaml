@@ -8,8 +8,6 @@ services:
 
   react-app:
     build: ./client
-    ports:
-      - "3000:80"
 
   node-api:
     build: ./server
@@ -38,10 +36,14 @@ services:
       - redis-cache
     command: ["sh", "-c", "redis-cli -h redis-cache CONFIG SET save '60 1'"]
 
+  nginx-react-exporter:
+    image: nginx/nginx-prometheus-exporter
+    command: -nginx.scrape-uri=http://react-app:8080/stub_status
+    depends_on:
+      - react-app
+
   node-prometheus-exporter:
     image: prom/node-exporter:latest
-    ports:
-      - "9100:9100"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -51,13 +53,11 @@ services:
       - "--path.sysfs=/host/sys"
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"'
 
-  nginx-react-exporter:
+  nginx-main-exporter:
     image: nginx/nginx-prometheus-exporter
-    ports:
-      - "9113:9113"
-    command: -nginx.scrape-uri=http://react-app:8080/stub_status
+    command: -nginx.scrape-uri=http://nginx:8080/stub_status
     depends_on:
-      - react-app
+      - nginx
 
   prometheus:
     image: prom/prometheus:latest

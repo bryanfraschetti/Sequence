@@ -9,3 +9,7 @@ scrape_configs:
   - job_name: "nginx-react-exporter"
     static_configs:
       - targets: ["nginx-react-exporter:9113"]
+
+  - job_name: "nginx-main-exporter"
+    static_configs:
+      - targets: ["nginx-main-exporter:9113"]
