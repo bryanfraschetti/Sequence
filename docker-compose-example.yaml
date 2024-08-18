@@ -5,9 +5,11 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    restart: on-failure:5
 
   react-app:
     build: ./client
+    restart: on-failure:5
 
   node-api:
     build: ./server
@@ -19,6 +21,7 @@ services:
       TTL: 86400
     depends_on:
       - redis-cache
+    restart: on-failure:5
     volumes:
       - node-data:/var/log/node
 
@@ -29,6 +32,7 @@ services:
     depends_on:
       - node-api
       - react-app
+    restart: on-failure:5
     volumes:
       - nginx-data:/var/log/nginx
 
@@ -44,12 +48,14 @@ services:
       REDIS_ADDR: "redis-cache:6379"
     depends_on:
       - redis-cache
+    restart: on-failure:5
 
   nginx-react-exporter:
     image: nginx/nginx-prometheus-exporter
     command: -nginx.scrape-uri=http://react-app:8080/stub_status
     depends_on:
       - react-app
+    restart: on-failure:5
 
   node-prometheus-exporter:
     image: prom/node-exporter:latest
@@ -61,12 +67,14 @@ services:
       - "--path.procfs=/host/proc"
       - "--path.sysfs=/host/sys"
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"'
+    restart: on-failure:5
 
   nginx-main-exporter:
     image: nginx/nginx-prometheus-exporter
     command: -nginx.scrape-uri=http://nginx:8080/stub_status
     depends_on:
       - nginx
+    restart: on-failure:5
 
   prometheus:
     image: prom/prometheus:latest
@@ -81,6 +89,7 @@ services:
       - node-api
       - react-app
       - nginx
+    restart: on-failure:5
 
   grafana:
     image: grafana/grafana:latest
@@ -90,6 +99,7 @@ services:
       - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
+    restart: on-failure:5
 
 volumes:
   redis-data:
