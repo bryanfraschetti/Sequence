@@ -36,6 +36,13 @@ services:
       - redis-cache
     command: ["sh", "-c", "redis-cli -h redis-cache CONFIG SET save '60 1'"]
 
+  redis-exporter:
+    image: oliver006/redis_exporter
+    environment:
+      REDIS_ADDR: "redis-cache:6379"
+    depends_on:
+      - redis-cache
+
   nginx-react-exporter:
     image: nginx/nginx-prometheus-exporter
     command: -nginx.scrape-uri=http://react-app:8080/stub_status
@@ -65,6 +72,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - prometheus-data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yaml"
     depends_on:
@@ -83,6 +91,8 @@ services:
 
 volumes:
   redis-data:
+    driver: local
+  prometheus-data:
     driver: local
   grafana-data:
     driver: local
