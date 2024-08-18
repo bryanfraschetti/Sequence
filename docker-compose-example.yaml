@@ -17,8 +17,6 @@ services:
       COOKIE_SIGNER: MY_COOKIE_SIGNER
       JWT_SECRET: MY_JWT_SECRET
       TTL: 86400
-    ports:
-      - 3001:3001
     depends_on:
       - redis-cache
 
@@ -29,6 +27,8 @@ services:
     depends_on:
       - node-api
       - react-app
+    volumes:
+      - nginx-data:/var/log/nginx
 
   post-start:
     image: redis/redis-stack-server:latest
@@ -91,6 +91,8 @@ services:
 
 volumes:
   redis-data:
+    driver: local
+  nginx-data:
     driver: local
   prometheus-data:
     driver: local
