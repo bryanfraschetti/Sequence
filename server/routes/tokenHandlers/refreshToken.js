@@ -91,7 +91,7 @@ router.post("/", (req, res) => {
           }); // Send redirect
         });
     }
-  } catch {
+  } catch (error) {
     errorLogger.error(
       `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
     );

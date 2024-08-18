@@ -1,6 +1,8 @@
 import express from "express";
 import client from "../../redisClient.js";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import { logger } from "../../utils/logger.js";
+import { errorLogger } from "../../utils/errorLogger.js";
 import jwt from "jsonwebtoken";
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -10,6 +12,8 @@ const router = express.Router();
 const TTL = process.env.TTL;
 
 router.get("/:userId", async (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   try {
     const authHeader = req.headers["authorization"];
     const JWT = authHeader && authHeader.split(" ")[1];
@@ -27,7 +31,10 @@ router.get("/:userId", async (req, res) => {
       // No user cached (e.g. returning user that has been dropped from memory)
       res.status(404).json();
     }
-  } catch {
+  } catch (error) {
+    errorLogger.error(
+      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
+    );
     res.status(401).json();
   }
 });

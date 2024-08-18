@@ -2,6 +2,8 @@ import express from "express";
 import client from "../../redisClient.js";
 import bodyParser from "body-parser";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import { logger } from "../../utils/logger.js";
+import { errorLogger } from "../../utils/errorLogger.js";
 import jwt from "jsonwebtoken";
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -12,6 +14,8 @@ router.use(bodyParser.json());
 const TTL = process.env.TTL;
 
 router.post("/:playlistId/:userId", async (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   try {
     const authHeader = req.headers["authorization"];
     const JWT = authHeader && authHeader.split(" ")[1];
@@ -45,7 +49,10 @@ router.post("/:playlistId/:userId", async (req, res) => {
     await client.expire(`user:${sanitizedUserId}`, TTL); // Expire key in TTL
 
     res.status(200).json();
-  } catch {
+  } catch (error) {
+    errorLogger.error(
+      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
+    );
     res.status(401).json();
   }
 });

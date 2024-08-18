@@ -1,6 +1,7 @@
 import express from "express";
 import client from "../../redisClient.js";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import { logger } from "../../utils/logger.js";
 
 const router = express.Router();
 
@@ -8,6 +9,8 @@ const router = express.Router();
 const TTL = process.env.TTL;
 
 router.get("/:trackId", async (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   const trackId = req.params.trackId;
   //   console.log(trackId);
   const sanitizedTrackId = sanitizeInput(trackId);

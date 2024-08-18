@@ -2,6 +2,8 @@ import express from "express";
 import client from "../../redisClient.js";
 import bodyParser from "body-parser";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
+import { logger } from "../../utils/logger.js";
+import { errorLogger } from "../../utils/errorLogger.js";
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -10,6 +12,8 @@ router.use(bodyParser.json());
 const TTL = process.env.TTL;
 
 router.post("/:trackId", async (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   const trackId = req.params.trackId;
   const sanitizedTrackId = sanitizeInput(trackId);
 
@@ -17,6 +21,9 @@ router.post("/:trackId", async (req, res) => {
   const cacheRead = await client.json.get(`track:${sanitizedTrackId}`);
   if (cacheRead) {
     // If it already exists, don't overwrite it
+    errorLogger.error(
+      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${cacheRead}`
+    );
     res.status(418).json();
   }
 
