@@ -2,6 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
 import jwt from "jsonwebtoken";
+import { logger } from "../../utils/logger.js";
+import { errorLogger } from "../../utils/errorLogger.js";
 const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
@@ -16,6 +18,8 @@ const entryPoint = "/";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
 router.post("/", (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   const refresh_token = req.body.refresh_token;
   const JWT = req.body.JWT;
   try {
@@ -79,12 +83,18 @@ router.post("/", (req, res) => {
         })
         .catch((error) => {
           // console.error(error)
+          errorLogger.error(
+            `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
+          );
           res.json({
             redirect_uri: entryPoint,
           }); // Send redirect
         });
     }
   } catch {
+    errorLogger.error(
+      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
+    );
     res.json({
       redirect_uri: entryPoint,
     }); // Send redirect

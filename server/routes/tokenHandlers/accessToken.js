@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import { sanitizeInput } from "../../utils/sanitizeInput.js";
 import jwt from "jsonwebtoken";
 const jwtSecret = process.env.JWT_SECRET;
+import { logger } from "../../utils/logger.js";
+import { errorLogger } from "../../utils/errorLogger.js";
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -11,6 +13,8 @@ router.use(bodyParser.json());
 const entryPoint = "/";
 
 router.post("/", (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   try {
     if (req.session.tokens) {
       // New or continuing session -> overwrite client
@@ -62,8 +66,9 @@ router.post("/", (req, res) => {
           res.json(response);
         })
         .catch((error) => {
-          console.error(error);
-
+          errorLogger.error(
+            `ERR ${req.method} ${req.originalUrl} - ${req.ip} | Code: ${code} Spotify Code: ${spotifyState} Session Code: ${sessionState}`
+          );
           res.json({
             redirect_uri: entryPoint,
           }); // Send redirect
@@ -73,7 +78,10 @@ router.post("/", (req, res) => {
         redirect_uri: entryPoint,
       }); // Send redirect
     }
-  } catch {
+  } catch (error) {
+    errorLogger.error(
+      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | Code: ${code} Spotify Code: ${spotifyState} Session Code: ${sessionState}`
+    );
     res.json({
       redirect_uri: entryPoint,
     });

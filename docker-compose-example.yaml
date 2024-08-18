@@ -19,6 +19,8 @@ services:
       TTL: 86400
     depends_on:
       - redis-cache
+    volumes:
+      - node-data:/var/log/node
 
   nginx:
     build: ./nginx
@@ -91,6 +93,8 @@ services:
 
 volumes:
   redis-data:
+    driver: local
+  node-data:
     driver: local
   nginx-data:
     driver: local

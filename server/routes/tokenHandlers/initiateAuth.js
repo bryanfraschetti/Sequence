@@ -1,5 +1,6 @@
 import express from "express";
 import { generateRandomString } from "../../utils/generateRandomString.js";
+import { logger } from "../../utils/logger.js";
 
 const router = express.Router();
 
@@ -11,6 +12,8 @@ const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 const authCallback = "http://127.0.0.1/api/authorizationCallback";
 
 router.get("/", (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   const state = generateRandomString(16); //state key for integrity
   let url = spotifyAuthUrl;
   url += `?client_id=${clientId}`;

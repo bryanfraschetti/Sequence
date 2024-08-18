@@ -3,7 +3,8 @@ import { sanitizeInput } from "../../utils/sanitizeInput.js";
 import jwt from "jsonwebtoken";
 import { updateUserCache } from "../../utils/updateUserCache.js";
 const jwtSecret = process.env.JWT_SECRET;
-
+import { logger } from "../../utils/logger.js";
+import { errorLogger } from "../../utils/errorLogger.js";
 const router = express.Router();
 
 // Sequence credentials
@@ -16,6 +17,8 @@ const authCallback = "http://127.0.0.1/api/authorizationCallback";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
 router.get("/", (req, res) => {
+  logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
+
   // Reach spotify endpoint, generate tokens, return tokens, redirect user
   // Spotify response
   const code = req.query.code;
@@ -26,10 +29,13 @@ router.get("/", (req, res) => {
 
   // Check spotifyState against sessionState to ensure integrity
   const authorizationComplete =
-    code && spotifyState && spotifyState === sessionState ? true : false;
+    code && spotifyState === sessionState ? true : false;
 
   if (!authorizationComplete) {
     // Not complete or integrity lost
+    errorLogger.error(
+      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | Code: ${code} Spotify Code: ${spotifyState} Session Code: ${sessionState}`
+    );
     res.redirect(entryPoint);
   } else {
     // Begin token generation
@@ -108,10 +114,16 @@ router.get("/", (req, res) => {
             res.redirect("/sequencer");
           })
           .catch((error) => {
+            errorLogger.error(
+              `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
+            );
             res.redirect(entryPoint);
           });
       })
       .catch((error) => {
+        errorLogger.error(
+          `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
+        );
         // Something went wrong, send user to index page
         // console.error(error)
         res.redirect(entryPoint);

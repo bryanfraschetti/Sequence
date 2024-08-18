@@ -9,7 +9,7 @@ export const errorLogger = winston.createLogger({
     })
   ),
   transports: [
-    new winston.transports.Console(), // Logs to the console
+    // new winston.transports.Console(), // Logs to the console
     new winston.transports.File({ filename: "/var/log/node/error.log" }), // Logs to a file
   ],
 });
