@@ -76,6 +76,15 @@ services:
       - nginx
     restart: on-failure:5
 
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
   prometheus:
     image: prom/prometheus:latest
     ports:
@@ -89,6 +98,7 @@ services:
       - node-api
       - react-app
       - nginx
+      - cadvisor
     restart: on-failure:5
 
   grafana:
