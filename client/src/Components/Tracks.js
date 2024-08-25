@@ -17,28 +17,22 @@ const Tracks = () => {
       <div className="sequencer" id="sequencer">
         <h3 className="subheading">Choose Sequencing</h3>
         <div className="button-container" id="button-container">
-          <SequenceModeButton
-            id="cof"
-            text="Circle of Fifths"
-          ></SequenceModeButton>
-          <SequenceModeButton
-            id="rsm"
-            text="Rising Semitone Modal"
-          ></SequenceModeButton>
-          <SequenceModeButton
-            id="dsm"
-            text="Descending Semitone Modal"
-          ></SequenceModeButton>
-          <SequenceModeButton
+          <SequenceModeButton id="cof" text="Soothing"></SequenceModeButton>
+          <SequenceModeButton id="rsm" text="Rising"></SequenceModeButton>
+          <SequenceModeButton id="dsm" text="Falling"></SequenceModeButton>
+          {/* <SequenceModeButton
             id="rsa"
             text="Rising Semitone Alternate"
-          ></SequenceModeButton>
-          <SequenceModeButton id="fader" text="Fader"></SequenceModeButton>
-          <SequenceModeButton id="timbre" text="Timbre"></SequenceModeButton>
+          ></SequenceModeButton> */}
           <SequenceModeButton
+            id="fader"
+            text="Cross-Fading"
+          ></SequenceModeButton>
+          <SequenceModeButton id="timbre" text="Timbre"></SequenceModeButton>
+          {/* <SequenceModeButton
             id="wt"
             text="Weighted Timbre"
-          ></SequenceModeButton>
+          ></SequenceModeButton> */}
           <SequenceModeButton id="tt" text="Tempo Timbre"></SequenceModeButton>
         </div>
         <hr className="separator" id="seq-track-sep" />

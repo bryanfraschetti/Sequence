@@ -25,6 +25,7 @@ import {
 import { TbRulerMeasure } from "react-icons/tb";
 import { HiCursorClick } from "react-icons/hi";
 import { GiCardPick } from "react-icons/gi";
+import { TbReorder } from "react-icons/tb";
 import RevealComponent from "../Components/revealComponent";
 
 const Help = () => {
@@ -42,6 +43,88 @@ const Help = () => {
       <NotLoggedIn></NotLoggedIn>
       <NavBar></NavBar>
       <div className="postNav centerContent">
+        <span className="FAQ-span" style={{ alignItems: "center" }}>
+          <TbReorder className="headerIcon" size={32} />
+          <h2 className="myTitle" style={{ margin: "20px" }}>
+            <span className="gradientText">Sequencing</span> Modes Explained
+          </h2>
+        </span>
+
+        <p
+          className="bText"
+          style={{ width: "min(100%, 800px)", textAlign: "center" }}
+        >
+          Sequence offers many algorithms which can organize your playlists -
+          each provides its own unique flavour and quality. Click on any
+          algorithm name below to learn more
+        </p>
+
+        <div className="FAQ-container">
+          <span className="FAQ-span">
+            <FaqItem title="Soothing" id="soothing">
+              <p>
+                The soothing sorting algorithm is based on the idea of musical
+                resolution. The goal of this sorting pattern is to provide the
+                most neutral and relaxing transitions by basing the sequence on
+                harmonics. Functionally speaking, this algorithm sorts playlists
+                by resolving counter-clockwise about the circle of fifths while
+                tempo matching.
+              </p>
+            </FaqItem>
+          </span>
+          <span className="FAQ-span">
+            <FaqItem title="Cross-Fading" id="cross-fading">
+              <p>
+                The Cross-Fading algorithm is based on key-matching transitions.
+                It is designed to preferentially create transitions that match
+                the ending key signature of one song to the starting key of
+                another while synchronizing tempos for the most seamless and
+                energetic of transitions.
+              </p>
+            </FaqItem>
+          </span>
+          <span className="FAQ-span">
+            <FaqItem title="Rising and Falling" id="rising-falling">
+              <p>
+                The Rising and Falling sorting algorithms are designed upon the
+                same principle - just operating in opposite directions. The
+                Rising algorithm sorts by pairing songs such that the key
+                signature ascend one semitone at a time, song over song. The
+                falling sort descends one semitone at a time. Both of these
+                sequences embed fundamentally embed tension into the transitions
+                by exploiting the adjacency of the harmonics.
+              </p>
+            </FaqItem>
+          </span>
+          <span className="FAQ-span">
+            <FaqItem title="Timbre" id="timbre">
+              <p>
+                Perhaps the most interesting and conceptual algorithm is the
+                Timbre algorithm. Spotify conducted analysis (via PCA) of their
+                song database to determine the frequency-time audio features
+                (spectrotemporal surfaces) that maximize the representation the
+                audio space. These features correspond to qualities such as
+                "brightness," "flatness," "attack," etc. and characterize the
+                perceived the sound. Using these descriptors, the distance
+                between songs can be determined. This algorithm preferential
+                sorts by finding the nearest song in the feature space and
+                produces a seamlessly flowing playlist.
+              </p>
+            </FaqItem>
+          </span>
+
+          <span className="FAQ-span">
+            <FaqItem title="Tempo Timbre" id="tempotimbre">
+              <p>
+                The Tempo Timbre algorithm works on the same principle as the
+                Timbre algorithm, but with a strong focus on aligning songs with
+                similar tempos. This helps ensure that the transitions between
+                songs don't clash due to offset and out-of-phase beats.
+              </p>
+            </FaqItem>
+          </span>
+        </div>
+
         <span className="FAQ-span" style={{ alignItems: "center" }}>
           <FaGears className="headerIcon" size={32} />
           <h2 className="myTitle" style={{ margin: "20px" }}>
@@ -213,13 +296,13 @@ const Help = () => {
             <FaTools className="FAQ-icon" size={25} />
             <FaqItem title="How is Sequence Built" id="FaqCard4">
               <p>
-                Sequence was built by coupling a ReactJS component oriented
-                front-end (streamlined using AntDesign) with a NodeJS/ExpressJS
+                Sequence was built by coupling a React component oriented
+                front-end (streamlined using AntDesign) with an Express
                 back-end. Authorization and authentication related requests are
                 proxied to Spotify via Express and caching occurs server-side
-                using a Redis client. The Node app and Redis client run in
-                separate Docker containers that communicate with each other over
-                a Docker network.
+                using a Redis client. React, Express, and Redis all run in
+                separate Docker containers that sit behind an Nginx
+                reverse-proxy container.
               </p>
             </FaqItem>
           </span>

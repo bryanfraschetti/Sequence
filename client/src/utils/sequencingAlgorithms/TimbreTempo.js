@@ -47,6 +47,7 @@ export const TimbreTempo = (initSongId) => {
       const candidateClone = JSON.parse(JSON.stringify(song.begTimbreCentroid));
       candidateClone.push(song.starttempo);
       const candidateStartVector = candidateClone.slice(1, 13);
+
       const currentDist = tempoWeightedSquaredEuclideanDistance(
         endVector,
         candidateStartVector
