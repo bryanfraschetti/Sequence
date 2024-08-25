@@ -34,6 +34,7 @@ const Tracks = () => {
             text="Weighted Timbre"
           ></SequenceModeButton> */}
           <SequenceModeButton id="tt" text="Tempo Timbre"></SequenceModeButton>
+          <SequenceModeButton id="ang" text="Angular"></SequenceModeButton>
         </div>
         <hr className="separator" id="seq-track-sep" />
       </div>

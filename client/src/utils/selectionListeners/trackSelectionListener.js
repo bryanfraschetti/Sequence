@@ -5,10 +5,11 @@ import { SM } from "../sequencingAlgorithms/SM";
 // import { RSA } from "../sequencingAlgorithms/RSA";
 import { Fader } from "../sequencingAlgorithms/Fader";
 import { Timbre } from "../sequencingAlgorithms/Timbre";
-import { weightedTimbre } from "../sequencingAlgorithms/weightedTimbre";
+// import { weightedTimbre } from "../sequencingAlgorithms/weightedTimbre";
 import { TimbreTempo } from "../sequencingAlgorithms/TimbreTempo";
 import { removeAllChildren } from "../styling/removeAllChildren";
 import { addTrackToDom } from "../styling/addTrackToDom";
+import { AngularSort } from "../sequencingAlgorithms/AngularSort";
 
 export const trackSelectionListener = async () => {
   const tracksTable = document.getElementById("tracks-table");
@@ -61,6 +62,10 @@ export const trackSelectionListener = async () => {
         case "tt":
           NewSequence = TimbreTempo(initSongId);
           SequenceNamespace.setVar("playlistPrefix", "Tempo Timbre Sequenced");
+          break;
+        case "ang":
+          NewSequence = AngularSort(initSongId);
+          SequenceNamespace.setVar("playlistPrefix", "Angular Sequenced");
           break;
       }
 

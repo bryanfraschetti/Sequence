@@ -123,6 +123,20 @@ const Help = () => {
               </p>
             </FaqItem>
           </span>
+
+          <span className="FAQ-span">
+            <FaqItem title="Angular" id="angular">
+              <p>
+                The Angular algorithm sorts based on the same spectrotemporal
+                features as the timbre algorithms, however, instead of sorting
+                by finding the songs that are closest to each other, it sorts by
+                finding the songs which point in the most similar directions.
+                The effect of which is consecutive songs will have demonstrate a
+                similar combination of features and quality, but taken to
+                varying extremes.
+              </p>
+            </FaqItem>
+          </span>
         </div>
 
         <span className="FAQ-span" style={{ alignItems: "center" }}>

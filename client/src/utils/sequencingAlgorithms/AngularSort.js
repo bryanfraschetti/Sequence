@@ -1,9 +1,7 @@
 import { SequenceNamespace } from "../SequenceNamespace";
-import { weightedSquaredEuclideanDistance } from "../math/weightedSquaredEuclideanDistance";
+import { cosineSimilarityFactor } from "../math/cosineSimilarityFactor";
 
-// This sorting algorithm proved to not be
-// Substantially unique from the normal Timbre sorting
-export const weightedTimbre = (initSongId) => {
+export const AngularSort = (initSongId) => {
   let songList = SequenceNamespace.getVar("songList");
 
   const initSong = songList.find((song) => {
@@ -34,25 +32,36 @@ export const weightedTimbre = (initSongId) => {
   })();
 
   while (songList.length !== 0) {
-    let { minDist, indexClosest } = { minDist: null, indexClosest: null };
+    let { cosTheta, indexClosest } = { minDist: null, indexClosest: null };
 
     songList.forEach((song, index) => {
       // Squared Euclidean distance of cluster centroids
       // excluding dimension representing loudness
-      const currentDist = weightedSquaredEuclideanDistance(
-        safeClosure.getCur().endTimbreCentroid.slice(1, 12),
-        song.begTimbreCentroid.slice(1, 12)
+      const current = safeClosure.getCur();
+      const currentClone = JSON.parse(
+        JSON.stringify(current.endTimbreCentroid)
+      );
+      currentClone.push(current.endtempo);
+      const endVector = currentClone.slice(1, 13);
+
+      const candidateClone = JSON.parse(JSON.stringify(song.begTimbreCentroid));
+      candidateClone.push(song.starttempo);
+      const candidateStartVector = candidateClone.slice(1, 13);
+
+      const currentAngularSimilarity = cosineSimilarityFactor(
+        endVector,
+        candidateStartVector
       );
 
       // Cheeky destructuring assignment ternary operator
-      ({ minDist, indexClosest } =
-        minDist == null || currentDist < minDist
+      ({ cosTheta, indexClosest } =
+        cosTheta == null || currentAngularSimilarity > cosTheta
           ? {
-              minDist: currentDist,
+              cosTheta: currentAngularSimilarity,
               indexClosest: index,
             }
           : {
-              minDist: minDist,
+              cosTheta: cosTheta,
               indexClosest: indexClosest,
             });
     });
