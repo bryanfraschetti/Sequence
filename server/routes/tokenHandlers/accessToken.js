@@ -63,11 +63,17 @@ router.post("/", (req, res) => {
           return response.json();
         })
         .then((response) => {
+          req.session.tokens = {};
+          req.session.tokens.access_token = response.access_token;
+          req.session.tokens.refresh_token = response.refresh_token;
+          req.session.tokens.expires = response.expires;
+          req.session.JWT = response.JWT;
+          req.session.userId = response.userId;
           res.json(response);
         })
         .catch((error) => {
           errorLogger.error(
-            `ERR ${req.method} ${req.originalUrl} - ${req.ip} | Code: ${code} Spotify Code: ${spotifyState} Session Code: ${sessionState}`
+            `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error.stack}`
           );
           res.json({
             redirect_uri: entryPoint,
@@ -80,7 +86,7 @@ router.post("/", (req, res) => {
     }
   } catch (error) {
     errorLogger.error(
-      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | Code: ${code} Spotify Code: ${spotifyState} Session Code: ${sessionState}`
+      `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
     );
     res.json({
       redirect_uri: entryPoint,

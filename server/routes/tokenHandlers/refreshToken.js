@@ -58,9 +58,6 @@ router.post("/", (req, res) => {
           };
         })
         .then((tokens) => {
-          // Store tokens in session and send to user
-          req.session.tokens = tokens;
-
           const verifiedJwt = jwt.verify(JWT, jwtSecret);
           const userId = verifiedJwt.userId;
 
@@ -71,12 +68,15 @@ router.post("/", (req, res) => {
 
           const JWTNew = jwt.sign(payload, jwtSecret);
 
+          // Store tokens in session and send to user
+          req.session.tokens = tokens;
           req.session.JWT = JWTNew;
+          req.session.userId = userId;
 
           res.json({
-            access_token: req.session.tokens.access_token,
-            expires: req.session.tokens.expires,
-            refresh_token: req.session.tokens.refresh_token,
+            access_token: tokens.access_token,
+            expires: tokens.expires,
+            refresh_token: tokens.refresh_token,
             userId: userId,
             JWT: JWTNew,
           });
