@@ -9,14 +9,14 @@ the information regarding the musical content of their songs
 The purpose of this application is for users to reorganize their playlists
 based on music theory
 
-Naturally, the .env configuration file used in development is not tracked as it contains confidential credentials.
-Similarly, when running in a docker container it is unadvisable to store the .env on the container. For this reason, the real docker-compose.yaml is also not version tracked. An example docker-compose without any critical information is nevertheless provided.
+Naturally, any .env configuration file used in development is not tracked as it contains confidential credentials.
+Similarly, when running in a docker container it is unadvisable to store the .env on the container. For this reason, the real docker-compose.yaml, which stores credentials is also not version tracked. An example docker-compose without any critical information is nevertheless provided.
 
 ## ⚙️ Production Steps
 
 First build the client locally. It will be copied to the container and only the final build product is needed. Building locally helps minimize the Docker build and runtime. These steps are automated in build.sh
 
-### 🧰 Building Client
+### 🧰 Building Client (React)
 
 ```
 cd client
@@ -45,6 +45,8 @@ Additionally, a container is created to host the build product of the react app.
 Then a Node container is created. This container serves the backend API which is the middleware between the client, cache, and the Spotify API. This depends on the existing caching service.
 
 To resolve all requests using the same endpoint, we have a container through which all traffic is routed - a lightweight Nginx instance. Requests matching the /api prefixed path are reverse-proxied to the Node container, which is optimized for handling Rest API traffic. Other endpoints are proxied to the container that hosts the static React app. This is dependent on both the Node and Nginx/React containers
+
+Various exporter containers exist to scrape metrics from the different containers: a centralized Nginx exporter for the Nginx instance that sits in front of and reverse proxies to Node and React, a node exporter, another Nginx exporter for the Nginx instance which is responsible for serving the React client, a Redis exporter to examine cache performance, and Cadvisor to monitor the statuses of all containers. All of this data is passed to Grafana for visualization using the help of Prometheus.
 
 ## 🏗️ Development Steps (Deprecated)
 
