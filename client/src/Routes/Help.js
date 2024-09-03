@@ -56,7 +56,9 @@ const Help = () => {
         >
           Sequence offers many algorithms which can organize your playlists -
           each provides its own unique flavour and quality. Click on any
-          algorithm name below to learn more
+          algorithm name below to learn more. Different algorithms will work
+          better with different genres. Experiment with the pairing and initial
+          song!
         </p>
 
         <div className="FAQ-container">

@@ -37,3 +37,7 @@
     height: 32px;
     width: 32px;
 }
+
+:where(.css-6j9yrn).ant-card .ant-card-body{
+    padding: 0px 24px 24px 24px;
+}
