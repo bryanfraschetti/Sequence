@@ -9,6 +9,8 @@ services:
 
   react-app:
     build: ./client
+    volumes:
+      - ./logs/react-logs:/var/log/nginx
     restart: on-failure:5
 
   node-api:
@@ -23,7 +25,7 @@ services:
       - redis-cache
     restart: on-failure:5
     volumes:
-      - node-data:/var/log/node
+      - ./logs/node-logs:/var/log/node
 
   nginx:
     build: ./nginx
@@ -34,7 +36,7 @@ services:
       - react-app
     restart: on-failure:5
     volumes:
-      - nginx-data:/var/log/nginx
+      - ./logs/nginx-logs:/var/log/nginx
 
   post-start:
     image: redis/redis-stack-server:latest
@@ -111,12 +113,26 @@ services:
       - prometheus
     restart: on-failure:5
 
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    restart: on-failure:5
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - ./logs/node-logs:/var/log/node
+      - ./logs/react-logs:/var/log/react
+      - ./logs/nginx-logs:/var/log/nginx
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    depends_on:
+      - loki
+    restart: on-failure:5
+
 volumes:
   redis-data:
-    driver: local
-  node-data:
-    driver: local
-  nginx-data:
     driver: local
   prometheus-data:
     driver: local

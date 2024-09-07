@@ -1,0 +1,30 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: Sequence-logs
+    static_configs:
+      - targets:
+          - localhost # Promtail scrapes logs from local files
+        labels:
+          job: node-logs
+          __path__: /var/log/node/*.log # Path to log files (adjust as needed)
+
+      - targets:
+          - localhost
+        labels:
+          job: react-logs
+          __path__: /var/log/react/*.log # Path to log files (adjust as needed)
+
+      - targets:
+          - localhost
+        labels:
+          job: nginx-logs
+          __path__: /var/log/nginx/*.log # Path to log files (adjust as needed)
