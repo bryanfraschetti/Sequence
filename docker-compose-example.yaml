@@ -1,7 +1,7 @@
 services:
   redis-cache:
     build: ./redis
-    ports:
+    ports: # Not exposed for production
       - "6379:6379"
     volumes:
       - redis-data:/data
