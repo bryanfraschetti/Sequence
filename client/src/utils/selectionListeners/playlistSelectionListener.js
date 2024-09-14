@@ -30,6 +30,8 @@ export const playlistSelectionListener = () => {
 
       if (window.screen.width <= 440) {
         toggleSidebar();
+        const hamburger = document.getElementById("hamburger");
+        hamburger.checked = !hamburger.checked;
       }
 
       // Update UI
