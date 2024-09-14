@@ -9,6 +9,7 @@ import { getAudioAnalysisCache } from "../checkCache/getAudioAnalysisCache";
 import { updateTracksTableContent } from "../styling/updateTracksTableContents";
 import { getAudioAnalysisSpotify } from "../accessSpotify/getAudioAnalysisSpotify";
 import { removeAllChildren } from "../styling/removeAllChildren";
+import { toggleSidebar } from "../styling/toggleSidebar";
 
 export const playlistSelectionListener = () => {
   const playlistList = document.getElementById("playlist-list");
@@ -26,6 +27,10 @@ export const playlistSelectionListener = () => {
       const playlistName = e.target.innerHTML;
       SequenceNamespace.setVar("playlistId", playlistId);
       SequenceNamespace.setVar("playlistName", playlistName);
+
+      if (window.screen.width <= 440) {
+        toggleSidebar();
+      }
 
       // Update UI
       updateTracksTableTitle(playlistName);
