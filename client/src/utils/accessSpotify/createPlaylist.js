@@ -73,6 +73,11 @@ export const createPlaylist = async () => {
           Authorization: " Bearer " + access_token,
         },
         body: base64ImageString,
+      }).then(() => {
+        window.open(
+          `https://open.spotify.com/playlist/${newPlaylistId}`,
+          "_blank"
+        );
       });
     })
     .catch((error) => {
