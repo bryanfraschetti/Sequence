@@ -1,0 +1,142 @@
+services:
+  redis-cache:
+    image: bryanfraschetti/sequence-redis-cache:latest
+    volumes:
+      - redis-data:/data
+    restart: on-failure:5
+
+  react-app:
+    image: bryanfraschetti/sequence-react-app:latest
+    volumes:
+      - ./logs/react-logs:/var/log/nginx
+    restart: on-failure:5
+
+  node-api:
+    image: bryanfraschetti/sequence-node-api:latest
+    environment:
+      SPOTIFY_CLIENT_ID: MY_CLIENT_ID
+      SPOTIFY_CLIENT_SECRET: MY_CLIENT_SECRET
+      COOKIE_SIGNER: MY_COOKIE_SIGNER
+      JWT_SECRET: MY_JWT_SECRET
+      TTL: 86400
+    depends_on:
+      - redis-cache
+    restart: on-failure:5
+    volumes:
+      - ./logs/node-logs:/var/log/node
+
+  nginx:
+    image: bryanfraschetti/sequence-nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - node-api
+      - react-app
+    restart: on-failure:5
+    volumes:
+      - ./logs/nginx-logs:/var/log/nginx
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --keep-until-expiring --email [email] -d sequencewav.com --agree-tos
+
+  post-start:
+    image: redis/redis-stack-server:latest
+    depends_on:
+      - redis-cache
+    command: ["sh", "-c", "redis-cli -h redis-cache CONFIG SET save '60 1'"]
+
+  redis-exporter:
+    image: oliver006/redis_exporter
+    environment:
+      REDIS_ADDR: "redis-cache:6379"
+    depends_on:
+      - redis-cache
+    restart: on-failure:5
+
+  nginx-react-exporter:
+    image: nginx/nginx-prometheus-exporter
+    command: -nginx.scrape-uri=http://react-app:8080/stub_status
+    depends_on:
+      - react-app
+    restart: on-failure:5
+
+  node-prometheus-exporter:
+    image: prom/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"'
+    restart: on-failure:5
+
+  nginx-main-exporter:
+    image: nginx/nginx-prometheus-exporter
+    command: -nginx.scrape-uri=http://nginx:8080/stub_status
+    depends_on:
+      - nginx
+    restart: on-failure:5
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    volumes:
+      - /var/snap/docker/common/run/docker.sock:/var/run/docker.sock:ro
+      - /var/snap/docker/common/sys:/sys:ro
+      - /var/snap/docker/common/var-lib-docker:/var/lib/docker:ro
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - prometheus-data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+    depends_on:
+      - node-api
+      - react-app
+      - nginx
+      - cadvisor
+    restart: on-failure:5
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    restart: on-failure:5
+
+  loki:
+    image: grafana/loki:latest
+    restart: on-failure:5
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - ./logs/node-logs:/var/log/node
+      - ./logs/react-logs:/var/log/react
+      - ./logs/nginx-logs:/var/log/nginx
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    depends_on:
+      - loki
+    restart: on-failure:5
+
+volumes:
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
