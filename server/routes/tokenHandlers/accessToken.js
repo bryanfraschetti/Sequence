@@ -43,7 +43,7 @@ router.post("/", (req, res) => {
         JWT: req.body.JWT,
       };
 
-      fetch("http://nginx/api/RefreshToken", {
+      fetch("https://sequencewav.com/api/RefreshToken", {
         // Send current state to Sequence
         method: "POST",
         headers: {
