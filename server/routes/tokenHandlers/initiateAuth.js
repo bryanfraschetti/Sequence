@@ -9,7 +9,7 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 
 // Important URLs
 const spotifyAuthUrl = "https://accounts.spotify.com/authorize";
-const authCallback = "http://sequencewav.com/api/authorizationCallback";
+const authCallback = "https://sequencewav.com/api/authorizationCallback";
 
 router.get("/", (req, res) => {
   logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
