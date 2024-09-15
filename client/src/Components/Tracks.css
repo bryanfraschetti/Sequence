@@ -69,7 +69,7 @@
 .tracks{
     background-color: rgb(27,25,32);
     text-align: center;
-    min-width: 500px;
+    /* min-width: 500px; */
     width: inherit;
     height: calc(97vh - 70px);
     transition: all 0.3s linear;
