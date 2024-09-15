@@ -12,6 +12,16 @@ based on music theory
 Naturally, any .env configuration file used in development is not tracked as it contains confidential credentials.
 Similarly, when running in a docker container it is unadvisable to store the .env on the container. For this reason, the real docker-compose.yaml, which stores credentials is also not version tracked. An example docker-compose without any critical information is nevertheless provided.
 
+## 🗺️ Project Map
+
+The image below depicts the route of requests from the client through my app. The client makes a request to sequencewav.com, which is resolved via Cloudflare's DNS, which doubles as a forward proxy on behalf of the user. This design allows Sequence to take advantage of Cloudflare's anti-DDOS security provisions. Cloudflare then makes a request to my servers, which are cloud hosted. The publicly exposed interface is an Nginx instance which routes the request either to a static prebuilt React app hosted by Nginx, if the resource is simply web content, or to an Express API which handles authentication, authorization, and caching. The Express API further connects to a Redis instance for caching, and if the request misses in the cache, Spotify is then accessed at source. A quick legend explaining the colours: blue represents agents requesting from Sequence, Red indicates a Sequence container, yellow are high level decision blocks, and green is Spotify, which sits externally from Sequence.
+![Image depicting the routing flow of requests through Sequence](./readmeImages/routing.png)
+
+## 🧬 Project Architecture
+
+The image below depicts the networking, dependency, and hierarchy of the Docker containers. At the top of the pyramid are the explained interfaces which provide the app functionality: Nginx, Express, React, and Redis. Underneath these functional containers sits several scrapers, exporters, and monitors, which extract performance metrics and provide information about the status and behaviour of the above containers. These exporters are centralized by a Prometheus instance which acts as a sink, collecting the output of all the monitors. Alongside Prometheus sits a Promtail log scraper to provide detailed information of any malformed requests, errors, and broken sessions. Additionally, Cadvisor sits here and monitors all the running containers to provide any information about downed containers, restarts, etc. At the very bottom of the pyramid is a Grafana/Loki substrate which takes everything collected by Prometheus and Promtail and allows for cohesive visualization of the data as well as alerting.
+![Image depicting the container architecture of Sequence](./readmeImages/arch.png)
+
 ## ⚙️ Production Steps
 
 First build the client locally. It will be copied to the container and only the final build product is needed. Building locally helps minimize the Docker build and runtime. These steps are automated in build.sh
