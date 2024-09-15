@@ -22,6 +22,15 @@ const Entry = () => {
     ResizeAnimationStopper();
   }, []);
 
+  const routeUser = () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      requestAuthorization();
+    } else {
+      window.location.href = "/sequencer";
+    }
+  };
+
   return (
     <div>
       <LogOut></LogOut>
@@ -78,11 +87,7 @@ const Entry = () => {
                 </button>
               </div>
 
-              <button
-                className="myBtn"
-                id="startCTA"
-                onClick={requestAuthorization}
-              >
+              <button className="myBtn" id="startCTA" onClick={routeUser}>
                 Get Started!
               </button>
             </div>
