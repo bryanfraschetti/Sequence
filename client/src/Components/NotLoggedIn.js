@@ -1,12 +1,7 @@
 import React from "react";
+import { requestAuthorization } from "../utils/tokenHandling/requestAuthorization";
 
 const NotLoggedIn = () => {
-  const CloseAlert = () => {
-    const logoutContainer = document.getElementById("not-logged-in");
-    logoutContainer.style.display = "none";
-    window.location.href = "/";
-  };
-
   return (
     <div
       id="not-logged-in"
@@ -28,9 +23,9 @@ const NotLoggedIn = () => {
           <button
             className="myBtn"
             style={{ borderRadius: "12px", padding: "8px 25px" }}
-            onClick={CloseAlert}
+            onClick={requestAuthorization}
           >
-            Okay, Close!
+            Log me in!
           </button>
         </div>
       </div>
