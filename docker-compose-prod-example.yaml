@@ -87,11 +87,11 @@ services:
     restart: on-failure:5
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
     volumes:
-      - /var/snap/docker/common/run/docker.sock:/var/run/docker.sock:ro
-      - /var/snap/docker/common/sys:/sys:ro
-      - /var/snap/docker/common/var-lib-docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
 
   prometheus:
     image: prom/prometheus:latest
