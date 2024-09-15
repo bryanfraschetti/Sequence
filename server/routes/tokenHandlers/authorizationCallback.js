@@ -13,7 +13,7 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 // Important URLs
 const entryPoint = "/";
-const authCallback = "http://127.0.0.1/api/authorizationCallback";
+const authCallback = "http://sequencewav.com/api/authorizationCallback";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
 router.get("/", (req, res) => {
