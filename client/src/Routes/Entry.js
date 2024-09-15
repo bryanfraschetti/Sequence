@@ -59,7 +59,7 @@ const Entry = () => {
 
             <p
               className="appSummaryText bodyText subtleText"
-              style={{ maxWidth: "500px" }}
+              style={{ maxWidth: "500px", fontSize: "1.1rem" }}
             >
               Our innovative app, which we call <i>Sequence</i>,
               <span className="accentText gradientText"> harnesses </span>
