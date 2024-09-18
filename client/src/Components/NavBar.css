@@ -30,14 +30,16 @@
 
 #Logo-img{
     top: 50%;
-    transform: translateY(30%);
+    height: 50px;
+    width: 50px;
+    transform: translateY(20%);
 }
 
 #Logo-img{
     transition: all 0.5s ease-in-out;
 }
 #Logo-img:hover{
-    transform: rotate(50deg) translateY(8px) translateX(10px);
+    transform: rotate(35deg) translateY(7px) translateX(7px);
 }
 
 .ant-menu-submenu-title{

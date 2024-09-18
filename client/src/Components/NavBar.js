@@ -30,14 +30,7 @@ const NavBar = () => {
 
   const items = [
     {
-      icon: (
-        <img
-          src={sequenceLogo}
-          alt="Sequence Logo"
-          id="Logo-img"
-          style={{ height: "40px", width: "40px" }}
-        ></img>
-      ),
+      icon: <img src={sequenceLogo} alt="Sequence Logo" id="Logo-img"></img>,
       key: "Logo",
       id: "Logo",
       path: "/",
