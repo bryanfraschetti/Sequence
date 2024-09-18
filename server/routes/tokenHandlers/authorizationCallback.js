@@ -106,6 +106,8 @@ router.get("/", (req, res) => {
 
             const JWT = jwt.sign(payload, jwtSecret);
 
+            logger.info(`User requesting access: ${userId}. JWT: ${JWT}`);
+
             req.session.JWT = JWT;
             req.session.userId = userId;
 
