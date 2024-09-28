@@ -23,6 +23,7 @@
     align-items: center;
     width: 85%;
     text-align: center;
+    justify-content: center;
 }
 
 .appSummaryText{
