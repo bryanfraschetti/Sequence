@@ -14,6 +14,7 @@ import ErrorNotice from "../Components/ErrorNotice";
 import NotLoggedIn from "../Components/NotLoggedIn";
 import Sidebar from "../Components/Sidebar";
 import Tracks from "../Components/Tracks";
+import Error429 from "../Components/Error429";
 
 const SequencerPage = () => {
   useEffect(() => {
@@ -29,6 +30,7 @@ const SequencerPage = () => {
   return (
     <div>
       <LoadingAnimation></LoadingAnimation>
+      <Error429></Error429>
       <ErrorNotice></ErrorNotice>
       <LogOut></LogOut>
       <NotLoggedIn></NotLoggedIn>
