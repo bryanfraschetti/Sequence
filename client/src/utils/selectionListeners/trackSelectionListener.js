@@ -18,6 +18,13 @@ export const trackSelectionListener = async () => {
     e.preventDefault();
 
     if (!e.target.classList.contains("tracks-table-header")) {
+      const tracks = document.getElementById("tracks");
+
+      tracks.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
       ActivateAnimation();
 
       const sequencingMode = SequenceNamespace.getVar("sequencingMode");
