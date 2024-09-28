@@ -1,7 +1,9 @@
+import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 import { setProfileImage } from "../styling/setProfileImage";
 import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { tokenTimeValidity } from "../tokenHandling/tokenTimeValidity";
 import { updateUserCache } from "../updateCache/updateUserCache";
+import { Activate429 } from "../styling/Activate429";
 
 export const getUserInfoSpotify = async () => {
   const refresh_token = localStorage.getItem("refresh_token");
@@ -29,6 +31,8 @@ export const getUserInfoSpotify = async () => {
     .then((response) => {
       if (response.ok) {
         return response.json();
+      } else if (response.status === 429) {
+        Activate429();
       } else {
         throw new Error(response);
       }
@@ -50,6 +54,7 @@ export const getUserInfoSpotify = async () => {
       await updateUserCache(userId, profilePicUrl, JWT);
     })
     .catch((error) => {
+      ActivateErrorNotice(error);
       //   console.error(error);
       // window.location.href = "/";
     });

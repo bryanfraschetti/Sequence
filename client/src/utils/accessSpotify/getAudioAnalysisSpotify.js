@@ -3,6 +3,8 @@ import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { SumAxis } from "../math/SumAxis";
 import { SequenceNamespace } from "../SequenceNamespace";
 import { updateAudioAnalysisCache } from "../updateCache/updateAudioAnalysisCache";
+import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
+import { Activate429 } from "../styling/Activate429";
 
 export const getAudioAnalysisSpotify = async (trackInfo) => {
   const access_token = localStorage.getItem("access_token");
@@ -27,6 +29,8 @@ export const getAudioAnalysisSpotify = async (trackInfo) => {
     .then((response) => {
       if (response.ok) {
         return response.json();
+      } else if (response.status === 429) {
+        Activate429();
       } else {
         throw new Error(response);
       }
@@ -125,6 +129,6 @@ export const getAudioAnalysisSpotify = async (trackInfo) => {
       SequenceNamespace.appendArray("songList", songInfo);
     })
     .catch((error) => {
-      // console.error(error);
+      ActivateErrorNotice(error);
     });
 };

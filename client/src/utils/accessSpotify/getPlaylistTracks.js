@@ -1,4 +1,5 @@
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
+import { Activate429 } from "../styling/Activate429";
 import { getAudioAnalysisSpotify } from "./getAudioAnalysisSpotify";
 import { SequenceNamespace } from "../SequenceNamespace";
 import { updateTracksTableContent } from "../styling/updateTracksTableContents";
@@ -21,6 +22,8 @@ export const getPlaylistTracks = async () => {
     .then((response) => {
       if (response.ok) {
         return response.json();
+      } else if (response.status === 429) {
+        Activate429();
       } else {
         throw new Error(response);
       }

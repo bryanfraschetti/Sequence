@@ -3,6 +3,7 @@ import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { removeAllChildren } from "../styling/removeAllChildren";
 import { addPlaylistToDom } from "../styling/addPlaylistToDom";
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
+import { Activate429 } from "../styling/Activate429";
 import { SequenceNamespace } from "../SequenceNamespace";
 
 export const getPlaylistsSpotify = async () => {
@@ -26,6 +27,8 @@ export const getPlaylistsSpotify = async () => {
     .then((response) => {
       if (response.ok) {
         return response.json();
+      } else if (response.status === 429) {
+        Activate429();
       } else {
         throw new Error(response);
       }
@@ -67,6 +70,8 @@ export const getPlaylistsSpotify = async () => {
           .then((response) => {
             if (response.ok) {
               return response.json();
+            } else if (response.status === 429) {
+              Activate429();
             } else {
               throw new Error(response);
             }
@@ -94,6 +99,6 @@ export const getPlaylistsSpotify = async () => {
       }
     })
     .catch((error) => {
-      //   ActivateErrorNotice(error);
+      ActivateErrorNotice(error);
     });
 };

@@ -66,7 +66,6 @@ export const createPlaylist = async () => {
       })
         .then((response) => {
           if (response.ok) {
-            ActivateAnimation();
             return;
           } else if (response.status === 429) {
             Activate429();
@@ -86,6 +85,7 @@ export const createPlaylist = async () => {
         body: base64ImageString,
       }).then(() => {
         setTimeout(() => {
+          ActivateAnimation();
           window.open(
             `https://open.spotify.com/playlist/${newPlaylistId}`,
             "_blank"
