@@ -85,10 +85,12 @@ export const createPlaylist = async () => {
         },
         body: base64ImageString,
       }).then(() => {
-        window.open(
-          `https://open.spotify.com/playlist/${newPlaylistId}`,
-          "_blank"
-        );
+        setTimeout(() => {
+          window.open(
+            `https://open.spotify.com/playlist/${newPlaylistId}`,
+            "_blank"
+          );
+        }, 5000);
       });
     })
     .catch((error) => {
