@@ -91,7 +91,7 @@ router.get("/", (req, res) => {
             if (response.ok) {
               return response.json();
             } else {
-              throw new Error(response);
+              throw new Error(JSON.stringify(response, null, 2));
             }
           })
           .then(async (response) => {
