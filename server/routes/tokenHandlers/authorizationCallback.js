@@ -12,9 +12,9 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 // Important URLs
-const entryPoint = "/";
-const authCallback = "https://sequencewav.com/api/authorizationCallback";
+const authCallbackUrl = "https://sequencewav.com/api/authorizationCallback";
 const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
+const HTTPExceptionBadGatewayUrl = "/502";
 
 router.get("/", (req, res) => {
   logger.info(`HTTP ${req.method} ${req.originalUrl} - ${req.ip}`);
@@ -36,7 +36,7 @@ router.get("/", (req, res) => {
     errorLogger.error(
       `ERR ${req.method} ${req.originalUrl} - ${req.ip} | Code: ${code} Spotify Code: ${spotifyState} Session Code: ${sessionState}`
     );
-    res.redirect(entryPoint);
+    res.redirect(HTTPExceptionBadGatewayUrl);
   } else {
     // Begin token generation
     const authBody =
@@ -44,7 +44,7 @@ router.get("/", (req, res) => {
       "&code=" +
       code +
       "&redirect_uri=" +
-      encodeURI(authCallback) +
+      encodeURI(authCallbackUrl) +
       "&client_id=" +
       clientId;
 
@@ -119,7 +119,7 @@ router.get("/", (req, res) => {
             errorLogger.error(
               `ERR ${req.method} ${req.originalUrl} - ${req.ip} | ${error}`
             );
-            res.redirect(entryPoint);
+            res.redirect(HTTPExceptionBadGatewayUrl);
           });
       })
       .catch((error) => {
@@ -128,7 +128,7 @@ router.get("/", (req, res) => {
         );
         // Something went wrong, send user to index page
         // console.error(error)
-        res.redirect(entryPoint);
+        res.redirect(HTTPExceptionBadGatewayUrl);
       });
   }
 });
