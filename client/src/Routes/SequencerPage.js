@@ -15,6 +15,7 @@ import NotLoggedIn from "../Components/NotLoggedIn";
 import Sidebar from "../Components/Sidebar";
 import Tracks from "../Components/Tracks";
 import Error429 from "../Components/Error429";
+import PlsSeqNotice from "../Components/PlsSeqNotice";
 
 const SequencerPage = () => {
   useEffect(() => {
@@ -32,6 +33,7 @@ const SequencerPage = () => {
       <LoadingAnimation></LoadingAnimation>
       <Error429></Error429>
       <ErrorNotice></ErrorNotice>
+      <PlsSeqNotice></PlsSeqNotice>
       <LogOut></LogOut>
       <NotLoggedIn></NotLoggedIn>
       <NavBar></NavBar>

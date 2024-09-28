@@ -4,12 +4,14 @@ import { refreshTokens } from "../tokenHandling/refreshTokens";
 import { SequenceNamespace } from "../SequenceNamespace";
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
 import { Activate429 } from "../styling/Activate429";
+import { ActivatePlsSeq } from "../styling/ActivatePlsSeq";
 
 export const createPlaylist = async () => {
   const playlistPrefix = SequenceNamespace.getVar("playlistPrefix");
   const NewSequence = SequenceNamespace.getVar("NewSequence");
   //   console.log(playlistPrefix, NewSequence);
   if (playlistPrefix === "" || NewSequence === null) {
+    ActivatePlsSeq();
     return;
   }
 

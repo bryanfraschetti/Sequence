@@ -1,15 +1,15 @@
 import React from "react";
 
-const Error429 = () => {
+const PlsSeqNotice = () => {
   const goBack = () => {
-    const error429 = document.getElementById("error-429");
-    error429.style.display = "none";
+    const errorNotice = document.getElementById("pls-seq-notice");
+    errorNotice.style.display = "none";
     // window.location.href = "/";
   };
 
   return (
     <div
-      id="error-429"
+      id="pls-seq-notice"
       style={{
         position: "fixed",
         top: "0",
@@ -24,19 +24,19 @@ const Error429 = () => {
     >
       <div className="container" style={{ height: "220px" }}>
         <p style={{ fontSize: "16px", margin: "0" }}>
-          Unfortunately, we have reached the rate limit with Spotify. Please
-          wait a few minutes before trying again
+          Choose a Sequencing algorithm and song to reorder the playlist. Once
+          Sequenced, playlist will export
         </p>
         <button
           className="mybtn"
           style={{ width: "200px", color: "white", marginTop: "2rem" }}
           onClick={goBack}
         >
-          Okay! Go back.
+          Okay! I will.
         </button>
       </div>
     </div>
   );
 };
 
-export default Error429;
+export default PlsSeqNotice;
