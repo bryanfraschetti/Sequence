@@ -25,6 +25,8 @@ router.get("/", (req, res) => {
     "%20playlist-read-collaborative" +
     "%20playlist-modify-private" +
     "%20playlist-modify-public" +
+    "%20user-read-private" +
+    "%20user-read-email" +
     "%20ugc-image-upload";
   url += "&state=" + state;
   req.session.state = state;
