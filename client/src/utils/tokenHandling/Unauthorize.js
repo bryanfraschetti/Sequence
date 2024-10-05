@@ -1,6 +1,9 @@
+import { SequenceNamespace } from "../SequenceNamespace";
+
 export const Unauthorize = () => {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
   const userId = localStorage.getItem("userId"); // Post userId to Sequence endpoint
-  fetch("/api/Unauthorize", {
+  fetch(`${sequenceUrl}/api/Unauthorize`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

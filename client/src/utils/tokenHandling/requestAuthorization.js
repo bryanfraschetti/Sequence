@@ -1,9 +1,12 @@
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
+import { SequenceNamespace } from "../SequenceNamespace";
 
 export const requestAuthorization = async () => {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
+
   try {
     // Initiate authorization flow
-    const response = await fetch("/api/initiateAuth", {
+    const response = await fetch(`${sequenceUrl}/api/initiateAuth`, {
       method: "GET",
     }); // Request initiateAuth endpoint from Sequence
     if (response.ok) {

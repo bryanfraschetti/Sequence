@@ -1,10 +1,13 @@
 import { setProfileImage } from "../styling/setProfileImage";
+import { SequenceNamespace } from "../SequenceNamespace";
 
 export const getUserInfoCache = async (userID) => {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
+
   try {
     // Try reading user cache
     const JWT = localStorage.getItem("JWT");
-    const response = await fetch(`/api/users/cache/${userID}`, {
+    const response = await fetch(`${sequenceUrl}/api/users/cache/${userID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

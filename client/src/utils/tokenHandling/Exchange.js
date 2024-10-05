@@ -4,8 +4,11 @@ import { refreshTokens } from "./refreshTokens";
 import { getPlaylists } from "../dataAcquisition/getPlaylists";
 import { getUserInfo } from "../dataAcquisition/getUserInfo";
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
+import { SequenceNamespace } from "../SequenceNamespace";
 
 export const Exchange = async () => {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
+
   ActivateAnimation(); //loading animation
   const access_token = localStorage.getItem("access_token");
   const refresh_token = localStorage.getItem("refresh_token");
@@ -18,7 +21,7 @@ export const Exchange = async () => {
   } else {
     try {
       // Send tokens to Sequence
-      const response = await fetch("/api/AccessToken", {
+      const response = await fetch(`${sequenceUrl}/api/AccessToken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

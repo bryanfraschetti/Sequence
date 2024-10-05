@@ -1,9 +1,12 @@
+import { SequenceNamespace } from "../SequenceNamespace";
+
 export const updatePlaylistCache = async (playlists) => {
   // Send fetched playlists to Sequence
   const userId = localStorage.getItem("userId");
   const JWT = localStorage.getItem("JWT");
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
 
-  fetch(`/api/playlists/update/${userId}`, {
+  fetch(`${sequenceUrl}/api/playlists/update/${userId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

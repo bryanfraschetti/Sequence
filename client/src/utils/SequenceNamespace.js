@@ -12,6 +12,7 @@ export const SequenceNamespace = (function () {
     expectedNumSongs: null,
     NewSequence: null,
     playlistPrefix: "",
+    sequenceUrl: "https://sequencewav.com",
   }; // Variables that are shared across JS functions
 
   return {

@@ -1,5 +1,9 @@
+import { SequenceNamespace } from "../SequenceNamespace";
+
 export const updateAudioAnalysisCache = async (trackInfo) => {
-  await fetch(`/api/tracks/create/${trackInfo.trackId}`, {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
+
+  await fetch(`${sequenceUrl}/api/tracks/create/${trackInfo.trackId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

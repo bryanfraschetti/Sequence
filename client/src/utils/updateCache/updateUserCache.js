@@ -1,5 +1,9 @@
+import { SequenceNamespace } from "../SequenceNamespace";
+
 export const updateUserCache = async (userId, profilePicUrl, JWT) => {
-  fetch("/api/users/create", {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
+
+  fetch(`${sequenceUrl}/api/users/create`, {
     // Cache Image (or the lack thereof)
     method: "POST",
     headers: {

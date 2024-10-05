@@ -1,13 +1,15 @@
 import { ActivateErrorNotice } from "../styling/ActivateErrorNotice";
-
+import { SequenceNamespace } from "../SequenceNamespace";
 export const refreshTokens = async () => {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
+
   try {
     const access_token = localStorage.getItem("access_token");
     const refresh_token = localStorage.getItem("refresh_token");
     const expires = localStorage.getItem("expires"); // Get current client state
     const JWT = localStorage.getItem("JWT");
 
-    const response = await fetch("/api/RefreshToken", {
+    const response = await fetch(`${sequenceUrl}/api/RefreshToken`, {
       // Send current state to Sequence
       method: "POST",
       headers: {

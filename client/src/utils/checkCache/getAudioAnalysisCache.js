@@ -1,6 +1,9 @@
+import { SequenceNamespace } from "../SequenceNamespace";
+
 export const getAudioAnalysisCache = async (trackId) => {
+  const sequenceUrl = SequenceNamespace.getVar("sequenceUrl");
   // getAudio cache
-  return fetch(`/api/tracks/cache/${trackId}`, {
+  return fetch(`${sequenceUrl}/api/tracks/cache/${trackId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
