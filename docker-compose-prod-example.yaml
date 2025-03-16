@@ -44,7 +44,9 @@ services:
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --keep-until-expiring --email [email] -d sequencewav.com --agree-tos
+    command: certonly --webroot -w /var/www/certbot --email [email] -d sequencewav.com --agree-tos --keep-until-expiring
+    depends_on:
+      - nginx
 
   post-start:
     image: redis/redis-stack-server:latest

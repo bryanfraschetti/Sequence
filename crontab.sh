@@ -1,1 +1,1 @@
-0 8 * * * cd ~/ && docker-compose run certbot >> /var/log/certbot-renew.log 2>&1
+0 8 * * * cd ~/ && docker compose run --remove-orphans --rm certbot >> /var/log/certbot-renew.log 2>&1
